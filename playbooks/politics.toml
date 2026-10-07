@@ -1,0 +1,62 @@
+# Starter politics playbook. Edit freely, and replace federal starting points with
+# your state's campaign-finance, lobbying, ethics and legislature sites. Contains no
+# story and does not promise a lead. URLs are starting points, never verified access.
+name = "Politics, campaigns and government ethics"
+description = "Campaign money, lobbying, officials' financial interests, legislation and public meetings."
+
+# Watch mode: replace with your state's ethics commission, campaign-finance agency,
+# legislature and auditor pages. Written from general knowledge on 2026-10-06 and NOT verified.
+watch = [
+  "https://www.fec.gov/updates/",
+  "https://www.gao.gov/rss/reports.xml",
+]
+request_pages = []
+
+comparisons = [
+  "Contributions or lobbying against votes, contracts or appointments",
+  "Disclosed interests against official actions",
+  "Reported spending against filing deadlines and legal limits",
+]
+
+reject_when = [
+  "The connection rests only on timing or coincidence with no record linking them",
+  "The finding restates a published disclosure without new records",
+  "The records needed are confidential by law with no exception",
+  "Access to the essential records is unresolved",
+]
+
+[[record_families]]
+name = "Campaign contributions and spending"
+reveals = "Who funds candidates and committees, spending patterns, late or missing reports, and donors with business before officials."
+custodian = "Federal Election Commission; state campaign-finance agency"
+sources = [
+  { label = "FEC bulk data", url = "https://www.fec.gov/data/browse-data/?tab=bulk-data", verified = false },
+]
+request_notes = "State filings are usually public downloads; enforcement files may need a records request."
+
+[[record_families]]
+name = "Lobbying disclosures"
+reveals = "Who is paid to lobby on which bills or agencies, and how much."
+custodian = "Senate Office of Public Records and House Clerk; state lobbying registrar"
+sources = [
+  { label = "Lobbying Disclosure Act filings", url = "https://lda.senate.gov/system/public/", verified = false },
+]
+
+[[record_families]]
+name = "Officials' financial disclosures and ethics complaints"
+reveals = "Holdings, outside income and gifts that may intersect with official actions; complaint outcomes."
+custodian = "State ethics commission; legislative ethics offices"
+sources = []
+request_notes = "Many states publish disclosures; complaint files are often confidential until resolved."
+
+[[record_families]]
+name = "Legislative and agency actions"
+reveals = "Bills, votes, amendments, rulemaking dockets and contracts that can be matched against money and interests."
+custodian = "Legislature; state procurement office"
+sources = []
+
+[[record_families]]
+name = "Public meeting records"
+reveals = "Agendas, minutes, votes and attachments showing what officials actually approved."
+custodian = "The body that held the meeting"
+sources = []

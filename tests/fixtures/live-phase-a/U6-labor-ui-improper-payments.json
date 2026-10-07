@@ -1,0 +1,84 @@
+{
+  "leads": [
+    {
+      "headline": "Where did hundreds of millions in residual pandemic unemployment payments go?",
+      "established": [
+        {
+          "text": "The May 27, 2025 audit identified approximately $440.4 million in gross residual payments across three pandemic unemployment programs for its fiscal 2024 reporting.",
+          "source": "dol-oig-piia",
+          "quote": "The FPUC, PEUC, and PUA programs have had gross residual outlays of $250.5 million, $68.5 million, and $121.4 million, respectively, for FY 2024."
+        },
+        {
+          "text": "The department omitted specified payment-integrity reporting requirements for these programs despite their earlier assessment as susceptible to improper payments.",
+          "source": "dol-oig-piia",
+          "quote": "Although these programs were assessed as susceptible to improper payments in FY 2021, DOL did not report the Phase 2 program requirements21 in its FY 2024 OMB payment integrity data call."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The figures are gross positive disbursements, not net spending or identified losses. The source describes them as payments for eligible claims; their existence does not establish fraud or improper payment.",
+          "source": "dol-oig-piia",
+          "quote": "However, the PUA program has continued to have gross residual outlays for eligible claims of approximately $121.4 million for the FY 2024 reporting period."
+        },
+        {
+          "text": "The underlying transaction window identified for the Pandemic Unemployment Assistance amount is July 2023 through June 2024, rather than the federal fiscal-year calendar. Establish the corresponding windows for the other programs before comparing them.",
+          "source": "dol-oig-piia",
+          "quote": "The PUA amount was derived as positive disbursements from the ETA 2112 - UI Financial Transaction Summary report for the period of July 2023 to June 2024."
+        },
+        {
+          "text": "Management disputed two audit findings and their related recommendation. The supplied extraction does not include the complete explanation, so the full response is necessary before characterizing the disagreement.",
+          "source": "dol-oig-piia",
+          "quote": "In response to a draft of this report, DOL management agreed, in part, with two of our three recommendations and did not concur with Findings 24-02 and 24-04 and their related recommendation."
+        },
+        {
+          "text": "These are historical audit findings, not evidence that the reporting omissions persisted after May 2025.",
+          "source": "dol-oig-piia",
+          "quote": "DATE ISSUED: MAY 27, 2025 REPORT NUMBER: 22-25-007-13-001"
+        }
+      ],
+      "hypothesis": "The national residual-payment totals may conceal substantial concentration in particular states or reporting months, while the department's reporting treatment left those concentrations without a corresponding payment-risk assessment. Audit-held transaction extracts and assessment workpapers could test this; concentration alone would not establish improper payments.",
+      "already_answered": "The audit already establishes the national totals and the reporting omission. Simply repeating those findings is not the opportunity. The unanswered test is where and when the payments occurred, whether gross-versus-net accounting obscured their scale, and what existing assessments supported excluding them from the specified reporting requirements.",
+      "records": [
+        {
+          "description": "The complete audit PDF, especially Appendix A, the findings on residual pandemic-program outlays, and the supporting footnotes.",
+          "could_reveal": "Management's complete rationale, the auditors' response, reporting thresholds, and the precise calculation periods and scope needed to avoid an invalid comparison.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "U.S. Department of Labor, Office of Inspector General",
+          "location": "https://www.oig.dol.gov/public/reports/oa/2025/22-25-007-13-001.pdf",
+          "how": "Download the full supplied PDF and read the complete findings and management response; the provided text is an incomplete extraction.",
+          "source": "dol-oig-piia",
+          "quote": "Management’s complete response can be found at Appendix A."
+        },
+        {
+          "description": "Audit-held transaction extracts and calculation workpapers supporting the three residual-outlay totals, including underlying financial transaction summaries and gross-to-net reconciliations.",
+          "could_reveal": "State and reporting-month concentration, the effect of recoveries or other offsets on net totals, and whether the three program totals are directly comparable. Analyze only the geographic and temporal detail actually retained in the records.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Department of Labor (DOL) Office of Inspector General (OIG)",
+          "location": "FOIA.PrivacyAct@oig.dol.gov",
+          "how": "Request existing records held for audit 22-25-007-13-001, including contractor-prepared supporting records held by the office. The supplied sources identify no public download for these workpapers.",
+          "source": "dol-oig-foia",
+          "quote": "The public may make FOIA inquiries to OIG by sending an email to: FOIA.PrivacyAct@oig.dol.gov ."
+        },
+        {
+          "description": "Audit-held assessments, correspondence, and management submissions addressing residual payments and the decision not to report the specified payment-integrity requirements.",
+          "could_reveal": "Whether the omission reflected a documented assessment, an accounting or threshold interpretation, or an absence of assessment, and whether any state-specific payment risks were considered.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Department of Labor (DOL) Office of Inspector General (OIG)",
+          "location": "FOIA.PrivacyAct@oig.dol.gov",
+          "how": "Request the supporting records retained for the named audit, rather than asking the inspector general to create a new assessment or answer questions.",
+          "source": "dol-oig-foia",
+          "quote": "The public may make FOIA inquiries to OIG by sending an email to: FOIA.PrivacyAct@oig.dol.gov ."
+        }
+      ],
+      "request_text": "To the Department of Labor Office of Inspector General:\n\nPlease provide existing records held by your office, including contractor-prepared records held by the office, dated July 1, 2023–May 27, 2025, supporting Report 22-25-007-13-001:\n\n1. ETA 2112 financial transaction extracts, spreadsheets, calculation workpapers, and gross-to-net reconciliations supporting the FY 2024 residual-outlay totals for Federal Pandemic Unemployment Compensation, Pandemic Emergency Unemployment Compensation, and Pandemic Unemployment Assistance. Please retain any existing state, program, and reporting-month fields and provide spreadsheets in their existing electronic format.\n2. Assessments, memoranda, correspondence, and management submissions addressing those residual outlays and whether the programs were required to report Phase 2 payment-integrity information, including supporting records for the relevant findings and management's disagreement.\n\nThis request excludes individual claimant identifiers and seeks existing records, not a new analysis.",
+      "newsworthiness": 8
+    }
+  ],
+  "no_lead_reason": ""
+}

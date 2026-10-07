@@ -1,0 +1,46 @@
+# Fictional settings. Credentials belong only in repository secrets.
+# Watch mode: report documents published in the last 14 days on the military playbook's
+# watch list, with follow-on records requests. Scheduling stays disabled.
+[identity]
+id = "example-defense"
+newsletter_name = "Document Hunt"
+sender_name = "Example Newsroom"
+accent_color = "#152b44"
+[editorial]
+coverage_brief = """We cover the U.S. military: installations, service members' safety and living conditions,
+defense contracts and oversight, and veterans' services. Find newly released documents that
+point to records worth requesting."""
+exclusions = "Opinion and unsupported speculation"
+geography = "United States"
+max_final_leads = 5
+[ai]
+provider = "openai"
+model = "gpt-6.1-sol"
+reasoning_effort = "medium"
+[email]
+provider = "resend"
+sender = "editor@example.org"
+recipients = ["reporter@example.org"]
+[schedule]
+enabled = false
+timezone = "America/New_York"
+[retrieval]
+# Many federal sites return HTTP 403 to plain clients. Requires FIRECRAWL_API_KEY.
+firecrawl_enabled = true
+firecrawl_max_calls = 16
+[hunt]
+mode = "watch"
+playbook = "playbooks/military.toml"
+window_days = 14
+max_new_documents = 5
+max_source_chars = 80000
+allowed_acronyms = ["DOD", "VA"]
+[limits]
+research_requests = 6
+review_requests = 6
+searches = 1
+fetches = 50
+input_tokens = 950000
+output_tokens = 90000
+max_candidates = 5
+max_final_leads = 5

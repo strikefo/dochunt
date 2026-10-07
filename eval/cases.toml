@@ -1,0 +1,289 @@
+# Frozen DocHunt evaluation cases. Frozen 2026-10-06 before any engine output exists.
+# Do not edit briefs, geography or source lists after outputs are seen; add a new
+# versioned case instead and say why.
+#
+# track = "supplied"  : the engine receives only the listed saved receipts (no fetching).
+# track = "discovery" : brief + geography (+ optional playbook) only; needs approved live retrieval.
+# exposure = "regression" : used as an evaluation/development case before this assessment.
+# exposure = "unused"     : never used as an evaluation case; the receipts did appear in earlier
+#                           fixtures, discovery runs or tests, so prior agents (and this assessor)
+#                           have seen them. Not a blind held-out set.
+# exposure = "held_out"   : no sources chosen; nobody has seen outputs for this brief.
+# exercises = structural features present in the sources, recorded so coverage of the
+#             required situations can be checked. They are NOT expected answers.
+
+# ---------------- Supplied-source track: regression ----------------
+
+[[case]]
+id = "R1-labor-child-labor-targeting"
+track = "supplied"
+exposure = "regression"
+beat = "labor"
+geography = "United States"
+brief = "I cover labor and workplace enforcement nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-26-107722", "whd-foia", "whd-foia-request"]
+exercises = ["late-page agency comments", "records request route on separate page", "local discretion qualification"]
+note = "Prior runs used a thesis-shaped brief copied from the report. This case uses a neutral beat brief."
+
+[[case]]
+id = "R2-education-absenteeism-data"
+track = "supplied"
+exposure = "regression"
+beat = "education"
+geography = "United States"
+brief = "I cover K-12 education nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-26-107920", "ed-foia"]
+exercises = ["late-page agency disagreement", "data limitation that may defeat a comparison"]
+
+[[case]]
+id = "R3-housing-mitchell-lama-no-route"
+track = "supplied"
+exposure = "regression"
+beat = "housing"
+geography = "New York City, New York, United States"
+brief = "I cover housing in New York City. Find important existing documents or public data that could support original reporting."
+sources = ["osc-mitchell-lama", "hpd-response", "osc-dashboard"]
+exercises = ["full report linked but unread", "underlying records not supplied", "no custodian route supplied", "agency disagreement"]
+note = "Same three receipts as the 2026-10-06 housing false positive."
+
+[[case]]
+id = "R3b-housing-mitchell-lama-with-hpd-foil-page"
+track = "supplied"
+exposure = "regression"
+beat = "housing"
+geography = "New York City, New York, United States"
+brief = "I cover housing in New York City. Find important existing documents or public data that could support original reporting."
+sources = ["osc-mitchell-lama", "hpd-response", "osc-dashboard", "hpd-foil"]
+exercises = ["custodian page describing public data portals and request route", "agency disagreement"]
+note = "R3 plus the HPD FOIL page that the production local-government run had already retrieved. Derived from R3; disclose as such."
+
+[[case]]
+id = "R4-local-fonda-water-fund"
+track = "supplied"
+exposure = "regression"
+beat = "local government"
+geography = "Village of Fonda, New York"
+brief = "I cover local government in the Mohawk Valley of New York. Find important existing documents or public data that could support original reporting."
+sources = ["osc-fonda", "fonda-minutes-2025-08", "fonda-minutes-2026-01", "fonda-fees", "fonda-clerk", "fonda-foil-form"]
+exercises = ["public records already downloaded (minutes, fee schedule)", "local request form"]
+
+# ---------------- Supplied-source track: not previously used as cases ----------------
+
+[[case]]
+id = "U1-local-health-landfill-response"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Los Angeles County, California"
+brief = "I cover Los Angeles County government and public health. Find important existing documents or public data that could support original reporting."
+sources = ["ca-auditor-2025-128", "la-dph-prr-policy", "la-dph-cor-form"]
+exercises = ["source truncated at acquisition: late pages (agency response) missing", "county records request policy and form"]
+
+[[case]]
+id = "U2-local-chicago-auto-pounds"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Chicago, Illinois"
+brief = "I cover Chicago city government. Find important existing documents or public data that could support original reporting."
+sources = ["chicago-oig-auto-pounds", "chicago-oig-foia-form"]
+exercises = ["news release only; full report not acquired", "request form for the auditor, not the audited department"]
+
+[[case]]
+id = "U3-local-seattle-recommendation-status"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Seattle, Washington"
+brief = "I cover Seattle city government. Find important existing documents or public data that could support original reporting."
+sources = ["seattle-rec-followup", "seattle-prr-center"]
+exercises = ["status questions already answered in the follow-up report", "near-empty request-center page (inaccessible source)"]
+
+[[case]]
+id = "U4-local-lansing-procurement"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Village of Lansing, New York"
+brief = "I cover local government in Tompkins County, New York. Find important existing documents or public data that could support original reporting."
+sources = ["osc-lansing", "lansing-records-law", "lansing-contact"]
+exercises = ["audit summary only", "local records-access law", "near-empty contact page (inaccessible source)"]
+
+[[case]]
+id = "U5-labor-osha-oig-alert"
+track = "supplied"
+exposure = "unused"
+beat = "labor"
+geography = "United States"
+brief = "I cover workplace safety nationally. Find important existing documents or public data that could support original reporting."
+sources = ["dol-oig-osha-alert", "osha-foia"]
+exercises = ["agency response pending (not yet provided)", "agency request page"]
+
+[[case]]
+id = "U6-labor-ui-improper-payments"
+track = "supplied"
+exposure = "unused"
+beat = "labor"
+geography = "United States"
+brief = "I cover unemployment insurance and worker benefits nationally. Find important existing documents or public data that could support original reporting."
+sources = ["dol-oig-piia", "dol-oig-foia"]
+exercises = ["compliance audit with agency agreement", "possible legitimate no-lead"]
+
+[[case]]
+id = "U7-education-oregon-high-school-success"
+track = "supplied"
+exposure = "unused"
+beat = "education"
+geography = "Oregon"
+brief = "I cover K-12 education in Oregon. Find important existing documents or public data that could support original reporting."
+sources = ["oregon-ode-audit"]
+exercises = ["follow-up audit; agency agreed", "no request route supplied"]
+
+[[case]]
+id = "U8-education-puerto-rico-esser"
+track = "supplied"
+exposure = "unused"
+beat = "education"
+geography = "Puerto Rico"
+brief = "I cover education spending in Puerto Rico. Find important existing documents or public data that could support original reporting."
+sources = ["ed-oig-pr-esser", "ed-oig-foia"]
+exercises = ["summary page only; full report linked but unread", "request route belongs to the auditor, not the audited agency"]
+
+[[case]]
+id = "U9-education-special-education-placement"
+track = "supplied"
+exposure = "unused"
+beat = "education"
+geography = "United States"
+brief = "I cover special education nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-26-107814", "ed-foia"]
+exercises = ["full report with methods and agency comments", "public federal data described in methods"]
+
+[[case]]
+id = "U10-local-suffolk-contract-disclosure"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Suffolk County, New York"
+brief = "I cover Suffolk County government and its contractors. Find important existing documents or public data that could support original reporting."
+sources = ["suffolk-contract-disclosure", "suffolk-subrecipient"]
+exercises = ["tabular public data in the source", "saved receipt may be a partial excerpt"]
+
+# ---------------- Discovery track: held out, requires approved live retrieval ----------------
+
+[[case]]
+id = "D1-labor-pennsylvania-playbook"
+track = "discovery"
+exposure = "held_out"
+beat = "labor"
+geography = "Pennsylvania"
+brief = "I cover workers, wages and workplace safety in Pennsylvania."
+playbook = "playbooks/labor.toml"
+
+[[case]]
+id = "D2-labor-pennsylvania-custom"
+track = "discovery"
+exposure = "held_out"
+beat = "labor"
+geography = "Pennsylvania"
+brief = "I cover workers, wages and workplace safety in Pennsylvania."
+note = "Same brief as D1 without a playbook: isolates the playbook's contribution."
+
+[[case]]
+id = "D3-education-wisconsin-custom"
+track = "discovery"
+exposure = "held_out"
+beat = "education"
+geography = "Wisconsin"
+brief = "We cover public education in Wisconsin, focusing on school spending, special education, student safety, and accountability."
+
+[[case]]
+id = "D4-housing-cook-county-custom"
+track = "discovery"
+exposure = "held_out"
+beat = "housing"
+geography = "Cook County, Illinois"
+brief = "I cover housing conditions, landlords and code enforcement in Chicago and Cook County."
+
+[[case]]
+id = "D5-politics-arizona-playbook"
+track = "discovery"
+exposure = "held_out"
+beat = "politics"
+geography = "Arizona"
+brief = "I cover Arizona state politics: the Legislature, campaign money and lobbying."
+playbook = "playbooks/politics.toml"
+
+[[case]]
+id = "D6-military-texas-playbook"
+track = "discovery"
+exposure = "held_out"
+beat = "military"
+geography = "San Antonio, Texas"
+brief = "I cover military installations, service members and defense contractors around San Antonio."
+playbook = "playbooks/military.toml"
+
+# ---------------- Supplied-source track, set A2 (frozen 2026-10-06, after Phase A) ----------------
+# Added after the Phase A run and the gate corrections, before any engine output for these
+# cases exists. Receipts appeared in earlier development runs but were never used as cases,
+# and no prompt or gate was tuned on them. The briefs are neutral beat briefs.
+
+[[case]]
+id = "N1-labor-workplace-injury-data"
+track = "supplied"
+exposure = "unused"
+beat = "labor"
+geography = "United States"
+brief = "I cover workplace safety and injuries nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-24-106413", "bls-soii-2026", "bls-iif-data-requests", "bls-foia"]
+exercises = ["public statistical data with a data-request route", "agency FOIA page"]
+
+[[case]]
+id = "N2-education-school-facilities"
+track = "supplied"
+exposure = "unused"
+beat = "education"
+geography = "United States"
+brief = "I cover K-12 education nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-26-107970", "ed-foia-faq"]
+exercises = ["source truncated at acquisition: late pages missing", "federal request route"]
+
+[[case]]
+id = "N3-education-student-loans"
+track = "supplied"
+exposure = "unused"
+beat = "education"
+geography = "United States"
+brief = "I cover higher education and student debt nationally. Find important existing documents or public data that could support original reporting."
+sources = ["gao-26-108534", "ed-foia-faq"]
+exercises = ["full report with agency comments", "federal request route"]
+
+[[case]]
+id = "N4-labor-child-labor-oig-advisory"
+track = "supplied"
+exposure = "unused"
+beat = "labor"
+geography = "United States"
+brief = "I cover labor and workplace enforcement nationally. Find important existing documents or public data that could support original reporting."
+sources = ["dol-oig-child-labor", "dol-foia-submit", "dol-foia-guide"]
+exercises = ["department-wide request route covering components", "topic overlaps an earlier case (different seed document)"]
+
+[[case]]
+id = "N5-local-chicago-police-overtime"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "Chicago, Illinois"
+brief = "I cover Chicago city government and policing. Find important existing documents or public data that could support original reporting."
+sources = ["chicago-oig-cpd-overtime", "chicago-oig-2026-plan", "chicago-oig-foia-form"]
+exercises = ["public data dashboard", "auditor's own request route"]
+
+[[case]]
+id = "N6-local-california-homelessness"
+track = "supplied"
+exposure = "unused"
+beat = "local government"
+geography = "California"
+brief = "I cover California state and local government. Find important existing documents or public data that could support original reporting."
+sources = ["ca-auditor-2023-102-2"]
+exercises = ["source truncated at acquisition", "no request route supplied (a correct no-lead or access hold is acceptable)"]

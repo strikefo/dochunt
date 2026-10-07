@@ -1,0 +1,144 @@
+{
+  "leads": [
+    {
+      "headline": "Did Chicago’s towing contractor leave vehicle owners paying for preventable damage?",
+      "established": [
+        {
+          "text": "The audit found that the city did not monitor contractor damage claims or consistently enforce the contractor’s obligations.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "OIG also found that DSS does not monitor vehicle damage claims against its contractor and does not consistently hold URT accountable for meeting contract terms, exposing vehicles to risk of damage or theft and adding difficulty to the retrieval process."
+        },
+        {
+          "text": "The inspector general recommended enforcing contractual requirements concerning security, vehicle damage and claims handling.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "OIG recommends that DSS take steps to ensure that URT complies with its contract requirements to maintain pound security, protect vehicles from damage, act in good faith on claims of vehicle damage, and use an inventory system that interfaces with the City’s IT systems."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "These are historical audit findings, not evidence of conditions in October 2026. The observations and records cover different periods.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "OIG directly observed pound operations from December 2023 through October 2024 and reviewed records from calendar years 2022 and 2023."
+        },
+        {
+          "text": "The inspector general said the impoundment process generally worked effectively; exposure to damage does not itself establish actual damage or improperly denied claims.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "“Our audit found that the City’s impoundment processes generally work effectively, but the process can be more transparent and accessible for customers and reduce the risk of damage to vehicles."
+        },
+        {
+          "text": "The departmental response is available with the full report but was not supplied. Read it before characterizing the department’s position or subsequent corrective actions.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "Read the full report and departmental response , published on August 26, 2026."
+        },
+        {
+          "text": "Access to underlying audit materials is not guaranteed: the inspector general warns that substantial portions of its records may be exempt.",
+          "source": "chicago-oig-foia-form",
+          "quote": "Therefore, records listed above may not be subject to disclosure."
+        }
+      ],
+      "hypothesis": "Among incidents documented in the audit files, failures to follow contractual vehicle-protection requirements contributed to actual damage, and owners received inadequate compensation. The reporting test is to match documented incidents with applicable contract provisions, supporting evidence and claim dispositions—not to infer harm from the audit’s risk finding.",
+      "already_answered": "The audit already establishes deficient monitoring and inconsistent contract enforcement. It does not establish in the supplied release how many vehicles were damaged, whether particular claims were mishandled, or how much owners lost.",
+      "records": [
+        {
+          "description": "Full auto-pound audit and departmental response.",
+          "could_reveal": "The exact contractual failures, supporting incidents, audit limitations, department disagreements and promised or completed corrective actions.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "City of Chicago Office of Inspector General",
+          "location": "https://igchicago.org/publications/dss-auto-pounds-audit/",
+          "how": "Open the linked publication page and obtain the full report and response; their contents have not been supplied.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "Read the full report and departmental response , published on August 26, 2026."
+        },
+        {
+          "description": "Existing audit-project records concerning contractor vehicle protection and damage claims: contract provisions retained in the project, incident evidence, claim files or logs, dispositions, and compliance workpapers.",
+          "could_reveal": "Whether documented damage coincided with identifiable contractual failures and whether claims were paid, denied or left unresolved. The files may support case reporting, not a citywide damage rate.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Office of Inspector General (OIG)",
+          "location": "oigfoia@igchicago.org",
+          "how": "Request existing records retained in the auto-pound audit project from the named office. Seek segregable portions; do not assume it holds every contractor claim or that all audit records are disclosable.",
+          "source": "chicago-oig-foia-form",
+          "quote": "The following categories of records are maintained by OIG: Investigative records, such as complaints and reports OIG budget requests OIG operational records OIG personnel records Records related to Audit and Program Review projects Records related to Compliance activity Reports required under the OIG Ordinance"
+        }
+      ],
+      "request_text": "To the Office of Inspector General FOIA officers:\nPlease provide existing records retained in the Department of Streets and Sanitation auto-pound audit project published August 26, 2026, covering January 1, 2022–August 26, 2026:\n1. Contract provisions and amendments used to assess United Road Towing’s vehicle protection, pound security and damage-claim obligations.\n2. Vehicle damage or theft incident records, claim files or logs, and claim disposition or payment records retained in the project.\n3. Workpapers and supporting records documenting compliance testing of those obligations, including records linking incidents to claims and dispositions.\nPlease provide electronic copies and segregable nonexempt portions. This request is limited to existing project records and does not seek creation of a new analysis.",
+      "newsworthiness": 8
+    },
+    {
+      "headline": "Can Chicago account for the impounded vehicles its digital records could not trace?",
+      "established": [
+        {
+          "text": "The audit could not establish the disposition of 15 percent of vehicles in a randomly selected sample using the impoundment data it examined.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "The audit also found that digital impoundment data was unreliable: in a randomly-selected sample, OIG could not determine whether 15 percent of vehicles had been redeemed, disposed of, or remained impounded."
+        },
+        {
+          "text": "The department relied predominantly on paper processing, while digital records were incomplete.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "DSS relies mostly on paper records to process impoundments and retrievals, and digital impoundment records were incomplete at the time of the audit."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The release gives neither the sample size nor sufficient methodological detail to extrapolate the 15 percent figure to all impounded vehicles.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "The audit also found that digital impoundment data was unreliable: in a randomly-selected sample, OIG could not determine whether 15 percent of vehicles had been redeemed, disposed of, or remained impounded."
+        },
+        {
+          "text": "The audit reviewed 2022–2023 records and observed operations during December 2023–October 2024; it does not establish current inventory accuracy.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "OIG directly observed pound operations from December 2023 through October 2024 and reviewed records from calendar years 2022 and 2023."
+        },
+        {
+          "text": "Management is divided among police, the sanitation department and its contractor. Any facility comparison must establish which operations the audit actually sampled.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "The City maintains eight pound operations at five locations, with management responsibilities divided among the Chicago Police Department (CPD), DSS, and DSS’s towing and pound management vendor, United Road Towing (URT)."
+        },
+        {
+          "text": "The full departmental response must be checked for explanations and later status changes.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "Read the full report and departmental response , published on August 26, 2026."
+        },
+        {
+          "text": "The request route exists, but disclosure of the underlying audit files is uncertain.",
+          "source": "chicago-oig-foia-form",
+          "quote": "Therefore, records listed above may not be subject to disclosure."
+        }
+      ],
+      "hypothesis": "The unresolved sampled cases reflect failures to document actual vehicle dispositions, rather than merely failures to update digital fields. Reconcile the sampled entries against paper and transaction evidence retained in the audit project, and distinguish documented outcomes from genuinely unsupported dispositions.",
+      "already_answered": "Digital incompleteness and the audit’s inability to determine some sampled outcomes are already findings. Neither establishes that cars were physically missing, stolen or improperly disposed of. If the full audit already reconciles these cases, this lead should be dropped or narrowed to any remaining discrepancies.",
+      "records": [
+        {
+          "description": "Full auto-pound audit and departmental response.",
+          "could_reveal": "Sample size, selection method, facilities covered, whether paper records were already checked, and whether the department subsequently supplied disposition evidence.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "City of Chicago Office of Inspector General",
+          "location": "https://igchicago.org/publications/dss-auto-pounds-audit/",
+          "how": "Download the linked full report and response first. Stop if they already resolve the proposed reconciliation.",
+          "source": "chicago-oig-auto-pounds",
+          "quote": "Read the full report and departmental response , published on August 26, 2026."
+        },
+        {
+          "description": "Audit sampling and reconciliation files, including sampled digital entries and retained paper impoundment, redemption, disposal and inventory records.",
+          "could_reveal": "Which sampled outcomes can be independently documented, which remain unsupported, and whether unresolved cases cluster within particular audited facilities or record-processing practices.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Office of Inspector General (OIG)",
+          "location": "oigfoia@igchicago.org",
+          "how": "Request the existing sample-level files and supporting records held in the audit project. Preserve vehicle-level linkage while allowing redaction of owner information. Do not treat this route as access to the department’s entire inventory system.",
+          "source": "chicago-oig-foia-form",
+          "quote": "The following categories of records are maintained by OIG: Investigative records, such as complaints and reports OIG budget requests OIG operational records OIG personnel records Records related to Audit and Program Review projects Records related to Compliance activity Reports required under the OIG Ordinance"
+        }
+      ],
+      "request_text": "To the Office of Inspector General FOIA officers:\nPlease provide existing records retained in the auto-pound audit project published August 26, 2026, covering January 1, 2022–August 26, 2026:\n1. Sample-selection records, sampling methodology and field definitions for the vehicle-disposition test.\n2. Sampled digital impoundment entries and workpapers recording disposition determinations, exceptions and reconciliation results.\n3. Supporting paper impoundment, redemption, disposal and inventory records retained for the sampled vehicles.\n4. Departmental submissions retained in the project that document or correct the unresolved sampled dispositions.\nPlease provide electronic copies and segregable nonexempt portions. Owner information may be redacted; please preserve existing nonpersonal identifiers that allow records to be linked. I seek existing records, not a new reconciliation.",
+      "newsworthiness": 7
+    }
+  ],
+  "no_lead_reason": ""
+}

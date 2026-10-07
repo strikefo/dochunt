@@ -1,0 +1,76 @@
+# Starter labor playbook. Edit freely. It guides where to look and what to reject;
+# it contains no story and does not promise a lead. Source URLs are starting points
+# that DocHunt fetches and reads; they are never treated as verified access.
+name = "Labor and workplace enforcement"
+description = "Wages, safety, child labor, unions, unemployment insurance and the agencies that enforce them."
+
+# Watch mode: pages checked for newly published documents, and the request pages used
+# to route follow-on FOIAs. Written from general knowledge on 2026-10-06 and NOT verified.
+watch = [
+  "https://www.oig.dol.gov/auditreports.htm",
+  "https://www.osha.gov/news/newsreleases",
+  "https://www.dol.gov/newsroom/releases",
+  "https://www.gao.gov/rss/reports.xml",
+]
+request_pages = [
+  "https://www.dol.gov/general/foia/submit",
+]
+
+comparisons = [
+  "Before and after a policy or staffing change, within the same offices",
+  "One employer or industry against its peers in the same region",
+  "Penalties proposed against penalties finally paid",
+  "Agency-reported implementation against later case records",
+]
+
+reject_when = [
+  "The idea only re-reads or summarizes an audit or press release",
+  "The needed data is not collected or is published only in aggregate",
+  "The comparison mixes incompatible periods, definitions or populations",
+  "The agency's response or later status already answers the question",
+  "Access to the essential records is unresolved",
+]
+
+[[record_families]]
+name = "Wage and hour enforcement cases"
+reveals = "Employers found owing back wages, child labor violations, penalties, and how enforcement varies by industry, place or year."
+custodian = "U.S. Department of Labor, Wage and Hour Division; state labor departments"
+sources = [
+  { label = "DOL enforcement data catalog (bulk downloads)", url = "https://enforcedata.dol.gov/views/data_catalogs.php", verified = false },
+]
+request_notes = "Case files beyond the public extract usually need a FOIA request to the division's FOIA office."
+
+[[record_families]]
+name = "Workplace safety inspections, citations and fatalities"
+reveals = "Inspections, serious violations, penalty reductions, repeat violators and fatality investigations by employer or place."
+custodian = "Occupational Safety and Health Administration; state-plan agencies"
+sources = [
+  { label = "OSHA data and statistics", url = "https://www.osha.gov/data", verified = false },
+  { label = "OSHA establishment search", url = "https://www.osha.gov/ords/imis/establishment.html", verified = false },
+]
+request_notes = "Inspection case files, photos and settlement records generally require a FOIA request."
+
+[[record_families]]
+name = "Union elections and unfair labor practice charges"
+reveals = "Organizing drives, charges against employers or unions, settlements and outcomes."
+custodian = "National Labor Relations Board"
+sources = [
+  { label = "NLRB case search", url = "https://www.nlrb.gov/search/case", verified = false },
+]
+
+[[record_families]]
+name = "Union finances"
+reveals = "Officer pay, spending and membership reported by unions."
+custodian = "U.S. Department of Labor, Office of Labor-Management Standards"
+sources = [
+  { label = "OLMS online public disclosure room", url = "https://olmsapps.dol.gov/olpdr/", verified = false },
+]
+
+[[record_families]]
+name = "Oversight reports on labor agencies"
+reveals = "Findings about enforcement gaps, which point to the underlying case and program records worth getting."
+custodian = "Inspectors general, GAO, state auditors"
+sources = [
+  { label = "DOL Office of Inspector General reports", url = "https://www.oig.dol.gov/auditreports.htm", verified = false },
+]
+request_notes = "An audit is a starting point, not the hunt. The hunt is the agency's underlying records."

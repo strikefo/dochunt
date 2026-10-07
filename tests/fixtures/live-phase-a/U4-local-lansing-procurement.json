@@ -1,0 +1,101 @@
+{
+  "leads": [
+    {
+      "headline": "Who benefited from Lansing purchases without documented competition?",
+      "established": [
+        {
+          "text": "Auditors identified $468,700 in purchases for which officials could not document any competitive process.",
+          "source": "osc-lansing",
+          "quote": "More specifically, the Board and Village officials could not provide supporting documentation that they used any sort of competitive process to obtain goods and services totaling $468,700, which represented 52 percent of the purchases we reviewed."
+        },
+        {
+          "text": "The audit separately identified a purchase requiring documentation of a bidding exception and a public-work contract requiring competitive bids.",
+          "source": "osc-lansing",
+          "quote": "Maintain supporting documentation for using exceptions to competitive bidding, including one purchase contract totaling $68,500, or obtain required competitive bids for one contract for public work totaling $37,500."
+        },
+        {
+          "text": "Purchasing responsibility rests with the public works superintendent and clerk-treasurer under the board's direction.",
+          "source": "osc-lansing",
+          "quote": "The Department of Public Works Superintendent (Superintendent) and Clerk-Treasurer, under the direction of the Board, are responsible for Village purchases."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The review covers June 1, 2024–July 31, 2025, not necessarily current purchasing practices.",
+          "source": "osc-lansing",
+          "quote": "Audit Period June 1, 2024 – July 31, 2025"
+        },
+        {
+          "text": "The 52 percent figure applies only to purchases reviewed. It must not be presented as the share of all village spending; total goods-and-services expenditures were $7.8 million.",
+          "source": "osc-lansing",
+          "quote": "The Village expended $7.8 million for goods and services during the audit period."
+        },
+        {
+          "text": "Missing supporting documentation does not itself establish overpayment, favoritism, or that competition never occurred.",
+          "source": "osc-lansing",
+          "quote": "More specifically, the Board and Village officials could not provide supporting documentation that they used any sort of competitive process to obtain goods and services totaling $468,700, which represented 52 percent of the purchases we reviewed."
+        },
+        {
+          "text": "Read the complete report before choosing transactions or interpreting the sample. The supplied excerpt does not provide the village's response, detailed methodology, or subsequent corrective actions.",
+          "source": "osc-lansing",
+          "quote": "The audit’s methodology and standards are included in Appendix C."
+        }
+      ],
+      "hypothesis": "Purchases lacking documented competition were concentrated among repeat vendors or recurring purchasing categories, rather than being isolated filing failures. Transaction-level records could test that pattern and show whether officials repeatedly used unsupported exceptions or bypassed required bidding.",
+      "already_answered": "The audit already establishes a documentation shortfall and procurement noncompliance in its reviewed purchases. Repeating those findings is not the original reporting opportunity. Vendor concentration, repeated exceptions, approval decisions, and the distinction between missing records and missing competition remain to be tested.",
+      "records": [
+        {
+          "description": "Complete procurement audit, including methodology, transaction details, and any village response included in the report.",
+          "could_reveal": "Identify the reviewed purchases, sampling limits, explanations offered by officials, and whether the proposed vendor-pattern question is already answered.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the New York State Comptroller",
+          "location": "https://www.osc.ny.gov/files/state-agencies/audits/pdf/lansing-village-2026-39-4.pdf",
+          "how": "Download the complete report through the supplied PDF link. Its contents have not been supplied or read.",
+          "source": "osc-lansing",
+          "quote": "[read complete report – pdf]"
+        },
+        {
+          "description": "Existing village-held transaction lists, schedules, or audit correspondence identifying the purchases reviewed and the purchases making up the $468,700.",
+          "could_reveal": "Provide a reliable transaction-level crosswalk between the audit findings and vendor, date, amount, and purchasing category. Obtain this only if the public report does not already supply it.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk, Office of the Village of Lansing",
+          "location": "",
+          "how": "Send a written request to the records access officer at 2405 North Triphammer Road, Ithaca, New York. Omit any schedules already available in the complete public audit.",
+          "source": "lansing-records-law",
+          "quote": "A. The Village Clerk, Office of the Village of Lansing, 2405 North Triphammer Road, Ithaca, New York, is hereby designated records access officer."
+        },
+        {
+          "description": "Payment ledger or accounts-payable export for goods and services purchased during June 1, 2024–July 31, 2025, with existing vendor, date, amount, description, account, and voucher fields.",
+          "could_reveal": "Measure repeat awards and vendor concentration, and compare flagged vendors' audited purchases with their other village payments. Do not extrapolate audit noncompliance rates to unreviewed payments.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk, Office of the Village of Lansing",
+          "location": "",
+          "how": "Request the existing electronic ledger in a written submission to the designated records access officer at 2405 North Triphammer Road, Ithaca, New York.",
+          "source": "lansing-records-law",
+          "quote": "A. The Village Clerk, Office of the Village of Lansing, 2405 North Triphammer Road, Ithaca, New York, is hereby designated records access officer."
+        },
+        {
+          "description": "Procurement files for the flagged purchases: invoices, contracts, solicitations, bids or quotations, exception justifications, and award approvals.",
+          "could_reveal": "Distinguish undocumented competition from purchases made without competition; identify recurring exceptions and who approved awards. Compare only purchases with genuinely comparable scope and terms.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk, Office of the Village of Lansing",
+          "location": "",
+          "how": "After identifying transactions from the public audit or village-held schedules, request their existing procurement files from the records access officer at 2405 North Triphammer Road, Ithaca, New York.",
+          "source": "lansing-records-law",
+          "quote": "A. The Village Clerk, Office of the Village of Lansing, 2405 North Triphammer Road, Ithaca, New York, is hereby designated records access officer."
+        }
+      ],
+      "request_text": "To the Village Clerk, Office of the Village of Lansing, records access officer:\n\nPlease provide electronic copies of these existing records concerning purchases during June 1, 2024–July 31, 2025, examined in the Comptroller's procurement audit 2026M-39:\n1. Village-held transaction lists, schedules, or audit correspondence identifying purchases reviewed and those comprising the $468,700 lacking documented competition. Please exclude material already contained in the publicly available complete audit.\n2. The payment ledger or accounts-payable export for goods and services during that period, including existing vendor, payment date, amount, description, account, and voucher identifiers. Please provide its existing electronic format.\n3. Procurement files for purchases identified as lacking documented competition, including the $68,500 purchase contract and $37,500 public-work contract: invoices, contracts, solicitations, bids or quotations, bidding-exception justifications, and award approvals.\n\nI seek existing records, not a newly prepared analysis. If item 3 requires transaction identifiers, please provide item 1 first so I can narrow that portion.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

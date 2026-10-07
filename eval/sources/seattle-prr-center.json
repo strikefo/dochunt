@@ -1,0 +1,29 @@
+{
+ "url": "https://seattle.gov/public-records/public-records-request-center?utm_source=openai",
+ "title": "Public Records Request Center - Public Records | seattle.gov",
+ "retrieved_at": "2026-10-04T03:30:12Z",
+ "format": "html",
+ "acquisition_note": "Public document retrieved",
+ "truncated_at_acquisition": false,
+ "links": [
+  "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+  "tel: +1 (206) 684-2489",
+  "mailto:ITD_CPRA@seattle.gov",
+  "https://city-seattle.mycusthelp.com/webapp/_rs/(S(mqmeyz25hnyewgiiioia2g1p))/supporthome.aspx",
+  "https://seattle.gov/public-records/elected-officials",
+  "https://data.seattle.gov/",
+  "https://seattle.gov/public-records/public-records",
+  "https://seattle.gov/public-records/holidays-and-closures",
+  "https://seattle.gov/public-records/event-calendar",
+  "https://public.govdelivery.com/accounts/WASEATTLE/subscriber/new",
+  "https://seattle.gov/public-records/departments",
+  "https://seattle.gov/public-records/boards-and-commissions",
+  "https://seattle.gov/public-records/city-light/outages",
+  "https://seattle.gov/public-records/courts/tickets-and-payments/pay-my-ticket",
+  "https://seattle.gov/public-records/animal-shelter/find-an-animal/adopt",
+  "https://seattle.gov/public-records/utilities/your-services/collection-and-disposal/your-collection-day/look-up-collection-day",
+  "https://seattle.gov/public-records/police/information-and-data/data/online-crime-maps"
+ ],
+ "text": "Public Records Request Center Welcome to our Public Records Request Center. This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records. Go to Public Records Request Center",
+ "content_sha256": "297a97380c931bab7a0f6210bb3881a67753168c62449e227b0ac5581bd37db7"
+}

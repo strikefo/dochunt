@@ -1,0 +1,16 @@
+# Credentials and local outputs
+.env
+.env.*
+!.env.example
+out/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+data/.lock
+data/*.tmp
+
+output/
+selected-preview/

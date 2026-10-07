@@ -1,0 +1,139 @@
+{
+  "leads": [
+    {
+      "headline": "Did ending federal school funding reviews leave known financial problems unresolved?",
+      "established": [
+        {
+          "text": "The Department of Education suspended its broad monitoring of federal elementary and secondary education programs in 2026.",
+          "source": "gao-26-107920",
+          "quote": "In 2026, Education suspended its consolidated monitoring efforts for all ESEA programs and requirements."
+        },
+        {
+          "text": "The funding at issue is substantial, but the audit establishes increased risk—not actual misuse.",
+          "source": "gao-26-107920",
+          "quote": "In fiscal year 2025, ESEA formula grant funds totaled almost $27 billion, and over $18 billion of these funds—about two-thirds—were related to Title I."
+        },
+        {
+          "text": "The previous reviews selected states using risk factors, creating a concrete opportunity to examine which identified risks lost coverage.",
+          "source": "gao-26-107920",
+          "quote": "Education selects several states per year based on a variety of risk factors and reviews the states’ compliance with federal statutes and guidance."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The suspension did not eliminate all oversight; the department continued narrower reviews and work on previous findings.",
+          "source": "gao-26-107920",
+          "quote": "Education officials described their efforts to identify areas of potential noncompliance in the absence of consolidated monitoring, including conducting annual report card reviews, working with recently monitored states to address previous monitoring findings, providing technical assistance on Title I requirements upon request, and conducting some monitoring for smaller ESEA programs."
+        },
+        {
+          "text": "The department disputed the monitoring recommendation and announced a forthcoming plan. Its current status must be checked before describing the suspension as continuing.",
+          "source": "gao-26-107920",
+          "quote": "Education noted that it will provide its 2027 monitoring plan in early fall 2026."
+        },
+        {
+          "text": "The audit does not establish that the department violated a statutory monitoring schedule.",
+          "source": "gao-26-107920",
+          "quote": "Therefore, it does not require Education to conduct monitoring with any set frequency or using any specific method."
+        }
+      ],
+      "hypothesis": "States with documented fiscal risks or unresolved financial findings lost scheduled comprehensive review without equivalent replacement oversight. Internal risk assessments, review cancellations and finding-status records could establish whether that happened and identify the specific financial controls affected; they would not by themselves prove fraud.",
+      "already_answered": "The suspension, historical monitoring coverage and general increase in risk are already reported. Original reporting would identify specific known fiscal problems, cancelled follow-up and whether the replacement approach actually covers them.",
+      "records": [
+        {
+          "description": "Existing state risk assessments, selection matrices, scheduled-review lists, cancellation records and internal comparisons of old and replacement monitoring coverage, January 2025–October 2026.",
+          "could_reveal": "Which states and fiscal controls were scheduled for scrutiny, why reviews were cancelled, and whether replacement activities covered the same risks.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Use the online portal identified on the supplied request-instructions page, or mail the request to the FOIA Service Center at the address quoted below. Seek nonpublic operational records rather than already published monitoring reports.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        },
+        {
+          "description": "Internal fiscal-finding status trackers, corrective-action submissions, closure memoranda and follow-up correspondence maintained January 2025–October 2026 for findings originating in 2019–2025.",
+          "could_reveal": "Whether known problems remained open, whether closure was supported by evidence, and whether follow-up continued after comprehensive monitoring stopped.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Submit through the named online portal or by mail. Exclude published findings and published corrective actions; request internal status and supporting review records.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        }
+      ],
+      "request_text": "To: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center\nPlease provide existing records created or maintained January 1, 2025–October 5, 2026:\n1. State risk assessments, selection matrices and scheduled-review lists for consolidated monitoring, including records cancelling or deferring reviews.\n2. Decision memoranda and internal analyses comparing fiscal requirements covered by consolidated monitoring with those covered by replacement activities and proposed 2027 monitoring.\n3. Internal status trackers for fiscal findings originating in 2019–2025, including assigned follow-up dates and closure status.\n4. Nonpublic corrective-action submissions, closure memoranda and follow-up correspondence supporting those status entries.\nPlease exclude already published monitoring reports and corrective actions. Provide electronic records in their existing formats, including spreadsheets where maintained.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Why was a fix for unreliable school absence rates shelved?",
+      "established": [
+        {
+          "text": "The department started developing a matching enrollment measure, then stopped following staffing changes.",
+          "source": "gao-26-107920",
+          "quote": "In late 2024, Education officials began the process of requiring states to report the number of students enrolled over the entire school year so that Education could more accurately calculate chronic absenteeism rates. However, officials said they later decided not to proceed due to staffing changes at the agency."
+        },
+        {
+          "text": "The mismatch prevents reliable national comparisons, not merely the interpretation of a few extreme outliers.",
+          "source": "gao-26-107920",
+          "quote": "Moreover, unless Education addresses the reliability of its chronic absenteeism data, ED Facts data cannot reliably be used to compare or track trends in chronic absenteeism rates, identify which schools or states have particularly concerning levels of chronic absenteeism, or evaluate the impact of accountability efforts on a national level."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The department argues against additional state reporting burden and already warns users about the limitation.",
+          "source": "gao-26-107920",
+          "quote": "Education noted that it has chosen to continue working with currently reported ED Facts data elements, highlighting limitations as needed, rather than imposing additional reporting burden on states."
+        },
+        {
+          "text": "Minimal additional burden is an argument in the audit, not an established cost estimate.",
+          "source": "gao-26-107920",
+          "quote": "Therefore, any additional burden could be minimal."
+        },
+        {
+          "text": "The department says it does not publicly publish school-level analysis because the limitation is particularly problematic there.",
+          "source": "gao-26-107920",
+          "quote": "Education indicated that the data limitation associated with using October 1 enrollment counts is particularly problematic at the school level, where student counts are smaller and the populations are usually more mobile. Education also noted it does not publicly publish analysis at this level for this reason."
+        },
+        {
+          "text": "The audit's quantitative analysis concerns an older school year, not current attendance.",
+          "source": "gao-26-107920",
+          "quote": "Data for school year 2022–2023 were the most recently available data at the time of our review."
+        }
+      ],
+      "hypothesis": "The proposed fix was sufficiently developed to implement, but staffing losses—not a documented assessment of state burden—were the decisive obstacle. Draft specifications, implementation schedules, burden estimates and decision records could test how feasible the fix was and what evidence supported abandoning it.",
+      "already_answered": "The denominator mismatch, implausible rates, staffing reductions and the department's stated objections are already reported. The unanswered question is how far the fix progressed, its documented costs and whether the cancellation rationale matches contemporaneous records.",
+      "records": [
+        {
+          "description": "Draft annual-enrollment collection specifications, implementation schedules, testing results, state feedback and reporting-burden estimates developed November 2024–October 2026.",
+          "could_reveal": "Whether a workable matching denominator had been designed, what implementation obstacles remained and whether burden estimates supported abandoning it.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Request nonpublic development records through the named portal or by mail; do not request publicly available final data specifications.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        },
+        {
+          "description": "Decision memoranda, project-status records and correspondence about stopping or restarting the matching enrollment collection, November 2024–October 2026.",
+          "could_reveal": "The decision timeline, responsible offices, staffing constraints, alternatives considered and any subsequent restart.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Submit through the named portal or mail to the quoted office; specify the annual-enrollment proposal associated with chronic absenteeism reporting.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        }
+      ],
+      "request_text": "To: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center\nPlease provide existing records dated November 1, 2024–October 5, 2026 concerning the proposal to collect school enrollment over the entire school year for calculating chronic absenteeism rates:\n1. Nonpublic draft collection specifications, implementation schedules, pilot or testing results and project-status records.\n2. Existing state reporting-burden estimates, cost analyses and state feedback on the proposal.\n3. Decision memoranda and correspondence documenting decisions to stop, defer, revise or restart the proposal, including records discussing staffing constraints or alternatives.\nPlease exclude publicly available final specifications. Provide electronic records in their existing formats.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

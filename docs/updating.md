@@ -1,0 +1,7 @@
+# Adopting updates
+
+Keep each newsroom's private installation under its own control. Review upstream release notes and diffs before adopting a release. In GitHub's website, compare an upstream release against your installation, then prepare a branch/pull request applying the application, prompts, tests and workflow changes. A GitHub administrator can help transfer reviewed files through the web editor; a local development environment is optional.
+
+Preserve `newsroom.toml`, repository secrets, recipients, schedule choices, repository permissions and the entire `data/` directory. Never replace them wholesale with template defaults or another newsroom's state. Schema changes require an explicit documented migration; unsupported versions should fail rather than silently reset history. Review any dependency/action pin, requested permission or secret-scope change.
+
+Keep scheduling disabled during a planned migration if your approved process requires it; document that interruption. Run credential-free CI and offline preview on the change, review the exact release commit, then merge only with your installation's required approval. Paid preview, live inbox test and enabling schedules require your own scoped authorization. After a config change, create a fresh preview artifact; older artifacts will fail config consistency checks. Retain state and accepted provider IDs for recovery and rollback. Do not roll state backward merely to roll code back: that can repeat an already accepted email.

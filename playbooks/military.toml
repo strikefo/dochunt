@@ -1,0 +1,81 @@
+# Starter military playbook. Edit freely. Contains no story and does not promise a
+# lead. URLs are starting points, never verified access.
+name = "Military, veterans and defense spending"
+description = "Installations, service members' living conditions and safety, defense contracts, and veterans' services."
+
+# Watch mode: pages checked for newly published documents, and the request pages used
+# to route follow-on FOIAs. Checked with DocHunt's plain retriever on 2026-10-06:
+#   readable feeds: GAO reports, DVIDS news, Federal Register (DoD, VA; item pages are thin);
+#   blocked (HTTP 403) without the Firecrawl fallback: DoD IG reports, defense.gov contracts,
+#   GAO report pages, DoD and DoD IG FOIA pages. Firecrawl never handles PDFs.
+watch = [
+  "https://www.gao.gov/rss/reports.xml",
+  "https://www.dvidshub.net/rss/news",
+  "https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=defense-department&order=newest",
+  "https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bagencies%5D%5B%5D=veterans-affairs-department&order=newest",
+  "https://www.dodig.mil/Reports/",
+  "https://www.defense.gov/News/Contracts/",
+]
+request_pages = [
+  "https://www.va.gov/foia/",
+  "https://pal.whs.mil/",
+  "https://www.esd.whs.mil/FOIA/",
+  "https://www.secnav.navy.mil/foia/Pages/default.aspx",
+  "https://www.rmda.army.mil/foia/",
+  "https://www.foia.af.mil/",
+  "https://www.hqmc.marines.mil/Agencies/USMC-FOIA/",
+]
+# Navy, Army and Air Force FOIA sites failed TLS for the plain retriever (DoD certificates)
+# and the Marine Corps page returned HTTP 403 on 2026-10-06; they need the fallback.
+
+# Feed items must mention one of these in their title (whole word, any case) to be opened.
+watch_keywords = ["defense", "military", "Pentagon", "Army", "Navy", "Air Force", "Space Force",
+  "Marine", "Marines", "Coast Guard", "National Guard", "veteran", "veterans", "VA", "DOD",
+  "base", "installation", "shipyard", "dry dock", "barracks", "servicemember", "service members",
+  "troops", "weapon", "weapons", "munitions", "contract", "contractor", "TRICARE", "military housing"]
+
+comparisons = [
+  "One installation against others in the same service",
+  "Contract cost and schedule against original award",
+  "Reported corrective action against later inspection or work-order records",
+]
+
+reject_when = [
+  "The records are classified or exempt with no releasable portion",
+  "The idea only re-reads an inspector general summary",
+  "Access to the essential records is unresolved",
+]
+
+[[record_families]]
+name = "Defense contracts and spending"
+reveals = "Who receives contracts at an installation or for a program, cost growth, sole-source awards and modifications."
+custodian = "Department of Defense contracting offices"
+sources = [
+  { label = "USAspending award data", url = "https://www.usaspending.gov/search", verified = false },
+  { label = "DoD daily contract announcements", url = "https://www.defense.gov/News/Contracts/", verified = false },
+]
+request_notes = "Contract files and performance evaluations usually need a FOIA request to the contracting command."
+
+[[record_families]]
+name = "Inspector general and audit findings"
+reveals = "Findings about installations, programs or contracts that point to the underlying records worth getting."
+custodian = "DoD Inspector General; service audit agencies; GAO"
+sources = [
+  { label = "DoD Inspector General reports", url = "https://www.dodig.mil/Reports/", verified = false },
+]
+request_notes = "An audit is a starting point. The hunt is the installation's or contractor's underlying records."
+
+[[record_families]]
+name = "Installation housing, environment and safety"
+reveals = "Housing complaints and work orders, contamination sampling, mishap and inspection records."
+custodian = "The installation, its service branch, and environmental regulators"
+sources = []
+request_notes = "Ask for existing work-order logs, sampling results or inspection reports for a named installation and date range."
+
+[[record_families]]
+name = "Veterans' services"
+reveals = "Wait times, claims backlogs, facility inspections and contractor performance."
+custodian = "Department of Veterans Affairs"
+sources = [
+  { label = "VA Office of Inspector General reports", url = "https://www.vaoig.gov/reports", verified = false },
+]

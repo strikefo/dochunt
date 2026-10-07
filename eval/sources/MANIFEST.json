@@ -1,0 +1,338 @@
+{
+ "gao-26-107722": {
+  "url": "https://files.gao.gov/reports/GAO-26-107722/index.html",
+  "chars": 120000,
+  "sha256": "e3e524bc9a8f1699a9a97f9720e5e840ff22102ee68c0bc2206467c3d20f41d9",
+  "truncated_at_acquisition": true,
+  "origin": "labor-75-cohort-20261005T225748Z-f48f1aea"
+ },
+ "whd-foia": {
+  "url": "https://www.dol.gov/agencies/whd/foia",
+  "chars": 3752,
+  "sha256": "efa2bb099fdee39fb7d80f1baf054e89d6b64b45267d9a1f47b4c410985a782b",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "whd-foia-request": {
+  "url": "https://www.dol.gov/agencies/whd/foia/foiaRequest",
+  "chars": 1257,
+  "sha256": "53ca61cbe11a7b3941e5974a82288add44f07b2bf3bd4ade714c803c9376cd99",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "gao-26-107920": {
+  "url": "https://files.gao.gov/reports/GAO-26-107920/index.html",
+  "chars": 70741,
+  "sha256": "f206311e9b14f7f5a7ee430821f4024ad1fe7507ecd58aa29f8478768f2f5b64",
+  "truncated_at_acquisition": false,
+  "origin": "education-75-cohort-20261005T225748Z-f48f1aea"
+ },
+ "ed-foia": {
+  "url": "https://www.ed.gov/about/ed-overview/required-notices/freedom-of-information-act-foia/how-make-freedom-of-information-act-foia-request-or-appeal",
+  "chars": 2811,
+  "sha256": "7227616b2ab88d374fcea758feab413d25de26026d920f74c2a6a22e1a7a963d",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "osc-mitchell-lama": {
+  "url": "https://www.osc.ny.gov/state-agencies/audits/2026/01/15/physical-and-financial-conditions-selected-mitchell-lama-developments?utm_source=openai",
+  "chars": 4747,
+  "sha256": "d5c138868909fafda9e563d74ac5fd184bfc6ecf91179d8ddb625079a7d50b06",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-request14-20261005T215949Z-841e2417"
+ },
+ "hpd-response": {
+  "url": "https://www.osc.ny.gov/files/state-agencies/audits/pdf/sga-2026-24n4-response.pdf",
+  "chars": 10065,
+  "sha256": "6ff9914e3fc77169f8b34a2cd65be55e0446d7c76f917a4de9160e003180ede5",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-request14-20261005T215949Z-841e2417"
+ },
+ "osc-dashboard": {
+  "url": "https://www.osc.ny.gov/state-agencies/audits/physical-and-financial-conditions-selected-mitchell-lama-developments-2024-n-4-interactive-dashboard",
+  "chars": 1040,
+  "sha256": "7b0f405e8e4f22532c9d84c0900697eb509a90c672afa39846c3310a1da565d6",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-request14-20261005T215949Z-841e2417"
+ },
+ "hpd-foil": {
+  "url": "https://www.nyc.gov/site/hpd/contact/foil.page",
+  "chars": 7720,
+  "sha256": "00157255d631db15fe27cd8f7cfcb893374e02e10d188cf20f16b9fb4da1af93",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-request14-20261005T215949Z-841e2417"
+ },
+ "osc-fonda": {
+  "url": "https://www.osc.ny.gov/local-government/audits/village/2026/10/02/village-fonda-water-fund-financial-operations-2026m-77",
+  "chars": 3854,
+  "sha256": "6364e6e8f564dfd47de4040f600f6387776f8a70fdbbf9919bace168a8aa6bac",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "fonda-minutes-2025-08": {
+  "url": "https://villageoffonda.ny.gov/wp-content/uploads/2026/01/August-11-2025-Meeting-Regular-Minutes.pdf",
+  "chars": 17650,
+  "sha256": "afc0b38908ced12662ac99fc45650c3de7123c37624b6697bf9e6ba403e8e303",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "fonda-minutes-2026-01": {
+  "url": "https://villageoffonda.ny.gov/wp-content/uploads/2024/06/January-12-2026-Regular-Meeting-Minutes.pdf",
+  "chars": 15146,
+  "sha256": "43a6cb54f616b2355954021831f0f7cbe4a7a75ac86240dc4f4bf36ad6837073",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "fonda-fees": {
+  "url": "https://villageoffonda.ny.gov/wp-content/uploads/2024/06/Village-of-Fonda-2026-2027-Fees-and-Deposits.pdf",
+  "chars": 6774,
+  "sha256": "deef0891ad8d7684ff77cad882149ea591ead832c9de9c41af19ddcef4e6ff24",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "fonda-clerk": {
+  "url": "https://villageoffonda.ny.gov/clerk-treasurer/",
+  "chars": 6238,
+  "sha256": "b6ddb05377dca347698c91436dc5dbea65c22e08c2e4090cab5b649983a71669",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "fonda-foil-form": {
+  "url": "https://villageoffonda.ny.gov/wp-content/uploads/2022/12/FOIL-REQUEST-FOR-ACCESS-TO-PUBLIC-RECORDS.pdf",
+  "chars": 2518,
+  "sha256": "4341ffe1c681afffc43854dc7faef7090684aa591c233e4e0a123eff60248845",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "ca-auditor-2025-128": {
+  "url": "https://www.auditor.ca.gov/reports/2025-128/",
+  "chars": 120000,
+  "sha256": "c8eb85140576cb289372eb0ff69b6d7e8f8a86ca8bf3a3034786a09eb7b2909c",
+  "truncated_at_acquisition": true,
+  "origin": "local-government-75-cohort-20261005T225748Z-f48f1aea"
+ },
+ "la-dph-prr-policy": {
+  "url": "http://publichealth.lacounty.gov/cor/prrpolicy.htm?utm_source=openai",
+  "chars": 4652,
+  "sha256": "3d4fdd840b84c04976abd248588aa8d837bd1355da26efe86db55c63d2e42362",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-cohort-20261005T225748Z-f48f1aea"
+ },
+ "la-dph-cor-form": {
+  "url": "http://publichealth.lacounty.gov/phi/docs/COR-Online-Form.pdf?utm_source=openai",
+  "chars": 2690,
+  "sha256": "fd9774c74679d017ff398c41eb1f5b4d2ea1eaa648c876917d140838204e7a37",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "chicago-oig-auto-pounds": {
+  "url": "https://igchicago.org/2026/08/26/oig-audit-of-dss-auto-pounds-finds-incomplete-data/?utm_source=openai",
+  "chars": 4780,
+  "sha256": "0051fe9cbb553c9684c59d8630c5ea884f4133a141baa6d363493de619ceb217",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "chicago-oig-foia-form": {
+  "url": "https://igchicago.org/contact-us/foia-request-form/",
+  "chars": 3695,
+  "sha256": "47de08e21a71ffaa09b700afe884d15f5375799c7c2f47626f68c75513a7e4f9",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "seattle-rec-followup": {
+  "url": "https://www.seattle.gov/documents/Departments/CityAuditor/auditreports/2026/2025RecFollow-upFinalReport.pdf",
+  "chars": 22788,
+  "sha256": "24164439948b3452a0d4b0826c18ee3b9b03f1bbece128f4bfb7e34b6a8a818e",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "seattle-prr-center": {
+  "url": "https://seattle.gov/public-records/public-records-request-center?utm_source=openai",
+  "chars": 301,
+  "sha256": "297a97380c931bab7a0f6210bb3881a67753168c62449e227b0ac5581bd37db7",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "osc-lansing": {
+  "url": "https://www.osc.ny.gov/local-government/audits/village/2026/10/02/village-lansing-procurement-2026m-39",
+  "chars": 4088,
+  "sha256": "652afb93f1896bffad094d531a49aa3fa7aafb0a14564b1b91117fa30fced40f",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "lansing-records-law": {
+  "url": "https://villageoflansingny.gov/Village_Code/Part_II/Chapter105Records_PublicAccessTo.pdf?utm_source=openai",
+  "chars": 8632,
+  "sha256": "1730d5c44a42f11dd014418d1fe889c7fe83a16cd6021dc044656c39ed1bfa5a",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "lansing-contact": {
+  "url": "https://villageoflansingny.gov/contact-us/",
+  "chars": 230,
+  "sha256": "2fdec7602633fddc1c472ee45b042ff2fada2fefc9e83152cb68a19e68bd1bbb",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-oig-osha-alert": {
+  "url": "https://www.oig.dol.gov/public/reports/oa/2026/03-26-001-10-105.pdf?utm_source=openai",
+  "chars": 28729,
+  "sha256": "048deb6af2aaaf8750956c234a97e777c6e352f5430b75048227e7b62afe19a2",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "osha-foia": {
+  "url": "https://www.osha.gov/foia/",
+  "chars": 6830,
+  "sha256": "0de72717cde69be3c658b6aebb1d49b6afaa64f2e19ad01f6e14a1e4f8df4dfb",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-oig-piia": {
+  "url": "https://www.oig.dol.gov/public/reports/oa/2025/22-25-007-13-001.pdf",
+  "chars": 7389,
+  "sha256": "72056c9a8b8ec8f75bbb8e746f46f6deecc43ea12dd3f2523b9fdfa748c2fec8",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-oig-foia": {
+  "url": "https://oig.dol.gov/foia.htm",
+  "chars": 4357,
+  "sha256": "3d2e7a0f43d119d7c807e9775ca27711063d61698e9a4adae8f383c352578d23",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "oregon-ode-audit": {
+  "url": "https://sos.oregon.gov/audits/Pages/audit-2026-27-ODE.aspx",
+  "chars": 4889,
+  "sha256": "fb2a837e4c91e847452b506e5ef3304f1446444b0b12c74a90f783bff6067401",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "ed-oig-pr-esser": {
+  "url": "https://oig.ed.gov/reports/inspection-evaluation/puerto-rico-department-educations-use-arp-esser-funds-measure-student?utm_source=openai",
+  "chars": 3226,
+  "sha256": "2c176fc0470eb8220231bcb36d16469cac86c65f2e785fbe6c759fdd5000c067",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "ed-oig-foia": {
+  "url": "https://oig.ed.gov/resources/freedom-information-act?utm_source=openai",
+  "chars": 4297,
+  "sha256": "3b0d2d43492fbd67eb20d6d5596fbc9ab549748f88ebda31a2a37eaecd9bb023",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "gao-26-107814": {
+  "url": "https://files.gao.gov/reports/GAO-26-107814/index.html",
+  "chars": 69519,
+  "sha256": "b555facc51920526b964546c0553a385d573907fa8676c14a2f349ff40930ce0",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "suffolk-contract-disclosure": {
+  "url": "https://www.suffolkcountyny.gov/Portals/2/documents/Report No. 2026-03 Contract Agency Disclosure Disclosure Form Data.pdf",
+  "chars": 4163,
+  "sha256": "836d2e890ddf4811cfb35aa43d1596842d2b6ed23884fc1f9231145c9e4a28dc",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "suffolk-subrecipient": {
+  "url": "https://www.suffolkcountyny.gov/Portals/2/documents/Final Report 2025-17 - Subrecipient Monitoring.pdf",
+  "chars": 3448,
+  "sha256": "84043bb6dcfc838828446755541f3fb62a1d4ba290c1d543269f58dc7c0327f9",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "gao-24-106413": {
+  "url": "https://www.gao.gov/products/gao-24-106413",
+  "chars": 11697,
+  "sha256": "340be4b714598df9571e4aebaab507a5d2dc387e93eec88578f6bf1252c13c86",
+  "truncated_at_acquisition": false,
+  "origin": "labor-75-20261005T175914Z-3085e6fd"
+ },
+ "bls-soii-2026": {
+  "url": "https://www.bls.gov/news.release/archives/osh_01222026.htm",
+  "chars": 14513,
+  "sha256": "8a5ebd3c51df2c3917a3c0684fdd9268d825c40b8499c70869d7efb7ee3affca",
+  "truncated_at_acquisition": false,
+  "origin": "saved-public-labor"
+ },
+ "bls-iif-data-requests": {
+  "url": "https://www.bls.gov/iif/iif-data-requests.htm",
+  "chars": 6626,
+  "sha256": "296e39005a6a1b7ffaf4638a3d0a73eedd8ccbad832ff5db51b47ecfc3022e8e",
+  "truncated_at_acquisition": false,
+  "origin": "saved-public-labor"
+ },
+ "bls-foia": {
+  "url": "https://www.bls.gov/bls/blsfoia.htm",
+  "chars": 4941,
+  "sha256": "bd3bac89c5e63844825f57fe23613e5fc8d5c1d2696e490af524314e8dbd2fad",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "gao-26-107970": {
+  "url": "https://files.gao.gov/reports/GAO-26-107970/index.html",
+  "chars": 120000,
+  "sha256": "6947de7a924aae8a6e31cb4a6d5a393dbc24ecb3399541019543e8ca342bcc32",
+  "truncated_at_acquisition": true,
+  "origin": "education-75-20261005T183242Z-5d7d5bf5"
+ },
+ "ed-foia-faq": {
+  "url": "https://www.ed.gov/about/ed-overview/required-notices/freedom-of-information-act-foia/faqs-freedom-of-information-act-foia",
+  "chars": 5559,
+  "sha256": "3616f87a1cb6b365c45fb3654064bc2f9a82f3c5b686de804d58e869728057f5",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "gao-26-108534": {
+  "url": "https://files.gao.gov/reports/GAO-26-108534/index.html",
+  "chars": 33417,
+  "sha256": "359606642dd6bdc4022bb98caa4b197a857b6d305f79251c6f1c8cf33dadf54a",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-oig-child-labor": {
+  "url": "https://www.oig.dol.gov/public/reports/oa/2025/17-25-001-15-001.pdf",
+  "chars": 60575,
+  "sha256": "7b5348fd18c830925c8a973ceab613a2f4d1a95d5785948b7a2165d97f2e319e",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-foia-submit": {
+  "url": "https://www.dol.gov/general/foia/submit",
+  "chars": 3284,
+  "sha256": "1c44d828c58edd3a3e0267f73804ceba7803ad94939e655a586e5786cf70cc82",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "dol-foia-guide": {
+  "url": "https://www.dol.gov/general/foia/guide",
+  "chars": 12052,
+  "sha256": "5245dcdea80fdc6f9d1fbe8f24dca6be0f9e2cfee23c8d219348ad43dc9c23a4",
+  "truncated_at_acquisition": false,
+  "origin": "saved-public-labor"
+ },
+ "chicago-oig-cpd-overtime": {
+  "url": "https://igchicago.org/2025/07/24/cpd-overtime-data-dashboard/",
+  "chars": 3589,
+  "sha256": "f5af39ca1a953e3e441ea47caa6475f3128583defef0726c0cf3653724faa5d0",
+  "truncated_at_acquisition": false,
+  "origin": "final-review"
+ },
+ "chicago-oig-2026-plan": {
+  "url": "https://igchicago.org/wp-content/uploads/2026/02/OIG-Audit-and-Program-Review-2026-Annual-Plan_FINAL.pdf",
+  "chars": 55868,
+  "sha256": "e87f57760623c28aeb06116845ee5cc38cfc472fbc932fce089d26838ae20dc3",
+  "truncated_at_acquisition": false,
+  "origin": "local-government-75-cohort-20261005T225748Z-f48f1aea"
+ },
+ "ca-auditor-2023-102-2": {
+  "url": "https://www.auditor.ca.gov/reports/2023-102-2/?utm_source=openai",
+  "chars": 120000,
+  "sha256": "b5ed4ec7915af04e941497c34437a98da53c7282f857003c98c8a5c0ca59f1c6",
+  "truncated_at_acquisition": true,
+  "origin": "final-review"
+ }
+}

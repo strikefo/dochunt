@@ -1,0 +1,207 @@
+{
+  "leads": [
+    {
+      "headline": "Did Chiquita Canyon meet its landfill-cover deadline, and what happened if it didn’t?",
+      "established": [
+        {
+          "text": "The county enforcement program set an August 31, 2026 deadline to cover the entire waste-disposal area.",
+          "source": "ca-auditor-2025-128",
+          "quote": "At that time, the enforcement program established a deadline of August 31, 2026, for Chiquita to cover the entire facility where waste is disposed."
+        },
+        {
+          "text": "The local hearing board rejected the operator’s appeal in April 2026, leaving that deadline in effect at that stage.",
+          "source": "ca-auditor-2025-128",
+          "quote": "In April 2026, the county’s Solid Waste Facilities Hearing Board held an appeal hearing and denied Chiquita’s appeal, meaning that the deadline for Chiquita to fully install the cover at the landfill by August 31, 2026 remained in effect."
+        },
+        {
+          "text": "The operator’s July 2026 schedule for satisfying a federal cover requirement extended to December and, according to the county manager, would still leave acreage required by the county uncovered.",
+          "source": "ca-auditor-2025-128",
+          "quote": "In a July 2026 letter to the Chiquita Canyon Landfill Community Advisory Committee (CAC), Chiquita reported that it expected to complete the deployment of the additional 100 acres of geomembrane cover required by the U.S. EPA by December 1, 2026."
+        },
+        {
+          "text": "The county manager identified approximately 66 acres outside that federal cover expansion but within the county’s order.",
+          "source": "ca-auditor-2025-128",
+          "quote": "The enforcement program’s environmental health services manager conveyed to us that covering these 100 acres would leave uncovered about 66 acres of the landfill site that the enforcement program’s May 2025 order directed Chiquita to cover."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "A further appeal was pending at the end of audit fieldwork. The supplied text does not establish its disposition or the deadline’s current legal status.",
+          "source": "ca-auditor-2025-128",
+          "quote": "As of the conclusion of our audit’s fieldwork, Chiquita had appealed to CalRecycle to reconsider the local hearing board’s decision, and CalRecycle told us its hearing officer was actively working on reviewing this appeal."
+        },
+        {
+          "text": "The operator disputed the feasibility of an earlier planning deadline and pointed to overlapping regulation.",
+          "source": "ca-auditor-2025-128",
+          "quote": "Chiquita appealed the order later that month, stating that it was already working with the California Department of Toxic Substances Control to create a phased expansion of the landfill cover and that the enforcement program’s deadline for submitting a plan for expansion was impossible to meet."
+        },
+        {
+          "text": "The audit credited the enforcement program’s overall response; this is a test of subsequent compliance and enforcement, not a claim that its earlier actions were unreasonable.",
+          "source": "ca-auditor-2025-128",
+          "quote": "We conclude that the enforcement program has required Chiquita to pursue a reasonable course of action given the nature of the situation to which it is responding."
+        },
+        {
+          "text": "The department disputed many findings but agreed to the enforcement recommendation. Its detailed response and the report’s later pages were not supplied in full and must be read before publication.",
+          "source": "ca-auditor-2025-128",
+          "quote": "LADPH disagreed with many of our conclusions. However, it agreed to implement our recommendation for its enforcement program to take appropriate enforcement action and to create policies and procedures to guide its health hazard event responses."
+        }
+      ],
+      "hypothesis": "After accounting for any appeal decision, stay or amended order, the operator may have left county-required acreage uncovered beyond an operative deadline without timely county enforcement. Match the operative requirements and dates to completion documentation and enforcement records; do not treat the federal and county cover requirements as interchangeable.",
+      "already_answered": "The audit already assessed the reasonableness and timing of earlier enforcement and documented the acreage mismatch. It did not establish compliance after August 31, 2026 or the final disposition of the state appeal.",
+      "records": [
+        {
+          "description": "Complete audit, including the department’s detailed response, auditor comments and Appendix A.",
+          "could_reveal": "Additional qualifications, the complete corrective-action chronology, and the department’s specific disagreement or commitments. The unread sections may narrow the proposed test.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "California State Auditor",
+          "location": "https://www.auditor.ca.gov/reports/2025-128/",
+          "how": "Read the complete public report at the supplied URL, including the linked agency-response sections and Appendix A; do not rely on the truncated acquisition.",
+          "source": "ca-auditor-2025-128",
+          "quote": "Appendix A explains in more detail the types of corrective actions the enforcement program has directed Chiquita to take."
+        },
+        {
+          "description": "County-held cover orders and amendments, appeal decisions, stays, hearing notices and correspondence establishing the operative deadline, June 2024–October 5, 2026.",
+          "could_reveal": "Whether the August deadline survived the state appeal, which acreage and specifications remained enforceable, and whether any later extension was authorized.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Submit the department’s records-request form by email, requesting existing copies held by the department rather than assuming access to the state agency’s entire appeal file.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        },
+        {
+          "description": "County-held cover-installation progress submissions, dated coverage maps, completion certifications and acceptance or rejection correspondence, May 2025–October 5, 2026.",
+          "could_reveal": "How much required acreage was actually covered by each operative deadline, whether installation met county specifications, and what remained outstanding. These are distinct from routine inspection reports that may already be public.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Request operator submissions and county acceptance records through the department’s records-request form. Calculate covered and outstanding acreage against the operative order, not just the federal project.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        },
+        {
+          "description": "Noncompliance notices, penalty assessments, enforcement referrals and nonprivileged enforcement-decision records concerning the cover order, August 2026–October 5, 2026.",
+          "could_reveal": "Whether the county identified a violation and acted on it, or documented a reason to defer enforcement.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Request existing enforcement records through the department’s published email route; do not request privileged legal advice or ask the department to create an explanation.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        }
+      ],
+      "request_text": "To: County of Los Angeles Department of Public Health Custodian of Records\nPlease provide existing electronic records held by the department concerning Chiquita Canyon Landfill:\n1. June 1, 2024–October 5, 2026: cover-installation orders and amendments, appeal decisions, stays, hearing notices and correspondence establishing or changing cover deadlines.\n2. May 1, 2025–October 5, 2026: operator cover-progress submissions, dated coverage maps, completion certifications, and county acceptance or rejection correspondence.\n3. August 1, 2026–October 5, 2026: cover-related noncompliance notices, penalty assessments, enforcement referrals and nonprivileged records documenting enforcement decisions.\nThis request excludes routine inspection reports available online and privileged legal advice. Please provide existing maps and tables in their original electronic formats where available.",
+      "newsworthiness": 9
+    },
+    {
+      "headline": "What evidence supported dismissing Chiquita Canyon air alerts as sensor problems?",
+      "established": [
+        {
+          "text": "The department’s February 2026 fact sheet attributed summer 2025 chemical-related air alerts to temporary sensor problems.",
+          "source": "ca-auditor-2025-128",
+          "quote": "For example, LADPH’s February 2026 fact sheet about landfill odors and health concerns discusses how the community received alerts in the summer of 2025 about potential air quality problems pertaining to specific chemicals."
+        },
+        {
+          "text": "The audit identifies the department’s explanation, but the supplied text does not present the technical evidence underlying it.",
+          "source": "ca-auditor-2025-128",
+          "quote": "The flyer states that these alerts were related to temporary issues with air quality sensors."
+        },
+        {
+          "text": "The auditors found no evidence of contemporaneous department communication explaining those alerts.",
+          "source": "ca-auditor-2025-128",
+          "quote": "However, we did not find any evidence that LADPH communicated with residents about these alerts at the time they occurred."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "An alert or threshold exceedance alone does not establish harmful exposure. The test must distinguish sensor artifacts from valid readings and consider duration, magnitude and monitoring conditions.",
+          "source": "ca-auditor-2025-128",
+          "quote": "She explained that interpreting an exceedance to determine the potential health risk depends on factors such as magnitude, duration, monitoring conditions, and other relevant context."
+        },
+        {
+          "text": "The department said it does not issue recurring communications when its risk assessment remains unchanged.",
+          "source": "ca-auditor-2025-128",
+          "quote": "LADPH’s deputy director of health protection stated that LADPH generally communicates when an initial public health assessment is completed, when a credible hazard is identified, or when new information materially changes the understanding of risk or recommended protective measures, and it does not issue recurring communications when its previous assessment remains unchanged."
+        },
+        {
+          "text": "Earlier independent sampling reached a reassuring regional-risk conclusion, but covered October–December 2023 rather than the summer 2025 alert episodes.",
+          "source": "ca-auditor-2025-128",
+          "quote": "Beginning in October 2023 and concluding in December 2023, the contractor conducted independent air sampling and evaluation in the communities surrounding the landfill."
+        },
+        {
+          "text": "The earlier evaluation must not be portrayed as finding elevated community health risks attributable to the landfill.",
+          "source": "ca-auditor-2025-128",
+          "quote": "The evaluation concluded that any health risks presented by air quality in the community were primarily the result of larger‑scale air quality issues in Los Angeles County."
+        },
+        {
+          "text": "The department disagreed with many audit conclusions; the detailed response remains unread in the supplied acquisition.",
+          "source": "ca-auditor-2025-128",
+          "quote": "LADPH disagreed with many of our conclusions."
+        }
+      ],
+      "hypothesis": "The department’s sensor-error explanation may have been inadequately documented, delayed, or applied more broadly than the validated faulty readings justified. Existing technical records could instead substantiate the explanation fully. Reconstruct each alert, when its validity was evaluated, and when the department had a defensible basis for its public characterization.",
+      "already_answered": "The audit already identifies the communication gap and the fact sheet’s sensor explanation. The original reporting opportunity is to test the technical basis, scope and timing of that explanation—not simply repeat that residents received no timely clarification.",
+      "records": [
+        {
+          "description": "Complete audit and detailed department response concerning air monitoring and the summer 2025 alerts.",
+          "could_reveal": "Whether unread response sections identify validation evidence, contemporaneous communications or other qualifications that already resolve the question.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "California State Auditor",
+          "location": "https://www.auditor.ca.gov/reports/2025-128/",
+          "how": "Read the full report and linked agency-response sections before pursuing the allegation. Their contents beyond the supplied text have not been read.",
+          "source": "ca-auditor-2025-128",
+          "quote": "Agency Comments LADPH disagreed with many of our conclusions."
+        },
+        {
+          "description": "Department-held alert notifications, event logs and underlying readings attached to the summer 2025 alerts, May–September 2025.",
+          "could_reveal": "The chemicals, stations, timestamps and values involved, and exactly which episodes the later sensor explanation addressed.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Request existing alert records and nonpublic attachments held by the department. Exclude published monitoring reports; seek links rather than copies for any already-public material.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        },
+        {
+          "description": "Department-held sensor quality-control, calibration, malfunction, validation and data-correction records, plus technical correspondence about the alerts, May 2025–February 2026.",
+          "could_reveal": "Whether faults were demonstrated, which measurements were invalidated, whether independent measurements corroborated the conclusion, and when the department learned the results.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Request copies received or created by the department, including relevant attachments from monitoring partners. The sources do not establish that the department holds every original sensor-maintenance record.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        },
+        {
+          "description": "Internal health-risk assessments, messaging decisions and drafts or approval records for the February 2026 fact sheet’s sensor explanation, May 2025–February 2026.",
+          "could_reveal": "Whether technical conclusions supported the wording, whether uncertainty was acknowledged internally, and whether decisions about notifying residents were documented contemporaneously.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "County of Los Angeles Department of Public Health Custodian of Records",
+          "location": "phicor@ph.lacounty.gov",
+          "how": "Request nonpublic internal assessment and drafting records through the published custodian route. Compare their dates and scope with the alert and validation records; do not infer actual injury from an alert.",
+          "source": "la-dph-prr-policy",
+          "quote": "If you have questions regarding CPRAs, please contact the DPH Custodian of Records at (562) 345-3404 or via email at phicor@ph.lacounty.gov ."
+        }
+      ],
+      "request_text": "To: County of Los Angeles Department of Public Health Custodian of Records\nPlease provide existing electronic records held by the department concerning summer 2025 Chiquita Canyon air-quality alerts and their characterization as sensor issues:\n1. May 1–September 30, 2025: alert notifications, event logs, and underlying readings attached to those alerts, including station, chemical, timestamp and data-quality fields.\n2. May 1, 2025–February 28, 2026: sensor calibration, malfunction, quality-control, validation and correction records, and technical correspondence with monitoring partners concerning those alerts.\n3. May 1, 2025–February 28, 2026: internal health-risk assessments and records documenting decisions about communicating the alerts or their correction to residents.\n4. May 1, 2025–February 28, 2026: drafts, source attachments and approval correspondence supporting the February 2026 fact sheet's sensor-issue explanation.\nPlease provide existing data in original electronic formats. Exclude already-public monitoring reports and final publications; please identify their public links instead.",
+      "newsworthiness": 8
+    }
+  ],
+  "no_lead_reason": ""
+}

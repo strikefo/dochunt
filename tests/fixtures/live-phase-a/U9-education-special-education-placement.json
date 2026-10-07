@@ -1,0 +1,72 @@
+{
+  "leads": [
+    {
+      "headline": "Were gaps in two states’ special education placement reports ever fixed?",
+      "established": [
+        {
+          "text": "The July 2026 report identifies missing 2023–24 placement data for all of New Mexico and missing disability-specific placement data for Iowa.",
+          "source": "gao-26-107814",
+          "quote": "New Mexico did not report any of these data for school year 2023–24. Iowa did not report data on educational setting by type of disability for school year 2023–24."
+        },
+        {
+          "text": "These are data states are required to submit, not a voluntary survey.",
+          "source": "gao-26-107814",
+          "quote": "IDEA Section 618 requires that each state submit data about the number of children with disabilities aged 3 to 21 serviced under IDEA Part B."
+        },
+        {
+          "text": "The missing reports affect a national collection used to examine where students with disabilities are educated.",
+          "source": "gao-26-107814",
+          "quote": "Specifically, 618 has data on these students by their educational environment, type of disability, race and ethnicity, sex, and English leaner status."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The finding concerns school year 2023–24 and the data available during the audit; it does not establish that the gaps remain unresolved today.",
+          "source": "gao-26-107814",
+          "quote": "About 7 million children aged 6 through 21 received special education and related services under Part B of the Individuals with Disabilities Education Act (IDEA) in school year 2023–24 (the most recent data available at the time of our review)."
+        },
+        {
+          "text": "The audit did not determine whether either state violated special education requirements. Missing reporting is not evidence of inappropriate student placements.",
+          "source": "gao-26-107814",
+          "quote": "We did not examine state, school district, or school compliance with IDEA and the right to a free appropriate public education as part of this review."
+        },
+        {
+          "text": "The Department of Education reviewed the report and supplied technical comments; the source does not describe a substantive dispute over these gaps.",
+          "source": "gao-26-107814",
+          "quote": "Education provided written technical comments, which we incorporated as appropriate."
+        }
+      ],
+      "hypothesis": "The missing reports may reflect unresolved submission or validation failures that left federal placement reporting incomplete beyond the original reporting cycle. Existing federal processing records and correspondence could establish the cause, duration, corrective action, and whether the omissions were subsequently resolved.",
+      "already_answered": "The audit already identifies the states, reporting year, and missing categories. It does not explain why the data were missing, whether submissions failed validation, what federal follow-up occurred, or whether corrected data later became available. Merely repeating the omissions would not be original reporting.",
+      "records": [
+        {
+          "description": "Existing receipt, processing, validation, rejection, and correction-status logs for New Mexico’s 2023–24 educational-environment reporting and Iowa’s 2023–24 educational-environment reporting by disability type, dated July 1, 2023–October 4, 2026.",
+          "could_reveal": "Whether reports were never submitted, submitted late, rejected, or withheld pending correction; when any corrected submission was accepted; and how long each reporting gap persisted.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Submit through the named online portal, or mail to the FOIA Service Center at 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536, ATTN: FOIA Public Liaison. The supplied page says email requests are not accepted. Request processing records, not the already-published statistical tables.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        },
+        {
+          "description": "Existing Department correspondence with New Mexico and Iowa, deficiency notices, correction plans, and closure records concerning those specific 2023–24 reporting gaps, dated July 1, 2023–October 4, 2026.",
+          "could_reveal": "The documented reasons for missing data, federal and state explanations, corrective deadlines, follow-up, and evidence that a gap was resolved or remained open.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "U.S. Department of Education Office of the Deputy Secretary FOIA Service Center",
+          "location": "Department's online FOIA portal",
+          "how": "Include these categories in the same request to the named FOIA Service Center, using the online portal or the mailing address supplied above.",
+          "source": "ed-foia",
+          "quote": "Send FOIA requests and appeals via mail to: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center 400 Maryland Avenue, SW, LBJ 7W106A Washington, DC 20202-4536 ATTN: FOIA Public Liaison"
+        }
+      ],
+      "request_text": "To: U.S. Department of Education Office of the Deputy Secretary FOIA Service Center, ATTN: FOIA Public Liaison\n\nPlease provide the following existing records dated July 1, 2023–October 4, 2026 concerning missing IDEA Section 618 school-year 2023–24 educational-environment data for New Mexico and missing educational-environment data disaggregated by disability type for Iowa:\n\n1. Submission receipt and processing logs, validation results, rejection notices, and correction or acceptance-status records for the affected submissions.\n2. Correspondence with the two states concerning these gaps, including deficiency notices, corrective plans or deadlines, follow-up correspondence, and closure records.\n\nPlease provide electronic records in their existing formats. This request seeks processing and follow-up records, not copies of publicly available statistical tables or newly prepared explanations.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

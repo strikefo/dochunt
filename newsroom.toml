@@ -1,0 +1,48 @@
+# Fictional settings. Credentials belong only in repository secrets.
+[identity]
+id = "example-newsroom"
+newsletter_name = "Document Hunt"
+sender_name = "Example Newsroom"
+accent_color = "#152b44"
+[editorial]
+coverage_brief = """We cover public education in Wisconsin, focusing on school spending,
+special education, student safety, and accountability."""
+exclusions = "Opinion and unsupported speculation"
+geography = "Wisconsin"
+max_final_leads = 5
+[ai]
+provider = "openai"
+model = "gpt-6.1-sol"
+reasoning_effort = "medium"
+reviewer_model = ""
+[email]
+provider = "resend"
+sender = "editor@example.org"
+recipients = ["reporter@example.org"]
+[schedule]
+enabled = false
+timezone = "America/Chicago"
+weekdays = [0, 1, 2, 3, 4]
+preferred_time = "08:00"
+[hunt]
+# Watch mode: each run reports documents published in the last 14 days on these pages that
+# it has not reported before, with follow-on records requests. Replace these with your own
+# state's education agency, auditor and district feeds; feeds (RSS/Atom) give exact dates.
+mode = "watch"
+watch = ["https://www.gao.gov/rss/reports.xml"]
+keywords = ["school", "schools", "education", "student", "students", "teacher", "teachers"]
+request_pages = ["https://www.ed.gov/about/ed-overview/required-notices/freedom-of-information-act-foia/how-make-freedom-of-information-act-foia-request-or-appeal"]
+window_days = 14
+max_new_documents = 5
+max_source_chars = 80000
+[limits]
+# Sized for watch mode: up to 5 new documents of up to 80,000 characters each, plus reviews.
+# A worst-case ceiling of about $3.30 per run at $2.50/$10 per million tokens; actual use is far lower.
+research_requests = 6
+review_requests = 6
+searches = 1
+fetches = 50
+input_tokens = 950000
+output_tokens = 90000
+max_candidates = 5
+max_final_leads = 5

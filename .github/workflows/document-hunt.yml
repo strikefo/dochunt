@@ -1,0 +1,168 @@
+name: Document Hunt
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: preview is fictional/offline; paid-ai-preview performs billed research only
+        type: choice
+        default: preview
+        options: [preview, paid-ai-preview, send-preview-test, deliver, resend]
+      preview_run_id:
+        description: Previous successful paid-ai-preview run ID (test or resend)
+        type: string
+      recipient:
+        description: One configured recipient for send-preview-test
+        type: string
+      attempt_id:
+        description: Explicit unique operator attempt ID for test or resend
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: document-hunt-state
+  cancel-in-progress: false
+jobs:
+  hunt:
+    if: github.event.repository.private && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Application deadline
+        run: echo "DOCHUNT_DEADLINE=$(( $(date +%s) + 1500 ))" >> "$GITHUB_ENV"
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.11'
+      - name: Eligibility before dependency installation
+        id: due
+        env:
+          PYTHONPATH: src
+          MODE: ${{ github.event.inputs.mode }}
+        run: |
+          if [ "$MODE" = deliver ]; then
+            python -m dochunt.cli due-check --manual
+          elif [ -z "$MODE" ]; then
+            python -m dochunt.cli due-check
+          else
+            echo "due=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install
+        if: steps.due.outputs.due == 'true' || github.event_name == 'workflow_dispatch'
+        run: python -m pip install .
+      - name: Synthetic preview
+        if: github.event.inputs.mode == 'preview'
+        run: dochunt preview --synthetic --output-dir output
+      - name: Paid AI preview (research and review only)
+        if: github.event.inputs.mode == 'paid-ai-preview'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: |
+          remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
+          [ "$remaining" -gt 0 ] || exit 1
+          timeout "$remaining" dochunt preview --output-dir output --history data/history.jsonl
+      - name: Select previous trusted preview
+        if: github.event.inputs.mode == 'send-preview-test' || github.event.inputs.mode == 'resend'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_RUN_ID: ${{ github.event.inputs.preview_run_id }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
+          [ "$remaining" -gt 0 ] || exit 1
+          timeout "$remaining" dochunt download-preview --run-id "$PREVIEW_RUN_ID" --repository "$REPOSITORY" --branch "$BRANCH" --output-dir selected-preview
+      - name: Configure local commit identity
+        if: steps.due.outputs.due == 'true' || github.event.inputs.mode == 'send-preview-test' || github.event.inputs.mode == 'resend'
+        run: |
+          git config user.name 'DocHunt state'
+          git config user.email 'dochunt@users.noreply.github.com'
+      - name: Delivery credential readiness before paid research
+        if: steps.due.outputs.due == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        run: dochunt delivery-readiness
+      - name: Research and review
+        if: steps.due.outputs.due == 'true' && github.event.inputs.mode != 'preview'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          MODE: ${{ github.event.inputs.mode }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
+          [ "$remaining" -gt 0 ] || exit 1
+          if [ "$MODE" = deliver ]; then
+            timeout "$remaining" dochunt run --research-only --manual --branch "$BRANCH"
+          else
+            timeout "$remaining" dochunt run --research-only --branch "$BRANCH"
+          fi
+      - name: Deliver with synchronous state publication
+        if: steps.due.outputs.due == 'true' && github.event.inputs.mode != 'preview'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MODE: ${{ github.event.inputs.mode }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
+          [ "$remaining" -gt 0 ] || exit 1
+          if [ "$MODE" = deliver ]; then
+            timeout "$remaining" dochunt run --delivery-only --manual --branch "$BRANCH"
+          else
+            timeout "$remaining" dochunt run --delivery-only --branch "$BRANCH"
+          fi
+      - name: Explicit selected-preview test or resend
+        if: github.event.inputs.mode == 'send-preview-test' || github.event.inputs.mode == 'resend'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MODE: ${{ github.event.inputs.mode }}
+          RECIPIENT: ${{ github.event.inputs.recipient }}
+          ATTEMPT_ID: ${{ github.event.inputs.attempt_id }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
+          [ "$remaining" -gt 0 ] || exit 1
+          if [ "$MODE" = send-preview-test ]; then
+            timeout "$remaining" dochunt preview-test --issue-dir selected-preview --recipient "$RECIPIENT" --attempt-id "$ATTEMPT_ID" --branch "$BRANCH"
+          else
+            timeout "$remaining" dochunt resend --issue-dir selected-preview --attempt-id "$ATTEMPT_ID" --branch "$BRANCH"
+          fi
+      - name: Reviewed paid preview artifact
+        if: success() && github.event.inputs.mode == 'paid-ai-preview'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: paid-ai-preview-${{ github.run_id }}
+          path: |
+            output/engine-result.json
+            output/sources.json
+            output/analysed-documents.json
+            output/issue.json
+            output/preview.html
+            output/preview.txt
+            output/preview-manifest.json
+          retention-days: 7
+          if-no-files-found: error
+      - name: Private installation diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: document-hunt-${{ github.run_id }}
+          path: output/
+          retention-days: 7
+          if-no-files-found: ignore

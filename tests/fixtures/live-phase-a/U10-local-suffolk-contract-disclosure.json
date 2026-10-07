@@ -1,0 +1,146 @@
+{
+  "leads": [
+    {
+      "headline": "Did repeat audit problems affect Suffolk-funded services at Brighter Tomorrows?",
+      "established": [
+        {
+          "text": "The comptroller identified two repeat findings at Brighter Tomorrows and reported that the agency had not taken timely corrective action.",
+          "source": "suffolk-subrecipient",
+          "quote": "Single Audit reports reviewed by the Comptroller's Office contained two repeat findings that pertained to all programs reported on the SEFA in which the Agency, Brighter Tomorrows , Inc., failed to take timely corrective action."
+        },
+        {
+          "text": "The review examined federal funding passed through Suffolk County during calendar year 2024.",
+          "source": "suffolk-subrecipient",
+          "quote": "The Suffolk County Comptroller’s Office conducted a review of the federal funding that Suffolk County passed through to subrecients for the period January 1, 202 4 through December 31, 2024."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The agency’s Single Audit did not test the funds passed through Suffolk County. The excerpt therefore does not establish losses, improper spending, or service failures involving county-administered funding.",
+          "source": "suffolk-subrecipient",
+          "quote": "Although funds passed through Suffolk County to the Agency were not tested as part of their Single Audit,"
+        },
+        {
+          "text": "The comptroller says its process included requesting corrective action and determining whether deficiencies were resolved. The supplied excerpt does not give the final resolution status for Brighter Tomorrows.",
+          "source": "suffolk-subrecipient",
+          "quote": "• Notified the subrecipients of any deficiencies in their Single Audit reports and requested corrective action. Determined whether all identified deficiencies were satisfactorily resolved."
+        },
+        {
+          "text": "Although numbered 2025-17, the report was issued September 28, 2026 and covers 2024.",
+          "source": "suffolk-subrecipient",
+          "quote": "Report on the Monitoring of Subrecipient Single Audit Submissions Period Covered: January 1, 2024 through December 31, 2024 Report No. 2025-17 Date Issued: Sept. 28, 2026 OFFICE OF THE SUFFOLK COUNTY COMPTROLLER John M. Kennedy, Jr."
+        }
+      ],
+      "hypothesis": "The repeat agency-wide weaknesses also affected Suffolk-funded programs, and the county’s monitoring records may show that those weaknesses remained unresolved or were inadequately verified before the report was issued.",
+      "already_answered": "The excerpt already establishes repeat findings and untimely corrective action, but not their practical effect on Suffolk-funded programs or their final status. Read the complete report first; it may already answer the resolution question.",
+      "records": [
+        {
+          "description": "Complete subrecipient-monitoring report, including findings, schedules, responses and resolution information.",
+          "could_reveal": "The exact weaknesses, county funding involved, agency response and whether the comptroller reported subsequent correction.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the Suffolk County Comptroller",
+          "location": "https://www.suffolkcountyny.gov/Portals/2/documents/Final Report 2025-17 - Subrecipient Monitoring.pdf",
+          "how": "Download the supplied report URL and inspect the full findings and appendices before requesting records.",
+          "source": "suffolk-subrecipient",
+          "quote": "Report on the Monitoring of Subrecipient Single Audit Submissions Period Covered: January 1, 2024 through December 31, 2024 Report No. 2025-17 Date Issued: Sept. 28, 2026 OFFICE OF THE SUFFOLK COUNTY COMPTROLLER John M. Kennedy, Jr."
+        },
+        {
+          "description": "Brighter Tomorrows Single Audit report and the comptroller’s desk-review, corrective-action and resolution records for that report.",
+          "could_reveal": "Whether findings 2024-001 and 2024-002 implicated Suffolk-funded activities, what corrective evidence was supplied and what the county verified.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Suffolk County Comptroller’s Office",
+          "location": "",
+          "how": "Request existing records from the named office; the supplied source provides no submission address or request portal.",
+          "source": "suffolk-subrecipient",
+          "quote": "The Suffolk County Comptroller’s Office conducted a review of the federal funding that Suffolk County passed through to subrecipients for the period January 1, 202 4 through December 31, 2024."
+        },
+        {
+          "description": "The funding information obtained and summarized for Brighter Tomorrows during the 2024 review.",
+          "could_reveal": "Which county departments and federal programs were exposed to the agency-wide weaknesses, and the amounts involved.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Suffolk County Comptroller’s Office",
+          "location": "",
+          "how": "Request the existing funding summary and supporting departmental submissions from the office that conducted the review.",
+          "source": "suffolk-subrecipient",
+          "quote": "The Suffolk County Comptroller’s Office conducted a review of the federal funding that Suffolk County passed through to subrecipients for the period January 1, 202 4 through December 31, 2024."
+        }
+      ],
+      "request_text": "To the Suffolk County Comptroller’s Office: Please provide existing records received or created from January 1, 2024 through September 28, 2026 concerning Brighter Tomorrows, Inc. in connection with Report No. 2025-17:\n1. The Single Audit report containing findings 2024-001 and 2024-002 and associated corrective-action plans.\n2. Desk-review records, deficiency notices, correspondence with the agency or county departments, and records documenting verification or closure of those findings.\n3. Funding summaries and supporting departmental submissions identifying federal funds passed through Suffolk County to the agency during calendar year 2024.\nPlease provide electronic records in their existing formats.",
+      "newsworthiness": 8
+    },
+    {
+      "headline": "How much contractor funding faced budget review without required disclosures?",
+      "established": [
+        {
+          "text": "The comptroller reported 45 contract agencies that missed the disclosure deadline.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "• There were 45 contract agencies that did not complete and submit the required online CADF to Audit & Control by the September 15 th deadline (Schedule 2, p. 13)."
+        },
+        {
+          "text": "At least one late submission was excluded from the database analysis even though the agency eventually submitted its paperwork.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "(4) This agency submitted their Contract Agency Disclosure Form and all required paperwork for this contract after the September 15, 202 6 deadline; therefore, this record was not included in our database analysis."
+        },
+        {
+          "text": "The analysis was intended to support budget decisions and identify contracts needing further review.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "The purpose of our analyses was to compile Contract Agency Disclosure Form (CADF) data in order to provide the County Executive and each member of the County Legislature with a report designed to assist in the budget process and to identify contracts which require further review by Audit & Control."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "Missing the deadline is not the same as never submitting. The source explicitly documents a subsequent submission.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "(4) This agency submitted their Contract Agency Disclosure Form and all required paperwork for this contract after the September 15, 202 6 deadline; therefore, this record was not included in our database analysis."
+        },
+        {
+          "text": "This report concerns the 2027 budget evaluation process and was issued September 28, 2026; it does not establish final 2027 funding decisions.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "A Compilation and Analysis of Contract Agency Disclosure Form Data For the 2027 Budget Evaluation Process Report 2026-03 Date Issued: September 28, 2026 OFFICE OF THE SUFFOLK COUNTY COMPTROLLER John M. Kennedy, Jr."
+        },
+        {
+          "text": "The reported 794 submissions count contracts/forms, while the missed-deadline figure counts agencies. Those denominators should not be treated as interchangeable.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "As a result of compiling the data from the 794 CADFs submitted to Audit & Control, we determined that county funding of these 794 contracts represented approximately 52% of the total r evenue reported by the contract agencies for these programs"
+        }
+      ],
+      "hypothesis": "Deadline-related omissions left a material amount of proposed county contractor funding outside the financial screening used for the 2027 budget, and late submissions may contain financial warning signs absent from that analysis.",
+      "already_answered": "The missed-deadline count and at least one exclusion are already disclosed. Original reporting would quantify the funding and financial information omitted, reconcile later submissions, and avoid presenting late agencies as permanent noncompliers.",
+      "records": [
+        {
+          "description": "Complete contract-disclosure report, especially Schedule 2, contract amounts, explanatory notes and methodology.",
+          "could_reveal": "The identities of the 45 agencies, subsequent submission notes and any funding amounts already published, preventing redundant requests.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the Suffolk County Comptroller",
+          "location": "https://www.suffolkcountyny.gov/Portals/2/documents/Report No. 2026-03 Contract Agency Disclosure Disclosure Form Data.pdf",
+          "how": "Download the supplied PDF and extract the complete schedules and notes.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "A Compilation and Analysis of Contract Agency Disclosure Form Data For the 2027 Budget Evaluation Process Report 2026-03 Date Issued: September 28, 2026 OFFICE OF THE SUFFOLK COUNTY COMPTROLLER John M. Kennedy, Jr."
+        },
+        {
+          "description": "The Excel disclosure-analysis database and existing submission records for the agencies listed in Schedule 2, including late forms and required attachments.",
+          "could_reveal": "Which contracts were excluded, their funding exposure, later compliance and whether late financial disclosures would have triggered the report’s screening criteria.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Department of Audit and Control",
+          "location": "",
+          "how": "Request the existing database and disclosure submissions from the department named as their recipient. No request address or portal is supplied.",
+          "source": "suffolk-contract-disclosure",
+          "quote": "Each contract agency shall be required to complete and submit an online contract agency disclosure form to the Department of Audit and Control no later than September 15 th of each year."
+        }
+      ],
+      "request_text": "To the Department of Audit and Control: Please provide existing records received or created from January 1, 2026 through October 5, 2026 relating to Report 2026-03:\n1. The Excel database used to compile and analyze the contract agency disclosure forms, in its existing electronic format.\n2. Disclosure forms and required attachments submitted by agencies listed in Schedule 2, including submissions received after September 15, 2026.\n3. Existing submission-status logs, receipt dates and records identifying which forms or contracts were included in or excluded from the analysis.\nPlease exclude copies of schedules already published in the report. This request seeks existing records, not a new analysis.",
+      "newsworthiness": 7
+    }
+  ],
+  "no_lead_reason": ""
+}

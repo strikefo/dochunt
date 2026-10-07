@@ -1,0 +1,116 @@
+{
+  "leads": [
+    {
+      "headline": "Were disputed small-business inspections unlawful, or did faulty records hide legitimate safety work?",
+      "established": [
+        {
+          "text": "The inspector general identified 481 inspections needing further review: 280 lacked a documented exception in the inspection data, while 201 had insufficient information to determine whether an exception applied.",
+          "source": "dol-oig-osha-alert",
+          "quote": "Specifically, we identified 280 inspections for which no permissible exception was documented in the data. For the remaining 201 inspections, the data was insufficient to determine if an exception applied."
+        },
+        {
+          "text": "An initial agency review found both coding errors and inspections that did not qualify for exceptions.",
+          "source": "dol-oig-osha-alert",
+          "quote": "OSHA officials examined supporting case file documentation for these 27 inspections and cited coding errors for 23 inspections, stating the other 4 were not exceptions to the appropriations rider."
+        },
+        {
+          "text": "The disputed records could affect more than compliance with spending restrictions: the agency uses inspection data to target workplace hazards.",
+          "source": "dol-oig-osha-alert",
+          "quote": "Potential coding errors in OSHA’s inspection data—which is used to target high-risk industries and hazards—raise concerns about overall data reliability."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The universe covers inspections both initiated and closed during a specific 14-month period, not all inspections or all small employers.",
+          "source": "dol-oig-osha-alert",
+          "quote": "In response to this allegation, we reviewed OIS data for inspections initiated and closed from November 8, 2024, through January 21, 2026 (herein referred to as the review period)."
+        },
+        {
+          "text": "The inspector general did not examine supporting case files and explicitly declined to conclude that the inspections violated the appropriations restrictions.",
+          "source": "dol-oig-osha-alert",
+          "quote": "This alert memorandum identifies OSHA inspections requiring further agency review based on the results of the OIG’s high-level data analysis; we did not audit supporting case file documentation and therefore draw no conclusions on whether OSHA complied with its appropriations acts."
+        },
+        {
+          "text": "The 27 reviewed cases were a selected subset, not a representative sample from which to extrapolate an error or violation rate.",
+          "source": "dol-oig-osha-alert",
+          "quote": "According to OSHA, it identified 27 inspections from the list that included a violation but were not coded as imminent danger at the inspection level."
+        },
+        {
+          "text": "The agency disputes the inspector general’s interpretation and says its conclusions overstate coding weaknesses.",
+          "source": "dol-oig-osha-alert",
+          "quote": "OSHA disagrees with OIG’s finding that OSHA may have conducted 481 inspections that did not comply with the small-employer/low-hazard rider which appears in OSHA’s annual appropriations acts."
+        },
+        {
+          "text": "Opening an inspection can be necessary to establish employer size or whether an exception applies; an inspection record alone does not establish impermissible enforcement.",
+          "source": "dol-oig-osha-alert",
+          "quote": "If, after undertaking these initial steps (which are necessary steps for OSHA to comply with the rider), OSHA determines (1) that the rider applies and (2) none of the rider's exceptions are applicable, then OSHA does not take further action."
+        },
+        {
+          "text": "The agency reported that its review had already begun in its August 25, 2026 response. The supplied September 24 alert does not contain final review results.",
+          "source": "dol-oig-osha-alert",
+          "quote": "Moreover, OSHA takes the matters raised by OIG seriously and has already begun a review of the inspections identified in the memorandum."
+        },
+        {
+          "text": "The complaint that triggered the review was itself resolved against the employer’s exemption claim; it should not be presented as a proven example of improper enforcement.",
+          "source": "dol-oig-osha-alert",
+          "quote": "Our analysis of OIS data found that the complainant did not meet the exemption criteria in the appropriations acts because it had more than 10 employees controlled by the employer."
+        }
+      ],
+      "hypothesis": "Case files and the agency’s follow-up review may show that some flagged inspections continued beyond necessary eligibility checks without a lawful exception, while others involved genuine hazards obscured by incorrect coding. Comparing contemporaneous case documentation with the review’s determinations would establish the split and test whether corrections are supported by evidence rather than retrospective relabeling.",
+      "already_answered": "The alert already establishes the database flags, the agency’s disagreement, and the findings in the selected 27 cases. The original complainant was not exempt. What remains unanswered is the documented disposition of the full 481-case universe, the grounds for clearing or confirming each case, and whether the agency corrected the underlying records.",
+      "records": [
+        {
+          "description": "The agency’s list of the 481 flagged inspections, case-by-case review determinations, supporting review worksheets, and records of resulting database corrections.",
+          "could_reveal": "Identify the employers and inspection numbers; show how many cases were cleared, confirmed, or remain unresolved; distinguish employee-count errors, hazard exceptions, initial eligibility checks, and unsupported enforcement; identify regional patterns without extrapolating from the selected 27 cases.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "national OSHA office",
+          "location": "OSHA.FOIA@dol.gov",
+          "how": "Request existing national-office records of the review described in the agency response, including the inspection-number inventory and case-level outcomes. Ask for electronic tables in their existing format.",
+          "source": "osha-foia",
+          "quote": "Step 3 : if your request is with the national OSHA office or you have questions, contact OSHA.FOIA@dol.gov ."
+        },
+        {
+          "description": "Inspection reports, safety narratives, violation worksheets, and managerial review records documenting employer headcounts, qualifying hazards, exemption decisions, and whether enforcement continued for the flagged inspections.",
+          "could_reveal": "Test the agency’s review determinations against contemporaneous evidence. Establish whether a qualifying exception existed, whether an inspection stopped after eligibility checks, and whether citations or other enforcement followed despite an exemption.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "OSHA",
+          "location": "foiarequests@dol.gov",
+          "how": "Once the inventory is obtained, submit inspection-specific requests with inspection number, employer name, city and state, and incident date where applicable. Prioritize the four initially identified cases and cases the subsequent review confirms or leaves unresolved; obtain the remainder before making universe-wide claims.",
+          "source": "osha-foia",
+          "quote": "If the employer is located in a state under federal OSHA jurisdiction , send an email to foiarequests@dol.gov , with the following information if you are seeking inspection records."
+        },
+        {
+          "description": "The July 18, 2024 enforcement directive governing appropriations exemptions and limitations.",
+          "could_reveal": "Provide the agency’s operative instructions for distinguishing initial eligibility checks from prohibited enforcement and evaluating case-file determinations. Read the linked document before interpreting individual cases.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "public_download",
+          "custodian": "OSHA",
+          "location": "https://www.osha.gov/sites/default/files/enforcement/directives/cpl-02-00-170.pdf",
+          "how": "Download the directive linked in the alert memorandum; do not request it.",
+          "source": "dol-oig-osha-alert",
+          "quote": "See also OSHA Instruction, “Enforcement Exemptions and Limitations under the Annual Appropriations Act,” (CPL 02-00-170) dated July 18, 2024, last accessed July 9, 2026, available at: https://www.osha.gov/sites/default/files/enforcement/directives/cpl-02-00-170.pdf."
+        },
+        {
+          "description": "Public inspection, citation, and violation data for the identified inspection numbers.",
+          "could_reveal": "Show publicly recorded enforcement outcomes and permit comparison with case files and the agency’s review. Public data alone cannot settle the legal exceptions because the alert identifies missing details and coding errors.",
+          "essential": false,
+          "kind": "underlying",
+          "route": "public_download",
+          "custodian": "OSHA",
+          "location": "Department of Labor Data Catalog",
+          "how": "Use the catalog identified on the supplied page to obtain inspection, citation, and violation data; match by inspection number. Do not request publicly available citations or inspection data.",
+          "source": "osha-foia",
+          "quote": "Go to OSHA's Data page to view available data for download or visit the Department of Labor Data Catalog to download inspection data, citations, and violations data since 1970."
+        }
+      ],
+      "request_text": "To the national OSHA office:\nPlease provide existing records concerning the 481 inspections identified in Report No. 03-26-001-10-105. The inspections were initiated and closed November 8, 2024–January 21, 2026; please include review records created through October 4, 2026.\n1. The inspection-number inventory supplied by the inspector general and existing case-level review tables or tracking logs.\n2. Completed review worksheets, determinations, and supporting managerial approvals identifying whether each inspection complied with the appropriations rider and the documented basis.\n3. Existing records of resulting corrections to employee counts, inspection types, or exception indicators, including recorded original and revised values and correction dates.\nPlease provide electronic tables in their existing format and segregable portions of other records.\n\nFollow-up to OSHA via foiarequests@dol.gov, after adding each inspection’s identifiers:\n4. For the listed inspections, provide nonpublic inspection reports, safety narratives, violation worksheets, and managerial review records documenting employer headcounts, qualifying hazards, exemption decisions, and cessation or continuation of enforcement, for November 8, 2024–October 4, 2026. Exclude citations and other materials already publicly available.",
+      "newsworthiness": 9
+    }
+  ],
+  "no_lead_reason": ""
+}

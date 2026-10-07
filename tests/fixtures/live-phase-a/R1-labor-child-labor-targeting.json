@@ -1,0 +1,236 @@
+{
+  "leads": [
+    {
+      "headline": "Are larger child labor fines being reduced without verified improvements?",
+      "established": [
+        {
+          "text": "The department changed its penalty policy in November 2023 to assess separate violations rather than one penalty per child.",
+          "source": "gao-26-107722",
+          "quote": "In November 2023, WHD began assessing CMPs on a per-violation basis, rather than the previous approach of one penalty per child involved."
+        },
+        {
+          "text": "Assessed child labor penalties more than quadrupled between fiscal years 2023 and 2025.",
+          "source": "gao-26-107722",
+          "quote": "From fiscal year 2023 to fiscal year 2025, WHD more than quadrupled the amount it assessed in child labor CMPs (see fig. 13)."
+        },
+        {
+          "text": "Officials in two regions reported more employers seeking reductions through agreements promising additional compliance measures.",
+          "source": "gao-26-107722",
+          "quote": "Since the changes in CMPs, field officials in two regions we spoke with said that it was more common for employers to seek post-assessment reductions in CMPs through enhanced compliance agreements."
+        },
+        {
+          "text": "Those agreements can exchange extra compliance measures for lower penalties.",
+          "source": "gao-26-107722",
+          "quote": "Under these agreements, an employer takes extra steps—such as implementing a system to more easily identify workers under 18 or having WHD train their managers on child labor laws—to ensure long-term compliance with child labor laws in exchange for a reduction in CMPs."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "Seeking a reduction does not establish that an employer received one; the report describes reductions as conditional on agreement.",
+          "source": "gao-26-107722",
+          "quote": "If the employer and WHD come to an agreement, the CMPs may be reduced."
+        },
+        {
+          "text": "The policy change described here concerns nonserious-injury and noninjury violations, not every child labor penalty.",
+          "source": "gao-26-107722",
+          "quote": "To hold employers accountable for child labor violations and deter future violations, WHD also changed how it assesses CMPs for nonserious injury and noninjury child labor violations."
+        },
+        {
+          "text": "The district-office interviews were a selected, nongeneralizable sample; the reports from two regions are not a national estimate.",
+          "source": "gao-26-107722",
+          "quote": "To ensure our district office selection captured a variety of enforcement experiences and to minimize bias in this nongeneralizable sample, we chose one district office with an above-average percentage of cases resulting in child labor violations compared to other districts in the region, and one that had an average or below-average percentage of recent violations."
+        },
+        {
+          "text": "Manual penalty calculations were a reported problem, but a November 2025 system replacement may have reduced that burden.",
+          "source": "gao-26-107722",
+          "quote": "In November 2025, WHD rolled out its new case management system, the Wage Hour Integrated System for Enforcement (known as WISE 2.0), which has automated capabilities to assist officials with CMP calculations."
+        }
+      ],
+      "hypothesis": "Post-assessment agreements substantially reduce the larger announced penalties, while the division does not consistently document whether employers completed the compliance measures exchanged for those reductions. Test the financial concessions and verification separately; a reduction alone is not evidence of weak enforcement.",
+      "already_answered": "The report establishes the rise in assessed penalties and the availability of compliance-linked reductions. It does not establish their national frequency, dollar value, final collection amounts, or whether promised measures were verified.",
+      "records": [
+        {
+          "description": "Existing case-level child labor penalty assessment, adjustment, final disposition and payment records for fiscal years 2023–2026, with case identifiers and available employer, violation, injury-severity and closure-date fields; associated data dictionaries.",
+          "could_reveal": "The difference between initial assessments, final liabilities and payments; the share attributable to compliance agreements rather than appeals or other adjustments. Analyze sufficiently aged cases and keep unpaid, pending and reduced amounts distinct.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request existing electronic records through the division's designated request email. Ask for available exports rather than a newly calculated analysis.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        },
+        {
+          "description": "Executed enhanced compliance agreements for child labor cases, their penalty-reduction approvals, and existing monitoring or follow-up records, November 2023–September 2026.",
+          "could_reveal": "Which employers received discounts, the commitments and deadlines exchanged for them, and whether the agency documented completion, missed commitments or subsequent violations.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request agreements and related approval and monitoring records, linking them to case identifiers where available. Disclosure may be limited by exemptions; do not assume a missing production proves monitoring never occurred.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        }
+      ],
+      "request_text": "To the WHD National Office, Attention Wage and Hour Division FOIA Coordinator:\nPlease provide the following existing records in electronic form, with available case identifiers:\n1. For October 1, 2022–September 30, 2026, case-level child labor penalty assessment, adjustment, final disposition and payment records, including available employer, violation, injury-severity and closure-date fields, and relevant data dictionaries.\n2. For November 1, 2023–September 30, 2026, executed enhanced compliance agreements concerning child labor violations and records approving associated penalty reductions.\n3. For those agreements, existing monitoring, completion-verification and follow-up enforcement records through September 30, 2026.\nPlease provide existing exports and segregable portions; this request does not ask the agency to conduct an analysis or create a new dataset.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Are outdated equipment rules delaying protection for children doing dangerous work?",
+      "established": [
+        {
+          "text": "Officials in three regions reported difficulty applying hazardous-work rules to modern equipment or complicated uses.",
+          "source": "gao-26-107722",
+          "quote": "Field officials in three of WHD’s regions described challenges in applying the hazardous occupations orders (HO) to some investigations because the HOs do not cover certain modern equipment and do not fully address complicated situations."
+        },
+        {
+          "text": "Equipment used for a different purpose can create uncertainty about which prohibition applies.",
+          "source": "gao-26-107722",
+          "quote": "In addition, officials from district offices in two regions said it could be difficult to determine if an HO applies when children use hazardous equipment for a task other than its intended purpose (such as using a meat-shredding machine to shred cheese)."
+        },
+        {
+          "text": "Unresolved interpretation questions go to the division's policy office.",
+          "source": "gao-26-107722",
+          "quote": "If it is unclear whether an HO applies to a given investigation based on existing guidance, field offices submit their questions to WHD’s Office of Policy, according to WHD."
+        },
+        {
+          "text": "Officials reported no guidance updates prompted by these field questions.",
+          "source": "gao-26-107722",
+          "quote": "However, WHD officials said there were no instances in which WHD updated internal or external guidance or the handbook based on a question from field officials about applying HOs."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The agency already researches individual equipment questions and can consult its lawyers; uncertainty does not establish that dangerous work was permitted.",
+          "source": "gao-26-107722",
+          "quote": "Officials said they work on a case-by-case basis to research the equipment and advise the inquiring field officials whether an HO applies, including consulting with the Solicitor’s Office if needed."
+        },
+        {
+          "text": "The agency disputes the usefulness of looking for recurring questions because cases differ.",
+          "source": "gao-26-107722",
+          "quote": "According to WHD officials, the Office of Policy may receive multiple questions from field officials about a given HO over time, but WHD does not analyze whether there are patterns in the questions it receives because it is rare that two cases are identical."
+        },
+        {
+          "text": "The existing tracking system cannot readily aggregate these questions, so the reporting test may require manual coding of correspondence.",
+          "source": "gao-26-107722",
+          "quote": "Additionally, WHD’s tracking system for technical assistance requests from field offices does not include any data fields that would allow WHD to easily aggregate and analyze questions related to HOs."
+        },
+        {
+          "text": "The division agreed to establish tracking and analysis procedures; obtain post-report implementation records before describing the problem as unchanged.",
+          "source": "gao-26-107722",
+          "quote": "The Secretary of Labor should direct the Wage and Hour Division Administrator to establish procedures to track and analyze the questions it receives from field offices related to applying the hazardous occupations orders, as well as the technical assistance it provides, and use the analysis to regularly update guidance, as appropriate. (Recommendation 4)"
+        }
+      ],
+      "hypothesis": "Repeated questions about the same equipment or task produce avoidable investigation delays or inconsistent enforcement outcomes because case-specific interpretations are not converted into reusable guidance. Records must establish actual delays or differing decisions, not merely unanswered regulatory questions.",
+      "already_answered": "The report establishes interpretive difficulties and the lack of systematic analysis. It does not identify affected employers, measure response delays, or establish inconsistent decisions or continued exposure during those delays.",
+      "records": [
+        {
+          "description": "Existing technical-assistance tracking entries, field-office questions and policy responses concerning hazardous occupations, including attachments and available case identifiers, January 2023–September 2026.",
+          "could_reveal": "Recurring equipment and task questions, time between referral and response, reasoning used in decisions, and whether materially similar situations received different interpretations.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request existing tracking records and the underlying correspondence. Manually classify equipment, task, applicable rule and decision; distinguish legal interpretation from differences in facts.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        },
+        {
+          "description": "Associated investigation chronologies, final findings and disposition records, plus existing guidance updates or tracking procedures addressing hazardous-occupation questions, January 2023–September 2026.",
+          "could_reveal": "Whether waiting for an interpretation delayed specific cases, changed citations or left suspected hazardous work unresolved; whether subsequent guidance or procedures addressed recurring questions.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request records for cases linked to technical-assistance referrals, using available identifiers; seek segregable factual chronologies and final determinations if advice is withheld.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        }
+      ],
+      "request_text": "To the WHD National Office, Attention Wage and Hour Division FOIA Coordinator:\nFor January 1, 2023–September 30, 2026, please provide:\n1. Existing technical-assistance tracking entries and field-office correspondence asking the Office of Policy whether hazardous occupations orders apply to equipment or tasks, including attachments, responses and available case identifiers.\n2. Existing investigation chronologies, final findings and disposition records for cases associated with those referrals.\n3. Guidance, handbook revisions and procedures issued during this period concerning the tracking, analysis or resolution of hazardous-occupation questions.\nPlease provide electronic records and segregable factual portions where other material is withheld. This request seeks existing records, not a new analysis.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Did national targeting data help investigators find dangerous child labor?",
+      "established": [
+        {
+          "text": "From fiscal years 2023–2025, the division directed regional offices to consider particular federal datasets when choosing investigation locations.",
+          "source": "gao-26-107722",
+          "quote": "From fiscal year 2023 through fiscal year 2025, WHD directed its regional offices to consider starting investigations in geographic areas where vulnerable workers might be, based on a combination of specific HHS and U.S. Census Bureau (Census) data, according to WHD officials and documents."
+        },
+        {
+          "text": "Officials in three regions said the nationally recommended data lacked sufficient detail for useful leads.",
+          "source": "gao-26-107722",
+          "quote": "Field officials in three of WHD’s five regions said the data that WHD asked them to use were not detailed enough to provide useful investigation leads."
+        },
+        {
+          "text": "The initiative's identified cases produced violations in 41 percent of cases, but this is not a measure of the recommended datasets' effectiveness.",
+          "source": "gao-26-107722",
+          "quote": "Of these 393 National Initiative cases, 161 (41 percent) resulted in at least one cited child labor violation, of which almost half were related to hazardous occupations orders."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The disputed datasets were removed from the targeting strategy in January 2026; this is a retrospective evaluation with a follow-up on replacement practices.",
+          "source": "gao-26-107722",
+          "quote": "WHD updated the National Initiative in January 2026 to exclude these specific HHS and Census data from WHD’s targeting strategy and did not replace them with another specific dataset it recommended, according to officials and planning documentation."
+        },
+        {
+          "text": "Some initiative-related cases were tracked elsewhere, so the 393 cases are not necessarily the full universe.",
+          "source": "gao-26-107722",
+          "quote": "Our analysis of enforcement data shows that WHD conducted 393 cases specifically under the National Initiative from fiscal year 2023 through fiscal year 2025, although officials noted that additional cases related to the National Initiative’s focus areas might be tracked under other initiatives."
+        },
+        {
+          "text": "The agency allowed consideration of local factors and other sources; initiative membership alone cannot identify how a case was selected.",
+          "source": "gao-26-107722",
+          "quote": "WHD also directed regional offices to consider other factors when starting investigations in those areas, including local circumstances and data sources particular to individual regions or districts."
+        },
+        {
+          "text": "The division agreed to develop an evaluation process but proposed addressing it through broader agency planning.",
+          "source": "gao-26-107722",
+          "quote": "While WHD stated it agreed with the recommendation to develop a systematic process to identify and evaluate potential data sources to target investigations, it also stated it would address the recommendation by strengthening its agency-wide planning process."
+        },
+        {
+          "text": "Enforcement outcomes cannot establish the national prevalence of illegal child labor.",
+          "source": "gao-26-107722",
+          "quote": "WHD officials noted that these data should not be used to describe the prevalence of illegal child labor in the U.S."
+        }
+      ],
+      "hypothesis": "Investigations demonstrably selected using the nationally recommended datasets found fewer hazardous violations, or required more investigative effort per such finding, than locally targeted investigations. Test within comparable offices, industries and periods; complaints are a separate descriptive benchmark, not an equivalent control group.",
+      "already_answered": "The report establishes field dissatisfaction, overall initiative results and removal of the datasets. It does not attribute case outcomes to individual targeting methods or compare their effectiveness.",
+      "records": [
+        {
+          "description": "Existing targeting instructions, regional and district investigation-selection plans, lead lists, case-opening justifications and dataset-evaluation records, fiscal years 2023–2026.",
+          "could_reveal": "Which cases actually used the recommended datasets, which relied on local sources or complaints, and how the agency changed targeting after January 2026.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request existing planning and case-selection records, then code the documented source of each investigation lead. If selection methods cannot be linked to cases, do not treat initiative labels as a substitute.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        },
+        {
+          "description": "Existing child labor investigation-level records for fiscal years 2023–2026, with identifiers, initiative association, office, industry, opening and closure dates, violation types, severity and available investigative-effort fields; associated dictionaries.",
+          "could_reveal": "Hazardous-violation findings and case duration by documented selection method, controlling for office, industry, case scope and period. Effort comparisons are possible only if existing records contain usable effort measures.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "WHD National Office",
+          "location": "foiarequest@dol.gov",
+          "how": "Request existing electronic exports and dictionaries and link them to selection records. Include cases with no child labor findings, and distinguish incomplete cases and changes in case-management systems.",
+          "source": "whd-foia",
+          "quote": "The WHD National Office, which is also the WHD FOIA Service Center, processes all requests for WHD documents."
+        }
+      ],
+      "request_text": "To the WHD National Office, Attention Wage and Hour Division FOIA Coordinator:\nFor October 1, 2022–September 30, 2026, please provide:\n1. National child labor targeting instructions, regional and district selection plans, lead lists, case-opening justifications and evaluations of targeting datasets, including available case identifiers.\n2. Existing electronic investigation records for cases examining child labor, including cases with no cited child labor violation, with available initiative, office, industry, opening/closure date, violation, severity and investigative-effort fields, and data dictionaries.\n3. Existing records implementing the January 2026 targeting changes or establishing procedures to evaluate replacement data sources.\nPlease provide existing exports and segregable records. This request does not ask the agency to calculate comparative results.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

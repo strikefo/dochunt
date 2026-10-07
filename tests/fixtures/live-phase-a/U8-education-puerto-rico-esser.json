@@ -1,0 +1,74 @@
+{
+  "leads": [
+    {
+      "headline": "Did Puerto Rico recover money paid for late or missing student assessments?",
+      "established": [
+        {
+          "text": "The inspector general found that Puerto Rico paid $3.9 million for assessments delivered late or not administered, undermining their intended instructional purpose.",
+          "source": "ed-oig-pr-esser",
+          "quote": "As a result, Puerto Rico DOE used $3.9 million in ARP ESSER funds to pay for student academic proficiency interim assessments that a contractor did not administer timely (10- and 20-week assessments) or at all (30- and 40-week assessments), and that did not achieve the intended purposes of helping teachers develop differentiated work plans based on each student’s academic lag, diagnose students’ immediate learning needs, and implement targeted re-teaching strategies effectively."
+        },
+        {
+          "text": "The inspector general recommended action to protect the money and improve contract supervision and payment controls.",
+          "source": "ed-oig-pr-esser",
+          "quote": "We made four recommendations to ensure that the $3.9 million in ARP ESSER funds are not wasted, future contract work is adequately supervised by Puerto Rico DOE, and contractors are not paid for services they did not perform or that were outside the scope of the contract."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "This finding concerns contracted academic-progress assessments, not a determination that Puerto Rico's entire pandemic-relief education allocation was misspent.",
+          "source": "ed-oig-pr-esser",
+          "quote": "The objective of our inspection was to determine whether Puerto Rico DOE ensured that (1) services contracted for and paid with ARP ESSER funds to measure students’ academic progress were provided as required and (2) results were used as intended to modify individual students’ instructional plans and help prevent academic failure."
+        },
+        {
+          "text": "The supplied summary does not establish that the entire $3.9 million is legally recoverable, that repayment was demanded, or that no corrective action followed. It also does not provide the agency's response or the detailed recommendations; obtain the full report before framing an accountability finding.",
+          "source": "ed-oig-pr-esser",
+          "quote": "We made four recommendations to ensure that the $3.9 million in ARP ESSER funds are not wasted, future contract work is adequately supervised by Puerto Rico DOE, and contractors are not paid for services they did not perform or that were outside the scope of the contract."
+        }
+      ],
+      "hypothesis": "Some payments for deficient assessment services remained unrecovered or unresolved after the inspection, despite documented delivery failures. Contract, payment and corrective-action records could distinguish an outstanding taxpayer loss from refunds, credits, replacement services or an adequately supported settlement.",
+      "already_answered": "The inspector general has already established the delivery failures and the $3.9 million expenditure. Repeating that finding would not be original reporting. The remaining opportunity is to establish the financial disposition and documented response, subject to checking what the full report already answers.",
+      "records": [
+        {
+          "description": "The full inspection report, I25GA0233, issued March 17, 2026.",
+          "could_reveal": "The precise inspection period, contractor identity, payment terms, detailed recommendations, agency response and any corrective actions already reported. These details could narrow or eliminate the proposed lead.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "U.S. Department of Education Office of Inspector General",
+          "location": "https://oig.ed.gov/sites/default/files/reports/2026-03/FY26%20I25GA0233%20%283.17.26%29v100_508_Secured.pdf",
+          "how": "Download the PDF linked from the supplied report page; review the recommendations and agency response before requesting nonpublic records.",
+          "source": "ed-oig-pr-esser",
+          "quote": "Related Work Products Related Work Products: See OIG’s pandemic-related work here View report on Oversight.gov Download PDF Image"
+        },
+        {
+          "description": "Contracts, amendments, invoices, payment records and service-acceptance records retained in the inspector general's inspection file for I25GA0233.",
+          "could_reveal": "Which services the $3.9 million purchased, what was actually paid, contractual remedies, and whether credits or refunds were already reflected in the inspected transactions.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "OIG FOIA Coordinator",
+          "location": "oig.foia@ed.gov",
+          "how": "Request existing copies retained by the inspector general, rather than assuming a separate Puerto Rico records-access route. Availability and disclosure of individual file records remain to be determined.",
+          "source": "ed-oig-foia",
+          "quote": "For more information, please contact OIG’s FOIA Coordinator at oig.foia@ed.gov ."
+        },
+        {
+          "description": "Corrective-action submissions, supporting financial records and recommendation-status correspondence retained by the inspector general concerning I25GA0233.",
+          "could_reveal": "Whether money was recovered, credited, replaced with services or left unresolved; what documentation supported any resolution; and whether the recommendations remained open.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "OIG FOIA Coordinator",
+          "location": "oig.foia@ed.gov",
+          "how": "Request records held by the inspector general through October 4, 2026, after excluding documents already available in the full report. Do not assume the office possesses every subsequent Puerto Rico transaction.",
+          "source": "ed-oig-foia",
+          "quote": "For more information, please contact OIG’s FOIA Coordinator at oig.foia@ed.gov ."
+        }
+      ],
+      "request_text": "To the OIG FOIA Coordinator:\n\nPlease provide existing records held by your office concerning inspection I25GA0233, Puerto Rico Department of Education’s Use of ARP ESSER Funds to Measure Student Academic Progress, created or received from January 1, 2021, through October 4, 2026:\n\n1. Copies of assessment-service contracts and amendments, invoices, payment records, and service-acceptance records retained in the inspection file concerning the $3.9 million identified in the report.\n2. Corrective-action submissions, supporting records of refunds, credits, repayments, replacement services or settlements, and correspondence recording the status or closure of the report's four recommendations.\n\nPlease exclude the publicly posted report and duplicate copies. Please provide electronic records and any reasonably segregable portions of records withheld in part.\n\n[Reporter name, address, telephone number and signature]",
+      "newsworthiness": 8
+    }
+  ],
+  "no_lead_reason": ""
+}

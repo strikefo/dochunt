@@ -1,0 +1,185 @@
+{
+  "leads": [
+    {
+      "headline": "Did Fonda close its water budget gap, or keep draining reserves?",
+      "established": [
+        {
+          "text": "The comptroller found that planned operating deficits depleted the water fund’s unrestricted balance over three fiscal years.",
+          "source": "osc-fonda",
+          "quote": "From fiscal years 2022-23 through 2024-25, the Board adopted budgets for the water fund with planned operating deficits that totaled $343,651. The Board’s budgeting practices caused unrestricted fund balance in the water fund to decline by $238,675 during this period."
+        },
+        {
+          "text": "The audit projected substantially less metered-water revenue than the village budgeted for 2025-26.",
+          "source": "osc-fonda",
+          "quote": "Additionally, because the Board did not adopt sufficient water rates to fully support the 2025-26 fiscal year water fund operations, we project a shortfall of $129,088 with metered water sales for the 2025-26 fiscal year totaling $379,406."
+        },
+        {
+          "text": "January 2026 minutes document increased commercial water billings, providing an actual billing series to investigate rather than simply repeating the audit’s projection.",
+          "source": "fonda-minutes-2026-01",
+          "quote": "Board signed Jan. 1, 2026, Abstract of Commercial Water & Sewer Billing • 21 Accounts billed • Water $41,569.54 (Up $9,955.42 from Jan 1, 2025, billing) • Sewer $27,331.64 (Up $11,924.16 from Jan 1, 2025, billing)"
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The principal audit period ended in November 2025; the revenue review extended only through March 2026. Its projected shortfall is not a final fiscal-year result.",
+          "source": "osc-fonda",
+          "quote": "Audit Period June 1, 2024 – November 30, 2025 We extended our scope back to June 1, 2022, for review of budgetary trends, to April 2024, for review of relevied delinquent inside-Village accounts and forward to March 31, 2026, to review actual revenues."
+        },
+        {
+          "text": "The January increase covers just 21 commercial accounts and measures bills, not collections. It does not establish that total water revenue recovered.",
+          "source": "fonda-minutes-2026-01",
+          "quote": "Board signed Jan. 1, 2026, Abstract of Commercial Water & Sewer Billing • 21 Accounts billed • Water $41,569.54 (Up $9,955.42 from Jan 1, 2025, billing) • Sewer $27,331.64 (Up $11,924.16 from Jan 1, 2025, billing)"
+        },
+        {
+          "text": "Officials generally accepted the recommendations and reported corrective action underway or planned. Obtain the full response before characterizing the village’s position.",
+          "source": "osc-fonda",
+          "quote": "Village officials generally agreed with our recommendations and have initiated, or indicated they planned to initiate corrective action."
+        },
+        {
+          "text": "The report was issued October 2, 2026 and calls for a corrective action plan within 90 days. The supplied material does not establish that a plan is overdue.",
+          "source": "osc-fonda",
+          "quote": "A written corrective action plan (CAP) that addresses the findings and recommendations in this report should be prepared and provided to our office within 90 days, pursuant to Section 35 of GML."
+        }
+      ],
+      "hypothesis": "Final 2025-26 accounts may show that higher commercial billings did not eliminate the water fund’s operating gap, and the 2026-27 budget and rate calculations may still depend on reserve depletion rather than recurring revenue sufficient to cover recurring costs.",
+      "already_answered": "The audit already establishes the 2022-23 through 2024-25 reserve decline and deficient budgeting. Original reporting should establish final 2025-26 results, the remaining unrestricted cushion, and whether subsequent rates and budgets changed the trajectory—not present the historical audit findings as a new discovery.",
+      "records": [
+        {
+          "description": "Complete comptroller audit, including the village’s response, projection calculations and methodology.",
+          "could_reveal": "The assumptions behind the revenue projection, distinctions between revenue and operating deficits, and specific corrective measures officials said they had taken.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the New York State Comptroller",
+          "location": "https://www.osc.ny.gov/files/local-government/audits/2026/pdf/fonda-village-2026-77.pdf",
+          "how": "Download the linked complete report before designing the final accounting comparison; its contents beyond the supplied summary have not been read.",
+          "source": "osc-fonda",
+          "quote": "[read complete report – pdf]"
+        },
+        {
+          "description": "Water-fund year-end trial balances, monthly financial statements, revenue and expenditure ledgers, and fund-balance classifications for June 1, 2022 through October 4, 2026.",
+          "could_reveal": "Final 2025-26 metered-water receipts versus the audit projection; annual operating results; transfers or other one-time support; and how much unrestricted balance remains. Reconcile these rather than equating a sales shortfall with the entire operating deficit.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Treasurer",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Request existing electronic accounting records through the Clerk & Treasurer’s published email.",
+          "source": "fonda-clerk",
+          "quote": "Accounting and reporting: The Village Treasurer maintains accurate financial records, prepares financial statements, and reports on the Village’s fiscal health to the Board of Trustees and the public."
+        },
+        {
+          "description": "Adopted water-fund budgets and amendments for 2025-26 and 2026-27, effective water-rate schedules, and supporting revenue forecasts and rate-setting calculations.",
+          "could_reveal": "Whether recurring revenue is now expected to cover recurring costs; how much fund balance is appropriated; and whether any improved forecast rests on higher rates, consumption assumptions or one-time revenue.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk and Treasurer",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Request these specific budget and rate records. The supplied sources do not identify a public download for them; the public fees sheet should not be treated as a complete regular water-rate schedule.",
+          "source": "fonda-clerk",
+          "quote": "Financial management: The Village Treasurer is responsible for managing the Village’s finances, including budget preparation, expenditure monitoring, and revenue collection."
+        },
+        {
+          "description": "Any existing corrective action plan and supporting implementation records prepared through October 4, 2026.",
+          "could_reveal": "Whether promised budget and rate reforms have been implemented. Absence of a plan at this early point would not itself establish a missed deadline.",
+          "essential": false,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Include a narrowly dated request for any plan already prepared; do not ask officials to create one or answer questions.",
+          "source": "fonda-clerk",
+          "quote": "Custodian of Village records: The Village Clerk maintains official records, documents, and archives, including meeting minutes, local laws, resolutions, contracts, and historical records."
+        }
+      ],
+      "request_text": "To Christine Kearns, Village Clerk & Treasurer:\nPlease provide existing electronic records for June 1, 2022 through October 4, 2026:\n1. Water-fund year-end trial balances, monthly financial statements, revenue and expenditure ledgers, and schedules classifying fund balance, including final 2025-26 results and recorded transfers.\n2. Adopted water-fund budgets and amendments for 2025-26 and 2026-27, with supporting revenue forecasts and budget worksheets.\n3. Water-rate schedules effective during this period and existing calculations or analyses supporting rate decisions and projected collections.\n4. Any corrective action plan addressing audit 2026M-77 already prepared, and existing records documenting implementation of its budget and rate recommendations.\nPlease provide spreadsheets in their existing electronic format where available. This request seeks existing records, not a new analysis. Please advise before incurring copying charges.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Did added water-project work leave Fonda enough money to finish?",
+      "established": [
+        {
+          "text": "In August 2025, the board approved an additional $43,159 for water-system control work.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "NOW, THEREFORE, BE IT RESOLVED, that the Village Board of Trustees hereby approves PCO #10 – Additional SCADA Work in the amount of $43,159.00, authorizes the Mayor to sign all related documents, and directs that the work proceed as outlined in the proposal from O’Connell Electric Company, Inc."
+        },
+        {
+          "text": "The resolution said approximately $115,000 remained in the original borrowing authorization after accounting for that work.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "WHEREAS, after accounting for this work, there remains approximately $115,000 in the original bonding authorization, enabling payment without the need for supplemental bonding; and"
+        },
+        {
+          "text": "The board authorized proceeding before all formal change-order paperwork was complete.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "WHEREAS, this work is necessary for the continued progress and completion of the Water System Improvements Project and will be formally documented as a change order with all required paperwork to follow; and"
+        },
+        {
+          "text": "The water fund’s depleted unrestricted balance makes the project’s final financing and future debt costs consequential, although it does not establish a capital-project funding gap.",
+          "source": "osc-fonda",
+          "quote": "The Board’s budgeting practices caused unrestricted fund balance in the water fund to decline by $238,675 during this period."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The village explicitly said this addition could be paid without supplemental borrowing. That assertion should be tested against the project’s remaining obligations, not portrayed as already disproved.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "WHEREAS, after accounting for this work, there remains approximately $115,000 in the original bonding authorization, enabling payment without the need for supplemental bonding; and"
+        },
+        {
+          "text": "Officials described the added work as necessary to complete the project. The supplied minutes do not establish waste, improper procurement or an unnecessary purchase.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "WHEREAS, this work is necessary for the continued progress and completion of the Water System Improvements Project and will be formally documented as a change order with all required paperwork to follow; and"
+        },
+        {
+          "text": "The amount is a proposed change order dated August 1, 2025. Its number alone does not establish that nine earlier changes were approved or paid; later project status is not supplied.",
+          "source": "fonda-minutes-2025-08",
+          "quote": "WHEREAS, O’Connell Electric Company, Inc. has submitted a Proposed Change Order (PCO #10) dated August 1, 2025, for Additional SCADA Work in the amount of $43,159.00; and"
+        }
+      ],
+      "hypothesis": "Other committed or subsequently added project costs may have consumed the stated $115,000 borrowing headroom, requiring additional financing or leaving work unfunded. A separate financing reconciliation can test whether project debt costs were fully incorporated into water-fund forecasts. Borrowing authority, available cash and unrestricted operating reserves must be kept distinct.",
+      "already_answered": "The minutes already disclose the $43,159 authorization and officials’ claim that it fit within existing borrowing authority. They do not disclose the original scope, cumulative approved changes, unpaid commitments, final completion cost or subsequent financing.",
+      "records": [
+        {
+          "description": "Original water-system project contracts and scope, change-order register, proposed and executed changes, and supporting engineer recommendations, including the August 1, 2025 proposal and final paperwork for change number 10.",
+          "could_reveal": "What the additional control work changed, whether it was originally included, how cumulative scope and price evolved, and whether the promised formal documentation was completed.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Request the project’s existing contract and change-order files through the Village Clerk.",
+          "source": "fonda-clerk",
+          "quote": "Custodian of Village records: The Village Clerk maintains official records, documents, and archives, including meeting minutes, local laws, resolutions, contracts, and historical records."
+        },
+        {
+          "description": "Project expenditure and commitment ledgers, contractor payment applications, engineer estimates of remaining cost, and any completion or closeout accounting through October 4, 2026.",
+          "could_reveal": "Whether the stated borrowing headroom covered all remaining commitments, how much was actually spent, and whether unresolved work or unpaid costs remained.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Treasurer",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Request existing project accounting records and estimates; reconcile paid costs and unpaid commitments without double-counting payment applications.",
+          "source": "fonda-clerk",
+          "quote": "Accounting and reporting: The Village Treasurer maintains accurate financial records, prepares financial statements, and reports on the Village’s fiscal health to the Board of Trustees and the public."
+        },
+        {
+          "description": "Project bonding authorizations and amendments, borrowing agreements and debt-service schedules, grant agreements and disbursement schedules, and existing financing reconciliations or debt-cost forecasts.",
+          "could_reveal": "The difference between authorized borrowing and available financing, any supplemental borrowing, remaining grant support, and the resulting annual cost to the water fund.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Village Clerk and Treasurer",
+          "location": "mailto:villageclerk@villageoffonda.ny.gov",
+          "how": "Request village-held financing agreements and accounting schedules through the published Clerk & Treasurer contact.",
+          "source": "fonda-clerk",
+          "quote": "Contact: Christine Kearns, Clerk & Treasurer – Dan Denofrio, Deputy Clerk & Treasurer Address : P O Box 447, 8 E. Main St. Fonda, NY 12068 Phone : 518-853-4335 Fax : 518-853-4555 Email : villageclerk@villageoffonda.ny.gov"
+        }
+      ],
+      "request_text": "To Christine Kearns, Village Clerk & Treasurer:\nPlease provide existing records for the Water System Improvements Project, January 1, 2017 through October 4, 2026:\n1. Original contracts and scope, the change-order register, proposed and executed changes, and supporting engineer recommendations, including O’Connell Electric’s August 1, 2025 proposed change number 10 and its final paperwork.\n2. Project expenditure and commitment ledgers, contractor payment applications, engineer estimates of remaining cost, and any completion or closeout accounting.\n3. Bonding authorizations and amendments, borrowing agreements and debt-service schedules, grant agreements and disbursement schedules, and existing project financing reconciliations or forecasts of water-fund debt costs.\nPlease supply existing electronic files, with spreadsheets in their existing format where available. This request seeks records, not a newly prepared cost estimate or explanation. Please advise before incurring copying charges.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

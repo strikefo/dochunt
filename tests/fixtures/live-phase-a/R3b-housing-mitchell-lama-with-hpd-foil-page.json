@@ -1,0 +1,195 @@
+{
+  "leads": [
+    {
+      "headline": "Did new inspection promises make Mitchell-Lama apartments safer?",
+      "established": [
+        {
+          "text": "Auditors identified serious physical hazards at three city-supervised developments.",
+          "source": "osc-mitchell-lama",
+          "quote": "Across the three developments, we observed several hazardous physical conditions, including façade damage; non-working self-closing/fire doors; units with mold, water damage, and peeling paint; and a commercial tenant (day care) with mouse droppings in classrooms."
+        },
+        {
+          "text": "The sample consisted of Clinton Towers, Evergreen Gardens and Tivoli Towers.",
+          "source": "osc-mitchell-lama",
+          "quote": "This audit is based on a sample of three developments: Clinton Towers (Manhattan), Evergreen Gardens (Bronx), and Tivoli Towers (Brooklyn)."
+        },
+        {
+          "text": "The housing department introduced annual certifications that management inspected every apartment.",
+          "source": "hpd-response",
+          "quote": "Additionally, as of 2025, HPD is requiring managing agents to submit an annual compliance certification, which includes confirmation that an annual inspection of all apartments was conducted by management/building staff."
+        },
+        {
+          "text": "In July 2026, the department promised to review certifications and send noncompliance letters after the July deadline.",
+          "source": "hpd-response",
+          "quote": "At the end of July when certifications are due, HPD will review all responses and will issue an out of compliance letter to managing agents who have not certified completion with the annual individual unit inspections for 2025."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The findings concern three sampled developments, not the entire city-supervised portfolio, and describe an earlier audit period.",
+          "source": "osc-mitchell-lama",
+          "quote": "The audit covered the period from January 2019 through April 2025."
+        },
+        {
+          "text": "The department disputes the implication that it was not pursuing prompt corrective action within available resources.",
+          "source": "hpd-response",
+          "quote": "However, HPD disagrees with the implication that, given the resources available, it is not pursuing prompt"
+        },
+        {
+          "text": "The department says inspections, violations and emergency repairs remain available; the reporting must examine their actual use rather than imply no enforcement exists.",
+          "source": "hpd-response",
+          "quote": "As with all NYC multiple dwellings, Mitchell Lama apartments continue to be subject to HPD enforcement actions which includes performance of inspections, issuance of violations, and performance of emergency repairs for uncorrected immediately hazardous violations."
+        },
+        {
+          "text": "A management certification is a claim of completion, not independent evidence that every apartment was inspected or every hazard corrected.",
+          "source": "hpd-response",
+          "quote": "Additionally, as of 2025, HPD is requiring managing agents to submit an annual compliance certification, which includes confirmation that an annual inspection of all apartments was conducted by management/building staff."
+        }
+      ],
+      "hypothesis": "The new certification process may document compliance without ensuring inspections actually occurred or hazardous conditions were corrected. Match certifications and supporting inspection records to the audit's specific locations and subsequent public enforcement records, distinguishing unresolved hazards, newly arising conditions and documented repairs.",
+      "already_answered": "The audit already establishes historical hazards, and the response establishes that a certification requirement and door reminder were introduced. Neither supplied document establishes what happened after the July 2026 certification deadline or whether the sampled hazards were corrected. Public violation status alone would not prove whether every apartment was inspected.",
+      "records": [
+        {
+          "description": "Full audit report, including detailed locations, observation dates, methodology and the original agency response.",
+          "could_reveal": "The precise conditions and building identifiers needed for a defensible follow-up, including any corrections already documented during the audit.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the State Comptroller",
+          "location": "https://www.osc.ny.gov/files/state-agencies/audits/pdf/sga-2026-24n4.pdf",
+          "how": "Download the linked full report before constructing the condition-by-condition follow-up.",
+          "source": "osc-mitchell-lama",
+          "quote": "Full Audit Report 2024-N-4 2.29 MB"
+        },
+        {
+          "description": "Public building complaints, violations, litigation and registration records for the three sampled developments.",
+          "could_reveal": "Whether the audited hazards correspond to enforcement records, their recorded status, and subsequent complaints or violations. These records can corroborate, but not independently establish, complete repair or inspection coverage.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "public_download",
+          "custodian": "New York City Department of Housing Preservation and Development (HPD)",
+          "location": "http://www1.nyc.gov/site/hpd/about/hpdonline.page",
+          "how": "Use HPD Online after obtaining exact building identifiers from the full audit; compare records by building, condition and date.",
+          "source": "hpd-foil",
+          "quote": "HPD Online contains residential building information such as complaints, violations, litigation, registration, building charges, tax block/lot for individual buildings."
+        },
+        {
+          "description": "Annual certifications, supporting inspection and correction records held by the department, certification-review records and noncompliance letters.",
+          "could_reveal": "Which developments certified inspection completion, what documentation supported those claims, and whether the department followed through on its promised review and corrective action.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "HPD Records Access Officer",
+          "location": "https://a860-openrecords.nyc.gov/",
+          "how": "Submit a focused request through NYC OpenRecords, selecting the housing department. Seek only records held by the agency, not answers or publicly available violation data.",
+          "source": "hpd-foil",
+          "quote": "HPD Records Access Officer 100 Gold Street, Room 4-O3 New York, NY 10038"
+        },
+        {
+          "description": "Audit photograph dashboard.",
+          "could_reveal": "Visual reference points and condition descriptions for checking the original hazards against inspection and repair records.",
+          "essential": false,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the State Comptroller",
+          "location": "https://www.osc.ny.gov/state-agencies/audits/physical-and-financial-conditions-selected-mitchell-lama-developments-2024-n-4-interactive-dashboard",
+          "how": "Filter the dashboard by development, location and condition; preserve the associated notes.",
+          "source": "osc-dashboard",
+          "quote": "Photographs can be filtered by various categories such as: by development, by location, and by condition."
+        }
+      ],
+      "request_text": "To the HPD Records Access Officer, via NYC OpenRecords:\nPlease provide these existing records held by HPD, dated January 1, 2025–October 5, 2026:\n1. Annual compliance certifications for Clinton Towers, Evergreen Gardens and Tivoli Towers, including attachments documenting apartment inspections and self-closing-door checks.\n2. Inspection reports and repair-completion documentation received or maintained by HPD concerning the hazardous conditions identified at those developments in audit 2024-N-4.\n3. Records of HPD's review of 2025 apartment-inspection certifications, including existing submission/compliance tracking records and out-of-compliance letters for city-supervised Mitchell-Lama developments.\n4. Follow-up correspondence with the three sampled developments concerning incomplete inspections or uncorrected audited hazards.\nPlease provide electronic records in their existing format. This request excludes publicly available complaints and violation records.",
+      "newsworthiness": 9
+    },
+    {
+      "headline": "Are large Mitchell-Lama vendor payments still escaping city review?",
+      "established": [
+        {
+          "text": "All three sampled developments failed to notify the housing department about vendor payments exceeding the aggregate threshold.",
+          "source": "osc-mitchell-lama",
+          "quote": "We found all three developments had aggregate payments to vendors exceeding $100,000 and did not notify HPD, as required."
+        },
+        {
+          "text": "Evergreen Gardens also had five vendor relationships involving payments above $100,000 without approval or evidence of competitive bidding.",
+          "source": "osc-mitchell-lama",
+          "quote": "Further, Evergreen contracted with five vendors with payments over $100,000 without receiving HPD approval and no evidence of competitive bidding."
+        },
+        {
+          "text": "The department says it changed its audit protocol to examine aggregate annual payments, not just individual contracts.",
+          "source": "hpd-response",
+          "quote": "HPD requires annual compliance reporting that includes a representation regarding the $100,000 aggregate limit and has adjusted audit protocol to review payments that exceed $100,000 in the aggregate in a FY."
+        },
+        {
+          "text": "The department says its continuing reviews examine expenses, supporting documentation and whether transactions were submitted for review.",
+          "source": "hpd-response",
+          "quote": "HPD is pleased to report that the agency continues to conduct periodic administrative reviews of Mitchell Lama managing agents, which includes a review of building expenses, supporting documentation, and whether the managing agent appropriately sent transactions to HPD for review."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The audit's sample does not establish the prevalence of these problems across the portfolio.",
+          "source": "osc-mitchell-lama",
+          "quote": "This audit is based on a sample of three developments: Clinton Towers (Manhattan), Evergreen Gardens (Bronx), and Tivoli Towers (Brooklyn)."
+        },
+        {
+          "text": "Reviews had already resumed in late 2023 after a staffing shortage; the story must test those reviews rather than assume oversight remained suspended.",
+          "source": "hpd-response",
+          "quote": "HPD agrees with this recommendation and has resumed consistent periodic reviews of the books and records of selected developments as of late 2023 (having resolved a staffing shortage that precluded consistent reviews since the pandemic); part of this review involves identifying contracts of $100,000 or more to ensure competitive bidding and HPD approval."
+        },
+        {
+          "text": "The source distinguishes aggregate-payment review from competitive-bidding and approval requirements for contracts of $100,000 or more. Do not treat every aggregate total as proof of an unbid qualifying contract.",
+          "source": "hpd-response",
+          "quote": "Periodically review a sample of contracts and expenses to identify payments to vendors and service providers that, in the aggregate, equal or exceed $100,000 in any fiscal year to ensure they are approved by HPD and that contracts at $100,000 or more were competitively bid and approved by HPD."
+        },
+        {
+          "text": "The response reports continuing annual certifications, which may provide evidence of compliance as well as discrepancies.",
+          "source": "hpd-response",
+          "quote": "In addition, HPD continues to require managing agents to complete an annual certification, which includes confirmation of compliance relative to the $100,000 threshold."
+        }
+      ],
+      "hypothesis": "The revised aggregate-payment checks may still miss vendors whose payments cross the annual threshold, or fail to secure required approvals and bidding documentation. Recalculate vendor totals from agency-held payment records and compare them with contracts, approvals, certifications and completed review findings.",
+      "already_answered": "Historical notification and approval failures are already reported. The department's response also answers whether it claims to have changed the review protocol. The unresolved question is whether those changes detected and corrected subsequent failures; the supplied sources do not establish fraud, inflated pricing or improper vendor relationships.",
+      "records": [
+        {
+          "description": "Full audit report and original agency response.",
+          "could_reveal": "The relevant fiscal years, vendor and transaction details, exact rules and exceptions, and any remedial action already documented.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "Office of the State Comptroller",
+          "location": "https://www.osc.ny.gov/files/state-agencies/audits/pdf/sga-2026-24n4.pdf",
+          "how": "Download the full report and use its detailed findings to define the vendor-level comparison.",
+          "source": "osc-mitchell-lama",
+          "quote": "Full Audit Report 2024-N-4 2.29 MB"
+        },
+        {
+          "description": "Agency-held vendor payment ledgers, expense schedules, contracts, bidding records and approvals for the three sampled developments, 2023–2026.",
+          "could_reveal": "Annual totals by vendor, whether payments or contracts triggered the applicable requirements, and whether required notification, approval and bidding documentation exists.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "HPD Records Access Officer",
+          "location": "https://a860-openrecords.nyc.gov/",
+          "how": "Request records submitted to or maintained by the department. Aggregate payments by vendor and development fiscal year, then match qualifying payments and contracts to approval and bidding files.",
+          "source": "hpd-foil",
+          "quote": "HPD Records Access Officer 100 Gold Street, Room 4-O3 New York, NY 10038"
+        },
+        {
+          "description": "Revised review protocols, completed administrative review files, annual threshold certifications and corrective-action correspondence.",
+          "could_reveal": "Whether reviewers actually applied aggregate-payment tests, identified discrepancies with certifications and pursued correction of the audited failures.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "HPD Records Access Officer",
+          "location": "https://a860-openrecords.nyc.gov/",
+          "how": "Include these categories in the same focused request and compare documented review work with independently recalculated vendor totals.",
+          "source": "hpd-foil",
+          "quote": "HPD Records Access Officer 100 Gold Street, Room 4-O3 New York, NY 10038"
+        }
+      ],
+      "request_text": "To the HPD Records Access Officer, via NYC OpenRecords:\nPlease provide the following existing records held by HPD, dated January 1, 2023–October 5, 2026:\n1. Vendor payment ledgers and expense schedules submitted to or maintained by HPD for Clinton Towers, Evergreen Gardens and Tivoli Towers, including vendor names, payment dates, amounts and fiscal-year identifiers.\n2. Contracts, bid solicitations, bid submissions, vendor-payment notifications and HPD approval records associated with vendors receiving aggregate payments of $100,000 or more in a fiscal year at those developments.\n3. Completed administrative review reports, supporting review worksheets, annual $100,000-threshold compliance certifications and corrective-action correspondence for those developments, including follow-up to audit 2024-N-4.\n4. Policies, directives and review protocols governing aggregate vendor-payment thresholds, contract approvals and competitive bidding, including revisions during this period.\nPlease provide electronic records in their existing format, including spreadsheets where maintained.",
+      "newsworthiness": 8
+    }
+  ],
+  "no_lead_reason": ""
+}

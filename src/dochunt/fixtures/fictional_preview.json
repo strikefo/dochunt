@@ -1,0 +1,89 @@
+{
+ "note": "FICTIONAL. Bundled for the free setup preview; not real documents or model output.",
+ "sources": [
+  {
+   "id": "n1",
+   "url": "https://auditor.example/reports/road-repair-contracts",
+   "title": "Road Repair Contracts | Example County Auditor",
+   "text": "Issued Date October 1, 2026. Example County Auditor: Road Repair Contracts. The auditor found that 9 of 30 sampled road repair contracts were paid before the county engineer signed the inspection certificate. The Public Works Department agreed to review its payment controls by March 2027. The department said most of the early payments involved emergency repairs.",
+   "links": [],
+   "retrieved_at": "2026-10-06T00:00:00Z",
+   "format": "html",
+   "note": "Fictional document for the setup preview",
+   "published": "2026-10-01",
+   "published_evidence": "Issued Date October 1, 2026",
+   "published_approximate": false,
+   "listed_url": ""
+  },
+  {
+   "id": "r0",
+   "url": "https://publicworks.example/records",
+   "title": "Records requests | Example County Public Works",
+   "text": "Example County Public Works Department records requests. Public records requests for Example County Public Works Department records may be submitted by email to records@publicworks.example or through the online portal. Please describe the records you seek.",
+   "links": [],
+   "retrieved_at": "2026-10-06T00:00:00Z",
+   "format": "html",
+   "note": "Fictional page for the setup preview",
+   "published": "",
+   "published_evidence": "",
+   "published_approximate": false,
+   "listed_url": ""
+  }
+ ],
+ "outputs": [
+  {
+   "leads": [
+    {
+     "headline": "Did Example County pay for road repairs before inspections were signed?",
+     "established": [
+      {
+       "text": "Auditors found 9 of 30 sampled road repair contracts were paid before the inspection certificate was signed.",
+       "source": "n1",
+       "quote": "The auditor found that 9 of 30 sampled road repair contracts were paid before the county engineer signed the inspection certificate."
+      }
+     ],
+     "qualifications": [
+      {
+       "text": "The department said most early payments involved emergency repairs.",
+       "source": "n1",
+       "quote": "The department said most of the early payments involved emergency repairs."
+      },
+      {
+       "text": "The department agreed to review its payment controls by March 2027.",
+       "source": "n1",
+       "quote": "The Public Works Department agreed to review its payment controls by March 2027."
+      }
+     ],
+     "hypothesis": "Some of the 9 early payments may have covered work that was never inspected or was later found deficient.",
+     "already_answered": "The audit reports the count, not which contracts or whether the work passed later inspection.",
+     "records": [
+      {
+       "description": "Inspection certificates and payment records for the 30 sampled contracts",
+       "could_reveal": "which payments preceded inspection",
+       "essential": true,
+       "kind": "underlying",
+       "route": "records_request",
+       "custodian": "Example County Public Works Department",
+       "location": "records@publicworks.example",
+       "how": "Email the request.",
+       "source": "r0",
+       "quote": "Public records requests for Example County Public Works Department records may be submitted by email to records@publicworks.example or through the online portal."
+      }
+     ],
+     "request_text": "To the Example County Public Works Department: Under the public records law, I request copies of existing records: the inspection certificates and payment records for the 30 road repair contracts sampled in the county auditor's report issued October 1, 2026.",
+     "newsworthiness": 6
+    }
+   ],
+   "no_lead_reason": ""
+  },
+  {
+   "verdicts": [
+    {
+     "lead": "L1",
+     "verdict": "approve",
+     "problems": []
+    }
+   ]
+  }
+ ]
+}

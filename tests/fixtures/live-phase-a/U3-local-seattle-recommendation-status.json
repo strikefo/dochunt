@@ -1,0 +1,176 @@
+{
+  "leads": [
+    {
+      "headline": "Can Seattle now verify police overtime against its payroll?",
+      "established": [
+        {
+          "text": "The follow-up report identifies a specific gap in reconciling police overtime records with payroll.",
+          "source": "seattle-rec-followup",
+          "quote": "At this time, Workday is unable to provide the reports necessary to reconcile all overtime hours on the Event Summary Forms with those recorded in the City’s payroll system."
+        },
+        {
+          "text": "Police reported a planned replacement for scheduling and overtime tracking, with completion scheduled for September 2026.",
+          "source": "seattle-rec-followup",
+          "quote": "The Seattle Police Department (SPD) reported that they are working on transitioning scheduling and overtime tracking from the City's Workday payroll system to a software solution specifically designed for first responder agencies: the Ultimate Kronos Group (UKG) TeleStaff system via a dedicated data portal."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "September 2026 was a scheduled completion date, not a documented successful launch. Obtain actual implementation and reconciliation records before describing the current situation.",
+          "source": "seattle-rec-followup",
+          "quote": "This implementation is scheduled to be completed by September 2026."
+        },
+        {
+          "text": "The report measures recommendation status principally at the end of 2025; it does not establish the present status or any improper payment.",
+          "source": "seattle-rec-followup",
+          "quote": "For detailed real-time information on the City’s progress towards implementing each recommendation, visit our online dashboard (see Appendix B)."
+        }
+      ],
+      "hypothesis": "The replacement system may not have resolved the reconciliation gap, leaving unexplained differences between event overtime authorized or reported and overtime paid. A record-level comparison could test both whether differences exist and whether the department detects and resolves them.",
+      "already_answered": "The source already establishes the reporting limitation and the planned software transition. Neither is itself evidence of overpayment, fraud, or a failed transition.",
+      "records": [
+        {
+          "description": "Event Summary Forms and existing event-level overtime payroll and scheduling exports for January–September 2026, including available event identifiers and correction records.",
+          "could_reveal": "Whether reported event hours match paid hours; the size and frequency of differences; and whether apparent discrepancies are explained by timing, coding, or subsequent corrections.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Police Department",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Submit to the Seattle Police Department through the city's Public Records Request Center. Seek existing exports and field definitions rather than asking the department to create a reconciliation.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        },
+        {
+          "description": "Existing transition acceptance tests, deployment records, reconciliation reports, exception logs, and corrective-action records for January–September 2026.",
+          "could_reveal": "Whether the new system launched, whether reconciliation was tested successfully, and whether discrepancies identified by the department remained unresolved.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Police Department",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Request from the Seattle Police Department using the Public Records Request Center; distinguish planned capabilities from completed tests and operational reports.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        }
+      ],
+      "request_text": "To the Seattle Police Department, through the Public Records Request Center: Please provide these existing records dated January 1–September 30, 2026, in native electronic format where available:\n1. Event Summary Forms and existing event-level overtime payroll and scheduling exports, with available event identifiers, field definitions, and adjustment or correction records.\n2. TeleStaff implementation schedules, deployment or acceptance records, and tests of reconciliation between event overtime records and payroll.\n3. Existing overtime reconciliation reports, discrepancy or exception logs, and records documenting their resolution.\nPlease provide existing records and exports; this request does not ask the department to create a new analysis.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Do Seattle’s bridge maintenance plans match its bridges’ documented needs?",
+      "established": [
+        {
+          "text": "Transportation officials reported completing an analysis of bridge preservation staffing needs, with a final report planned for early 2026.",
+          "source": "seattle-rec-followup",
+          "quote": "The Seattle Department of Transportation (SDOT) reported that the department has analyzed its personnel needs for a bridge preservation program and plans to finalize the staffing analysis report in Q1 2026."
+        },
+        {
+          "text": "A second report was under final review, and both analyses were said to incorporate bridge condition and lifecycle costs.",
+          "source": "seattle-rec-followup",
+          "quote": "SDOT stated that both reports incorporate bridge condition data and other analyses, including estimated useful life calculations, lifecycle cost analysis, and historical averages for bridge minor repairs."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "Finalization of the asset-management report was a plan, not an established outcome.",
+          "source": "seattle-rec-followup",
+          "quote": "The department is also going through a final review of its Strategic Asset Management report and plans to finalize the report in Q2 2026."
+        },
+        {
+          "text": "This is a follow-up report, not a new assessment of bridge safety. Its overall pending count also includes recently issued recommendations that ordinarily take time to implement.",
+          "source": "seattle-rec-followup",
+          "quote": "It should be noted that for audit reports published during 2025, it is typical for those reports’ recommendations to be pending, as it requires time and effort by departments to implement our audit recommendations."
+        }
+      ],
+      "hypothesis": "The department's own condition and lifecycle analyses may identify preservation work or staffing needs that its adopted staffing and maintenance plans do not cover. Comparing documented needs with actual allocations could establish the scale and consequences of any gap.",
+      "already_answered": "The source says staffing analysis occurred and asset-management work was advancing. It does not establish that either final report was completed, that identified needs were funded, or that any bridge is unsafe.",
+      "records": [
+        {
+          "description": "Latest existing versions of the bridge preservation staffing analysis and Strategic Asset Management report, with the bridge condition, useful-life, lifecycle-cost, and minor-repair inputs used in them.",
+          "could_reveal": "Which bridges and maintenance activities the department prioritized, the assumptions behind those priorities, and the staffing and spending its analysis says are needed.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Department of Transportation",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Request the named reports and their existing supporting tables from the Seattle Department of Transportation through the Public Records Request Center. Ask for the latest existing versions whether or not finalized.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        },
+        {
+          "description": "2026 bridge preservation staffing allocations, funded maintenance work plans, and existing completed or deferred work records.",
+          "could_reveal": "Whether adopted staffing and scheduled work cover the needs identified in the analyses, and the recorded reasons for deferring priorities.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Department of Transportation",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Request existing operational plans and work records from the department through the Public Records Request Center, then compare their bridge identifiers and work categories with the analytical reports.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        }
+      ],
+      "request_text": "To the Seattle Department of Transportation, through the Public Records Request Center: Please provide the following existing records dated January 1, 2025–September 30, 2026:\n1. Latest existing versions of the bridge preservation staffing analysis report and Strategic Asset Management report, including appendices and finalization or approval records.\n2. Existing supporting bridge condition tables, useful-life calculations, lifecycle-cost analyses, and historical minor-repair summaries used in those reports, including older inputs attached to or used in the reports.\n3. Adopted 2026 bridge preservation staffing allocations and funded maintenance work plans.\n4. Existing 2026 completed and deferred maintenance work records, including recorded reasons for deferrals.\nPlease provide tables in their existing native electronic format. No new analysis is requested.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Are Seattle’s new park restroom inspections finding and fixing persistent problems?",
+      "established": [
+        {
+          "text": "Parks reported piloting new cleaning standards in 2025, with formal adoption intended for 2026.",
+          "source": "seattle-rec-followup",
+          "quote": "The department piloted these standards in 2025 and is refining them based on lessons learned for formal adoption in 2026."
+        },
+        {
+          "text": "Parks also reported beginning monthly inspections across its maintenance districts.",
+          "source": "seattle-rec-followup",
+          "quote": "SPR also reported that they started to implement a routine monitoring program with crew chiefs and managers to complete monthly inspections across all park maintenance districts."
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The department reported adding staff, which should be considered when assessing changes in restroom conditions.",
+          "source": "seattle-rec-followup",
+          "quote": "In 2025, SPR filled vacant positions and hired more seasonal staff to assist with cleaning restrooms and related park maintenance."
+        },
+        {
+          "text": "All six recommendations remained pending in this follow-up account. That does not prove inspections were absent or ineffective, and later implementation must be checked.",
+          "source": "seattle-rec-followup",
+          "quote": "All six recommendations from this report remain pending."
+        }
+      ],
+      "hypothesis": "The inspection program may have uneven coverage or repeatedly identify cleanliness and availability problems without timely corrective work. Inspection and work-order records can test coverage, recurrence, and resolution by restroom and maintenance district.",
+      "already_answered": "The source documents reported efforts to improve standards, monitoring, and staffing. It does not establish actual inspection coverage, adoption of the final standards, or improved restroom conditions.",
+      "records": [
+        {
+          "description": "2025–September 2026 restroom cleaning standards, pilot assessments, inspection schedules, and completed inspection records, including existing lists of facilities subject to inspection.",
+          "could_reveal": "Whether standards were adopted, how inspections measured conditions, and which facilities received the intended monthly monitoring. A facility list supplies the denominator for coverage analysis.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Parks and Recreation",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Request from Seattle Parks and Recreation through the Public Records Request Center. Compare inspection coverage only across facilities and periods subject to the same requirements.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        },
+        {
+          "description": "Restroom cleaning and repair work orders, corrective-action records, and closure and reopening logs for the same period.",
+          "could_reveal": "Whether inspection findings resulted in completed work, how long facilities remained unavailable, and which problems recurred. Recorded seasonal closures should be separated from unplanned outages.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Seattle Parks and Recreation",
+          "location": "https://city-seattle.mycusthelp.com/webapp/_rs/supporthome.aspx",
+          "how": "Request existing records from Seattle Parks and Recreation through the Public Records Request Center and match them to inspection records using facility identifiers and dates.",
+          "source": "seattle-prr-center",
+          "quote": "This is where you can submit public disclosure requests (PDRs) to any city department, communicate with public disclosure officers about your request, and pay for and download your records."
+        }
+      ],
+      "request_text": "To Seattle Parks and Recreation, through the Public Records Request Center: Please provide these existing records dated January 1, 2025–September 30, 2026:\n1. Park restroom dry, wet, and deep-clean standards; pilot assessments; and adoption records.\n2. Restroom inspection schedules, completed inspection forms or database exports, and existing facility lists identifying restrooms subject to the monthly monitoring program.\n3. Restroom cleaning and repair work orders and corrective-action records, including completion dates and facility identifiers where maintained.\n4. Restroom closure and reopening logs, including recorded reasons and seasonal operating schedules.\nPlease provide existing electronic tables in native format, with existing field definitions. This request does not seek a newly created analysis.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

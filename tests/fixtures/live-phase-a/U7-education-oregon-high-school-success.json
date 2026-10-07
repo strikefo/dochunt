@@ -1,0 +1,168 @@
+{
+  "leads": [
+    {
+      "headline": "Can Oregon show what its high school grants are achieving?",
+      "established": [
+        {
+          "text": "The High School Success program receives substantial funding intended to improve graduation and preparation for education and careers.",
+          "source": "oregon-ode-audit",
+          "quote": "In the 2025 27 biennium, the Legislature allocated $338 million to the program."
+        },
+        {
+          "text": "Auditors recommended implementing an evaluation of whether required school systems improve student progress; the agency agreed, with a June 2027 target.",
+          "source": "oregon-ode-audit",
+          "quote": "Implement the process designed to evaluate whether systems implemented in high schools to meet eligibility requirements improve students' progress. Agency response: Agree Target completion date: June 2027"
+        },
+        {
+          "text": "Auditors also recommended collecting and maintaining sufficient data for statutory program evaluations; the agency agreed, with a December 2027 target.",
+          "source": "oregon-ode-audit",
+          "quote": "Collect and maintain sufficient data to ensure program outcomes can be evaluated to the extent required by statute, including external evaluations. Agency response: Agree Target completion date: December 2027"
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "This is a follow-up audit of implementation, not a supplied evaluation of the program's effect on graduation.",
+          "source": "oregon-ode-audit",
+          "quote": "The audit focused on efforts made by ODE to implement our recommendations from the prior High School Success (Measure 98) audit."
+        },
+        {
+          "text": "The audit's evidence cutoff predates its September publication; subsequent work must be checked.",
+          "source": "oregon-ode-audit",
+          "quote": "Our audit covered progress made by the agency prior to July 2026."
+        },
+        {
+          "text": "The agency accepted the recommendations, and its stated evaluation and data deadlines are in 2027, not already overdue.",
+          "source": "oregon-ode-audit",
+          "quote": "Oregon Department of Education agreed with all of our recommendations."
+        }
+      ],
+      "hypothesis": "Existing grant, implementation and outcome records may not allow Oregon to connect funded activities with student progress consistently across participating schools. Test the completeness and comparability of those records before assessing outcomes; an association between funding and graduation would not by itself establish the program's causal effect.",
+      "already_answered": "The audit already establishes that further evaluation and data work is needed. The original reporting opportunity is to identify precisely which schools, activities or outcomes cannot currently be evaluated, and whether post-audit work has closed those gaps.",
+      "records": [
+        {
+          "description": "Full September 2026 audit, including the agency response and details of the evaluation and data recommendations.",
+          "could_reveal": "The exact statutory evaluation requirements, existing evaluation methods, identified data gaps and the agency's explanation of its planned improvements.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "",
+          "location": "https://sos.oregon.gov/audits/Documents/2026-27.pdf",
+          "how": "Download the linked report and read the findings and agency response before defining the data comparison.",
+          "source": "oregon-ode-audit",
+          "quote": "September 2026 Report 2026-27 Download the full report View the agency response View the press release"
+        },
+        {
+          "description": "Existing High School Success evaluation protocols, instruments, completed evaluations and documentation of the process for assessing school eligibility systems, July 1, 2023–September 30, 2026.",
+          "could_reveal": "What student progress means operationally, which schools have been evaluated, whether findings are comparable, and whether implementation advanced after the audit cutoff.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Oregon Department of Education",
+          "location": "",
+          "how": "Request existing program evaluation records from the named department; no request address is supplied.",
+          "source": "oregon-ode-audit",
+          "quote": "Oregon Department of Education agreed with all of our recommendations."
+        },
+        {
+          "description": "Existing school- or district-level program data extracts and documentation covering awards, expenditures, funded activities, eligibility-system implementation and student outcomes, July 1, 2023–September 30, 2026.",
+          "could_reveal": "Whether spending, implementation and outcomes can be linked at consistent units and dates; the extent of missing coverage; and which comparisons the existing records actually support.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Oregon Department of Education",
+          "location": "",
+          "how": "Request existing aggregate or de-identified files, data dictionaries and completeness assessments. Request links instead of copies for any files already public.",
+          "source": "oregon-ode-audit",
+          "quote": "Oregon Department of Education agreed with all of our recommendations."
+        }
+      ],
+      "request_text": "To the Oregon Department of Education: Please provide the following existing High School Success records for July 1, 2023–September 30, 2026, preferably in their native electronic formats:\n1. Evaluation protocols, instruments, completed evaluations and documentation of the process for assessing whether school eligibility systems improve student progress.\n2. Existing school- or district-level aggregate or de-identified data files covering grant awards, expenditures, funded activities, implementation of eligibility systems and student outcomes maintained for program evaluation.\n3. Data dictionaries, file-layout documentation and existing assessments of missing data, coverage or comparability for those files.\nPlease provide links for records already publicly available. I am not requesting student-identifying information or the creation of new analyses.",
+      "newsworthiness": 5
+    },
+    {
+      "headline": "Who is checking whether Oregon fixes its high school grant problems?",
+      "established": [
+        {
+          "text": "Auditors found no documented process to address issues identified through external audits.",
+          "source": "oregon-ode-audit",
+          "quote": "ODE lacks a process to document and address issues, such as those identified in external audits."
+        },
+        {
+          "text": "Auditors found neither an explicit assignment of oversight responsibility nor evidence of governing-body review of identified deficiencies.",
+          "source": "oregon-ode-audit",
+          "quote": "The agency has not explicitly assigned and documented oversight responsibility, and we found no evidence that the State Board of Education or any other oversight body reviewed or provided input for identified deficiencies from internal or external reviews."
+        },
+        {
+          "text": "The department agreed to document corrective-action plans by February 2027.",
+          "source": "oregon-ode-audit",
+          "quote": "Document corrective action plans to address deficiencies. Documentation may include root cause analysis, planned actions, interim milestones, completion dates, measurable indicators to assess and validate progress of remediation efforts, and the role responsible for monitoring the status of corrective actions. Agency response: Agree Target completion date: February 2027"
+        }
+      ],
+      "qualifications": [
+        {
+          "text": "The department has made some progress; the source does not support saying it has done nothing.",
+          "source": "oregon-ode-audit",
+          "quote": "ODE has made progress on some recommendations, but further work is necessary to improve the High School Success program."
+        },
+        {
+          "text": "The findings concern work before July 2026 and must be checked against subsequent records.",
+          "source": "oregon-ode-audit",
+          "quote": "Our audit covered progress made by the agency prior to July 2026."
+        },
+        {
+          "text": "The agency accepted a February 2027 deadline to assign oversight responsibility; that deadline has not yet passed.",
+          "source": "oregon-ode-audit",
+          "quote": "Assign and document responsibility for the oversight of remediation of deficiencies identified in external audits. Agency response: Agree Target completion date: February 2027"
+        },
+        {
+          "text": "The source says the agency's trajectory was unclear, not that it would necessarily miss its target.",
+          "source": "oregon-ode-audit",
+          "quote": "As a result, it is unclear whether ODE is reasonably on track to fully implement our 2024 recommendations by the agency’s target implementation date."
+        }
+      ],
+      "hypothesis": "The department's commitments may still lack a named reviewer, measurable interim milestones or documented scrutiny. Compare corrective-action records with actual progress reports and oversight responses to test whether accountability has become operational since the audit cutoff.",
+      "already_answered": "The absence of documented oversight at the audit cutoff is already reported. New reporting should establish who now owns the fixes, what evidence that person or body receives, and whether documented intervention follows delays or incomplete work—not simply repeat the audit finding.",
+      "records": [
+        {
+          "description": "Full September 2026 audit and appended agency response.",
+          "could_reveal": "The specific outstanding recommendations, evidence used to assess implementation and the department's detailed commitments.",
+          "essential": true,
+          "kind": "seed",
+          "route": "public_download",
+          "custodian": "",
+          "location": "https://sos.oregon.gov/audits/Documents/2026-27.pdf",
+          "how": "Download the linked report to build a recommendation-by-recommendation tracking table.",
+          "source": "oregon-ode-audit",
+          "quote": "September 2026 Report 2026-27 Download the full report View the agency response View the press release"
+        },
+        {
+          "description": "Existing corrective-action plans, recommendation trackers, oversight policies and responsibility assignments for the 2024 and 2026 High School Success audits, January 1, 2024–September 30, 2026.",
+          "could_reveal": "Whether each outstanding recommendation has an owner, milestones, completion evidence and a designated oversight reviewer; version history could distinguish pre-audit arrangements from later changes.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Oregon Department of Education",
+          "location": "",
+          "how": "Request existing plans, trackers and assignments from the named department, including dated versions.",
+          "source": "oregon-ode-audit",
+          "quote": "Oregon Department of Education agreed with all of our recommendations."
+        },
+        {
+          "description": "Department-held progress reports, transmittals and written oversight responses concerning remediation of the High School Success audit findings, January 1, 2024–September 30, 2026.",
+          "could_reveal": "Whether an oversight function actually received evidence, challenged incomplete fixes or directed corrective work, rather than merely being designated on paper.",
+          "essential": true,
+          "kind": "underlying",
+          "route": "records_request",
+          "custodian": "Oregon Department of Education",
+          "location": "",
+          "how": "Request the department's existing copies of reports and communications with the State Board of Education or another designated oversight function; obtain links for any public materials.",
+          "source": "oregon-ode-audit",
+          "quote": "Oregon Department of Education agreed with all of our recommendations."
+        }
+      ],
+      "request_text": "To the Oregon Department of Education: Please provide existing records dated January 1, 2024–September 30, 2026 concerning remediation of the 2024 and 2026 High School Success audit findings:\n1. Corrective-action plans and recommendation trackers, including dated versions and recorded milestones or completion evidence.\n2. Policies and written assignments identifying responsibility for maintaining those plans and overseeing remediation.\n3. Progress reports and their transmittals to the State Board of Education or any other designated oversight function.\n4. Department-held written responses, directions or review comments from those oversight bodies concerning the findings or corrective actions.\nPlease provide native electronic files where available and links for records already public. This request seeks existing records, not a new explanation or analysis.",
+      "newsworthiness": 4
+    }
+  ],
+  "no_lead_reason": ""
+}

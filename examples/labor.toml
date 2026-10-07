@@ -1,0 +1,31 @@
+# Fictional settings. Credentials belong only in repository secrets.
+# United States is an example geography assumption, not part of the reporter's brief.
+# The labor playbook supplies the watch list and request pages; check its URLs first.
+[identity]
+id = "example-labor-newsroom"
+newsletter_name = "Labor Document Hunt"
+sender_name = "Example Labor Newsroom"
+accent_color = "#152b44"
+[editorial]
+coverage_brief = "I am a reporter who covers labor, and I'm seeking important documents that may help me with stories in that."
+exclusions = "Opinion and unsupported speculation"
+geography = "United States"
+max_final_leads = 8
+[ai]
+provider = "openai"
+model = "gpt-6.1-sol"
+reasoning_effort = "medium"
+reviewer_model = ""
+[email]
+provider = "resend"
+sender = "labor-editor@example.org"
+recipients = ["reporter@example.org"]
+[schedule]
+enabled = false
+timezone = "America/Chicago"
+weekdays = [0, 1, 2, 3, 4]
+preferred_time = "08:00"
+[hunt]
+mode = "watch"
+playbook = "playbooks/labor.toml"
+window_days = 14
