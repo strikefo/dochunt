@@ -76,7 +76,7 @@ def render_issue(issue, config):
         html.append(f'<div style="font-size:13px;line-height:1.3;font-weight:700;letter-spacing:1px;color:#64748b;text-transform:uppercase;">Lead {number}</div>')
         headline = f'{number}. {lead.provisional_headline}'
         html.append(f'<h1 style="margin:7px 0 18px;font-size:27px;line-height:1.25;color:#173b63;">{esc(headline)}</h1>')
-        text.extend([headline, ''])
+        text.extend([f'Lead {number}', headline, ''])
         hook = lead.factual_hook.strip()
         new = lead.records_plan.get('new_document') or {}
         if new.get('published'):
