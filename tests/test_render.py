@@ -1,6 +1,8 @@
 """Email rendering of engine issues: concise layout, escaping, branding, safe links."""
 from dataclasses import replace
 from datetime import date
+from html import escape
+import re
 
 import pytest
 
@@ -19,6 +21,46 @@ def test_layout_shows_new_document_facts_records_and_request():
     # The new document is the source, so no separate Source line repeats it.
     assert 'Source:' not in r.text
     assert r.subject == issue.subject and len(r.fingerprint) == 64 and render_issue(issue, c) == r
+
+
+@pytest.mark.parametrize('second_tier', ['ready', 'verify_route'])
+def test_lead_label_precedes_the_headline_in_both_formats(second_tier):
+    c = config()
+    issue = sample_issue(c)
+    first = issue.leads[0]
+    records_plan = dict(first.records_plan, tier=second_tier)
+    if second_tier == 'verify_route':
+        records_plan['route_notes'] = ['Confirm where to submit the records request.']
+    second = replace(first, id=f'{first.id}-followup',
+                     records_plan=records_plan,
+                     provisional_headline="Example County's audit raises questions about public works records")
+    issue = replace(issue, leads=[first, second])
+    rendered = render_issue(issue, c)
+    lines = rendered.text.splitlines()
+
+    html_notice = 'Check the request route first'
+    text_notice = 'CHECK THE REQUEST ROUTE FIRST'
+    if second_tier == 'verify_route':
+        first_headline = f'1. {first.provisional_headline}'
+        html_headline = f'>{escape(first_headline, quote=True)}</h1>'
+        assert rendered.html.count(html_notice) == 1
+        assert rendered.html.index(html_headline) < rendered.html.index(html_notice) < rendered.html.index('>Lead 2<')
+        assert lines.count(text_notice) == 1
+        assert lines.index(first_headline) < lines.index(text_notice) < lines.index('Lead 2')
+    else:
+        assert html_notice not in rendered.html
+        assert text_notice not in rendered.text
+
+    for number, lead in enumerate(issue.leads, 1):
+        label = f'Lead {number}'
+        headline = f'{number}. {lead.provisional_headline}'
+        assert lines.count(label) == 1
+        assert lines[lines.index(label) + 1] == headline
+
+        assert rendered.html.count(f'>{label}<') == 1
+        pair = (rf'<div\b[^>]*>{label}</div>\n<h1\b[^>]*>'
+                rf'{re.escape(escape(headline, quote=True))}</h1>')
+        assert re.search(pair, rendered.html)
 
 
 def test_internal_metadata_and_raw_quotes_are_not_shown():
