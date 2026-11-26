@@ -111,7 +111,7 @@
                 "properties": {
                   "label": {
                     "type": "string",
-                    "description": "Short link text, e.g. 'VA OIG FOIA page' or '140-page application (PDF)'."
+                    "description": "Short link text, e.g. 'City clerk records request page' or '140-page application (PDF)'."
                   },
                   "url": {
                     "type": "string",

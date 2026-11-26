@@ -51,7 +51,7 @@ You pay your own providers directly. A run is one agentic research session, plus
 - **AI-written.** The agent can be wrong about a fact, a number, an office or a route. Every email says so. Check facts and filing details before you report or file.
 - **Checks are deliberately light.** Code catches broken links, missing contacts, unverified routes and repeats. It doesn't re-verify facts against the source; the agent's own reviewing pass does that. This trade-off is intentional: stricter code gates in earlier versions blocked almost every lead.
 - **Quality varies by beat and model.** Tune `brief`, `priorities` and `source_families` after reading your first previews.
-- **Testing so far.** DocHunt runs live daily with the Codex agent on a military beat, and the Claude Code agent has completed a live paid preview on the same beat. Whichever you choose, start with a paid preview.
+- **Testing so far.** DocHunt runs live daily with the Codex agent on a military beat. The Claude Code agent has completed live paid previews on that beat and, from a fresh copy of this template, on the [local-government example](examples/local-government.toml), where it cited Illinois FOIA and found county and city records portals. The education and labor examples haven't run live yet. Whichever you choose, start with a paid preview.
 - DocHunt never files requests or contacts agencies.
 
 ## Development

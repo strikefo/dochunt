@@ -84,7 +84,7 @@ dochunt show-prompt
 dochunt preview --synthetic --output-dir out
 ```
 
-A local paid preview also needs the agent CLI (`npm install -g @openai/codex` or `npm install -g @anthropic-ai/claude-code`) and your API key in the environment:
+A local paid preview also needs the agent CLI, at the version the workflow pins (`npm install -g @openai/codex@0.163.0` or `npm install -g @anthropic-ai/claude-code@2.1.299`; other versions may reject DocHunt's command), and your API key in the environment:
 
 ```bash
 dochunt preview --paid --output-dir out
