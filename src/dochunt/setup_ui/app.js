@@ -8,7 +8,7 @@ async function api(path, body) {
   if (!response.ok) throw new Error(data.error || 'Request failed.');
   return data;
 }
-function secretNames() { return [state.config.ai.provider === 'openai' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY', ...(state.config.email.provider === 'resend' ? ['RESEND_API_KEY'] : ['SMTP_USERNAME', 'SMTP_PASSWORD']), ...(state.config.retrieval.firecrawl_enabled ? ['FIRECRAWL_API_KEY'] : [])]; }
+function secretNames() { return [state.config.agent.runtime === 'codex' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY', ...(state.config.email.provider === 'resend' ? ['RESEND_API_KEY'] : ['SMTP_USERNAME', 'SMTP_PASSWORD']), ...(state.config.email.subscription_url ? ['SUBSCRIPTION_API_TOKEN'] : [])]; }
 function secretsUI() {
   $('secret-fields').replaceChildren();
   for (const name of secretNames()) {
@@ -18,41 +18,38 @@ function secretsUI() {
   }
 }
 function invalidateReview() { plan=null; $('review').hidden=true; $('preview-reviewed').checked=false; }
-function addResource(source={url:'',label:'',notes:''}) {
-  const row=document.createElement('fieldset'); row.dataset.resource='row';
-  const legend=document.createElement('legend'); legend.textContent='Document source'; row.append(legend);
-  for(const [key,title] of [['url','Public URL'],['label','Resource name'],['notes','Access notes']]) {
-    const label=document.createElement('label'); label.textContent=title;
-    const input=document.createElement(key==='notes' ? 'textarea' : 'input'); input.dataset.resourceField=key; input.value=source[key];
-    if(key==='url') { input.type='url'; input.required=true; } if(key==='notes') input.rows=3;
-    label.append(input); row.append(label);
-  }
-  const remove=document.createElement('button'); remove.type='button'; remove.textContent='Remove resource';
-  remove.addEventListener('click',()=>{ row.remove(); invalidateReview(); }); row.append(remove); $('resources').append(row);
-}
-function readResources() {
-  return [...document.querySelectorAll('[data-resource]')].map(row=>Object.fromEntries([...row.querySelectorAll('[data-resource-field]')].map(input=>[input.dataset.resourceField,input.value])));
-}
-const fieldLabels={firecrawl_enabled:'Page fallback',firecrawl_max_calls:'Maximum fallback attempts',firecrawl_timeout_seconds:'Fallback timeout (seconds)',id:'Newsroom identifier',newsletter_name:'Newsletter name',sender_name:'Sender name',accent_color:'Accent color',coverage_brief:'Coverage brief',geography:'Geography',exclusions:'Exclusions',max_final_leads:'Maximum final leads',provider:'Provider',model:'Research model',reviewer_model:'Reviewer model',reasoning_effort:'Reasoning effort',sender:'Sender email',recipients:'Recipients',smtp_host:'SMTP hostname',smtp_port:'SMTP port',enabled:'Scheduling',timezone:'Timezone',weekdays:'Weekdays',preferred_time:'Preferred local time',workflow_timeout_minutes:'Workflow timeout (minutes)',application_deadline_minutes:'Application deadline (minutes)',max_candidates:'Maximum candidates',research_requests:'Research requests',review_requests:'Review requests',searches:'Searches',fetches:'Fetches',input_tokens:'Input tokens',output_tokens:'Output tokens',transient_retries:'Transient retries'};
-const sectionLabels={retrieval:'Optional page access',identity:'Newsroom',editorial:'Coverage',ai:'AI account',email:'Email delivery',schedule:'Schedule',sources:'Recommended resources',limits:'Usage limits'};
+function lines(id) { return $(id).value.split('\n').map(v => v.trim()).filter(Boolean); }
+const fieldLabels={id:'Newsroom identifier',newsletter_name:'Newsletter name',sender_name:'Sender name',accent_color:'Accent color',name:'Beat name',brief:'Coverage brief',priorities:'Priorities',source_families:'Source families',geography:'Geography',exclusions:'Exclusions',records_law:'Records law',freshness_days:'Freshness window (days)',max_leads:'Maximum leads',extra_instructions:'Extra instructions',runtime:'Agent',model:'Model',reasoning_effort:'Reasoning effort',max_budget_usd:'Spending cap per run (USD)',timeout_minutes:'Agent time limit (minutes)',provider:'Provider',sender:'Sender email',recipients:'Recipients',smtp_host:'SMTP hostname',smtp_port:'SMTP port',enabled:'Scheduling',timezone:'Timezone',weekdays:'Weekdays',preferred_time:'Preferred local time'};
+const sectionLabels={identity:'Newsroom',beat:'Beat',agent:'AI agent',email:'Email delivery',schedule:'Schedule'};
 function readableValue(key,value) {
-  if(key==='enabled' || key==='firecrawl_enabled') return value ? 'Enabled' : 'Disabled';
+  if(key==='enabled') return value ? 'Enabled' : 'Disabled';
   if(key==='weekdays') return value.map(v=>['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][v]).join(', ');
   if(Array.isArray(value)) return value.join('\n') || 'None';
   return String(value) || 'None';
 }
-function readableSources(sources) { return sources.map((source,index)=>`Resource ${index+1}\nPublic URL: ${source.url}\nResource name: ${source.label || 'None'}\nAccess notes: ${source.notes || 'None'}`).join('\n\n') || 'None'; }
 function readableChanges(changes) {
   return changes.map(change=>{
-    if(change.section==='sources') return `Recommended resources\nPrevious:\n${readableSources(change.before)}\nNew:\n${readableSources(change.after)}`;
     return sectionLabels[change.section]+'\n'+Object.keys(change.after).filter(key=>JSON.stringify(change.before[key])!==JSON.stringify(change.after[key])).map(key=>`${fieldLabels[key]}\nPrevious: ${readableValue(key,change.before[key])}\nNew: ${readableValue(key,change.after[key])}`).join('\n\n');
   }).join('\n\n') || 'No settings changed.';
 }
+function audienceText(email) {
+  if (email.subscription_url) return `everyone opted in on the subscription list at ${email.subscription_url} (allowed: ${email.subscription_domains.join(', ')}, plus ${email.recipients.join(', ') || 'no exceptions'}). The recipients below can receive test sends; they get scheduled issues only if they are on the list.`;
+  return email.recipients.join(', ');
+}
+function proposedEmail() {
+  return {...state.config.email, recipients: $('recipients').value.split('\n').map(v => v.trim()).filter(Boolean)};
+}
+function updateAudience() {
+  const saved = audienceText(state.config.email), proposed = audienceText(proposedEmail());
+  // Unsaved edits are a proposal until they are saved; never present them as the current audience.
+  $('audience-text').textContent = proposed === saved ? saved : `${saved} — proposed after saving: ${proposed}`;
+}
 function populate() {
   for (const input of document.querySelectorAll('input[name], textarea[name], select[name]')) { const [section,key] = input.name.split('.'); input.value = state.config[section][key]; }
-  document.querySelector('[name="editorial.max_final_leads"]').max = state.config.limits.max_final_leads;
-  $('resources').replaceChildren(); state.config.sources.forEach(addResource);
+  $('priorities').value = state.config.beat.priorities.join('\n');
+  $('source-families').value = state.config.beat.source_families.join('\n');
   $('recipients').value = state.config.email.recipients.join('\n');
+  updateAudience();
   $('weekdays').value = state.config.schedule.weekdays.join(', ');
   $('target').textContent = `${state.mock ? 'SAFE MOCK — no GitHub writes. ' : ''}${state.repository} · default branch ${state.default_branch} · private${state.protected ? ' · branch rules: use manual PR' : ''}`;
   $('actions-links').replaceChildren();
@@ -64,8 +61,8 @@ function populate() {
 function readConfig() {
   const c = structuredClone(state.config);
   for (const input of document.querySelectorAll('input[name], textarea[name], select[name]')) { const [section,key] = input.name.split('.'); c[section][key] = input.type === 'number' ? Number(input.value) : input.value; }
-  c.retrieval.firecrawl_enabled=document.querySelector('[name="retrieval.firecrawl_enabled"]').value==='true';
-  c.sources = readResources();
+  c.beat.priorities = lines('priorities');
+  c.beat.source_families = lines('source-families');
   c.email.recipients = $('recipients').value.split('\n').map(v => v.trim()).filter(Boolean);
   c.schedule.weekdays = $('weekdays').value.split(',').map(v => { if (!/^\s*[0-6]\s*$/.test(v)) throw new Error('Use unique weekday numbers 0 through 6.'); return Number(v.trim()); });
   c.schedule.enabled = false;
@@ -78,13 +75,13 @@ async function review(enable=false) {
   $('confirm').checked = false; $('review').hidden = false; $('review').scrollIntoView({behavior:'smooth'});
 }
 function error(e) { $('result').textContent = e.message; }
-$('add-resource').addEventListener('click',()=>{ addResource(); invalidateReview(); });
 $('settings').addEventListener('submit', async e => { e.preventDefault(); try { await review(); } catch(e) { error(e); } });
 $('enable').addEventListener('click', async () => { try { if (!$('preview-reviewed').checked) throw new Error('Review and approve the current preview and inbox test first.'); await review(true); } catch(e) { error(e); } });
 $('settings').addEventListener('input', e => {
   invalidateReview();
-  if (e.target.name === 'retrieval.firecrawl_enabled') { state.config.retrieval.firecrawl_enabled=e.target.value==='true'; secretsUI(); }
-  if (e.target.name === 'ai.provider' || e.target.name === 'email.provider') { state.config[e.target.name.split('.')[0]].provider=e.target.value; secretsUI(); }
+  updateAudience();
+  if (e.target.name === 'agent.runtime') { state.config.agent.runtime=e.target.value; document.querySelector('[name="agent.model"]').value=''; secretsUI(); }
+  if (e.target.name === 'email.provider') { state.config.email.provider=e.target.value; secretsUI(); }
 });
 $('save').addEventListener('click', async () => {
   if (!plan || !$('confirm').checked) return error(new Error('Review changes and confirm the repository and branch first.'));

@@ -46,9 +46,8 @@ def test_unknown_preview_does_not_block_normal_delivery(tmp_path):
 def test_legacy_pending_body_is_used_exactly_without_rerendering(tmp_path, monkeypatch):
     from dataclasses import asdict
     p = prepared(); saved = asdict(p)
-    for lead in saved['issue']['leads']:
-        for field in ('records_request_text', 'records_custodian', 'records_submission_url', 'records_route_note', 'caveat', 'records_route_evidence_ids'):
-            lead.pop(field)
+    for lead in saved['issue']['issue']['leads']:
+        lead['internal'].pop('reviewer_notes')
     saved['rendered'].update(html='<p>Legacy prepared body with internal rows</p>', text='Legacy prepared body\n')
     saved['fingerprint'] = saved['rendered']['fingerprint'] = 'old-render-fingerprint'
     s = StateStore(tmp_path, git=False)
@@ -57,4 +56,15 @@ def test_legacy_pending_body_is_used_exactly_without_rerendering(tmp_path, monke
     t = Fake(); send(p, s, t)
     assert t.calls[0].rendered == saved['rendered']
     assert t.calls[0].fingerprint == 'old-render-fingerprint'
-    assert all('records_request_text' not in l for l in t.calls[0].issue['leads'])
+    assert all('reviewer_notes' not in l['internal'] for l in t.calls[0].issue['issue']['leads'])
+    # The legacy issue no longer parses, but acceptance is still recorded (no resend risk).
+    assert s.read()['completed'] and s.read()['attempts'][p.attempt_key]['tracker_error']
+
+
+def test_unfinished_attempt_saved_by_version_01_still_recovers(tmp_path):
+    from dataclasses import asdict
+    p = prepared(); saved = asdict(p); saved['seen_documents'] = ['https://old.example/doc']
+    s = StateStore(tmp_path, git=False)
+    s.save({'attempts': {p.attempt_key: {'prepared': saved, 'status': 'pending'}}})
+    t = Fake(); send(p, s, t)
+    assert len(t.calls) == 1 and s.read()['attempts'][p.attempt_key]['status'] == 'accepted'

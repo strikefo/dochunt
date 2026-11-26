@@ -1,0 +1,48 @@
+# Fictional newsroom settings. Credentials belong only in GitHub Actions repository secrets.
+# A city and county accountability beat under a state public records law.
+[identity]
+id = "example-city-hall"
+newsletter_name = "City Hall Document Hunt"
+sender_name = "Example Metro Newsroom"
+accent_color = "#3b2a5e"
+
+[beat]
+name = "Chicago and Cook County government"
+brief = """We cover Chicago and Cook County government: contracts, budgets, police oversight, housing,
+inspections and how public money is spent."""
+priorities = [
+  "Inspector general findings and audits",
+  "Police oversight, misconduct and settlements",
+  "Contracts, no-bid awards and vendor performance",
+  "Housing, building inspections and code enforcement",
+]
+source_families = [
+  "City of Chicago and Cook County inspector general reports",
+  "City Council and County Board agendas, ordinances and committee materials",
+  "Civilian Office of Police Accountability and Police Board decisions",
+  "City and county procurement portals and contract award lists",
+  "Chicago and Cook County data portals",
+  "Illinois Auditor General reports involving Chicago or Cook County",
+]
+geography = "Chicago and Cook County, Illinois"
+exclusions = "Opinion, campaign news without a document trail, and crime blotter items."
+records_law = "the Illinois Freedom of Information Act (5 ILCS 140)"
+freshness_days = 5
+max_leads = 3
+
+[agent]
+runtime = "claude"
+model = "claude-opus-5-5"
+reasoning_effort = "high"
+max_budget_usd = 5.0
+
+[email]
+provider = "resend"
+sender = "cityhall-editor@example.org"
+recipients = ["reporter@example.org"]
+
+[schedule]
+enabled = false
+timezone = "America/Chicago"
+weekdays = [0, 1, 2, 3, 4]
+preferred_time = "07:00"

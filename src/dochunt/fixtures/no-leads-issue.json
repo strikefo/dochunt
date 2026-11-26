@@ -1,0 +1,11 @@
+{
+  "subject": "No actionable records leads qualified today",
+  "intro": "",
+  "no_lead_reason": "Checked the fictional auditor, fire marshal and transit sources for new documents; none pointed to records that could be requested or downloaded today.",
+  "checked_sources": [
+    "https://auditor.example/reports",
+    "https://firemarshal.example/notices",
+    "https://transit.example/plans"
+  ],
+  "leads": []
+}

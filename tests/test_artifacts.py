@@ -1,9 +1,16 @@
 from pathlib import Path
 import pytest
 from datetime import date
-from support import config, provider as fictional_provider
-from dochunt.cli import preview
+from support import config, FakeAgent, no_fetch
+from dochunt.hunt import preview as hunt_preview
 from dochunt.artifacts import load_preview, validate_run, validate_selection
+
+D=date(2026,10,2)
+
+
+def preview(c,path,*,synthetic=False,agent=None):
+    return hunt_preview(c,path,local_date=D,synthetic=synthetic,agent=agent or FakeAgent(),fetch=no_fetch)
+
 
 def test_safe_input():
     for value in ['$(curl evil)', '1; echo evil', '../1', '0', '1\n2']:
@@ -23,7 +30,7 @@ def test_wrong_artifact_and_config(tmp_path):
     with pytest.raises(ValueError): load_preview(tmp_path,c)
 
 def test_config_payload_consistency(tmp_path):
-    c=config(); preview(c,tmp_path,provider=fictional_provider(c),local_date=date(2026,10,2))
+    c=config(); preview(c,tmp_path)
     load_preview(tmp_path,c,require_paid=True)
     c.email.recipients=['different@example.invalid']
     with pytest.raises(ValueError): load_preview(tmp_path,c,require_paid=True)
@@ -54,7 +61,7 @@ def test_wrong_artifact_name_rejected_before_download(tmp_path):
 def test_changed_payload_hash_and_render_rejected(tmp_path):
     import json
     from dochunt.artifacts import write_manifest
-    c=config(); preview(c,tmp_path,provider=fictional_provider(c),local_date=date(2026,10,2))
+    c=config(); preview(c,tmp_path)
     (tmp_path/'preview.html').write_text('tampered')
     with pytest.raises(ValueError): load_preview(tmp_path,c)
     write_manifest(tmp_path,c,False)
@@ -96,9 +103,6 @@ def test_zip_traversal_duplicate_and_expanded_size_rejected(tmp_path,names,overs
 
 
 def test_branding_change_invalidates_preview_contract(tmp_path):
-    from support import config
-    from dochunt.cli import preview
-    from dochunt.artifacts import load_preview
     c=config(); preview(c,tmp_path,synthetic=True)
     c.identity.sender_name='Changed newsroom'
     with pytest.raises(ValueError): load_preview(tmp_path,c)
@@ -116,3 +120,12 @@ def test_old_renderer_preview_is_rejected_without_rewriting_saved_body(tmp_path,
     with pytest.raises(ValueError, match='Payload differs'):
         load_preview(tmp_path, c)
     assert (tmp_path/'preview.html').read_text() == old_html
+
+
+def test_raw_agent_outputs_are_kept_out_of_the_send_contract(tmp_path):
+    c=config(); preview(c,tmp_path)
+    assert (tmp_path/'raw'/'prompt.md').exists() and (tmp_path/'raw'/'agent-output-1.json').exists()
+    issue,_=load_preview(tmp_path,c,require_paid=True)
+    assert len(issue.leads)==3
+    (tmp_path/'issue.json').write_text((tmp_path/'issue.json').read_text().replace('road-repair','bridge-repair'))
+    with pytest.raises(ValueError): load_preview(tmp_path,c)

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DocHunt issue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "subject",
+    "intro",
+    "no_lead_reason",
+    "checked_sources",
+    "leads"
+  ],
+  "properties": {
+    "subject": {
+      "type": "string",
+      "description": "Sentence-case summary of the most important lead, under 100 characters. Without leads: No actionable records leads qualified today"
+    },
+    "intro": {
+      "type": "string",
+      "description": "Optional one-sentence introduction, or an empty string."
+    },
+    "no_lead_reason": {
+      "type": "string",
+      "description": "When leads is empty: one or two factual sentences on what was checked. Otherwise an empty string."
+    },
+    "checked_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of the official pages and documents you actually opened during this run, including those behind each lead and each verified route. Empty only if you could not search or read the web."
+    },
+    "leads": {
+      "type": "array",
+      "description": "Strongest qualified leads, best first. Never pad.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "headline",
+          "reporting_opportunity",
+          "source",
+          "get_records",
+          "caveat",
+          "internal"
+        ],
+        "properties": {
+          "headline": {
+            "type": "string",
+            "description": "Reader-facing possible published headline; must not overstate the source."
+          },
+          "reporting_opportunity": {
+            "type": "string",
+            "description": "2-4 plain-English sentences: what the source establishes, who is affected, what the records could reveal or disprove."
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Official title with report, docket or document identifier."
+              },
+              "url": {
+                "type": "string",
+                "description": "Direct https link to the document itself, not an index page."
+              }
+            }
+          },
+          "get_records": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "agency",
+              "office",
+              "action",
+              "contact",
+              "verified_at_url",
+              "text"
+            ],
+            "properties": {
+              "agency": {
+                "type": "string"
+              },
+              "office": {
+                "type": "string",
+                "description": "Responsible office; say 'likely' when custody is unconfirmed."
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "foia",
+                  "inquiry",
+                  "download"
+                ],
+                "description": "The single recommended first approach."
+              },
+              "contact": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "label",
+                  "url",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "description": "Short link text, e.g. 'VA OIG FOIA page' or '140-page application (PDF)'."
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "Submission portal, contact page or direct download link, or an empty string."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Verified email address, or an empty string."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Verified phone number, or an empty string."
+                  }
+                }
+              },
+              "verified_at_url": {
+                "type": "string",
+                "description": "Official page, read during this run, that shows the contact or submission route. Empty only for download."
+              },
+              "text": {
+                "type": "string",
+                "description": "Finished, copy-ready request or script in plain paragraphs separated by blank lines; for download, what to download and extract."
+              }
+            }
+          },
+          "caveat": {
+            "type": "string",
+            "description": "At most one short sentence naming the main limitation, or an empty string."
+          },
+          "internal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "newsworthiness",
+              "obtainability",
+              "is_update",
+              "reviewer_notes"
+            ],
+            "properties": {
+              "newsworthiness": {
+                "type": "integer",
+                "description": "1-10."
+              },
+              "obtainability": {
+                "type": "integer",
+                "description": "1-10."
+              },
+              "is_update": {
+                "type": "boolean",
+                "description": "True only when revisiting a previously sent lead because of material new information."
+              },
+              "reviewer_notes": {
+                "type": "string",
+                "description": "What the reviewing pass changed or checked. Never shown to readers."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

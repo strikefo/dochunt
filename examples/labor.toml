@@ -1,31 +1,46 @@
-# Fictional settings. Credentials belong only in repository secrets.
-# United States is an example geography assumption, not part of the reporter's brief.
-# The labor playbook supplies the watch list and request pages; check its URLs first.
+# Fictional newsroom settings. Credentials belong only in GitHub Actions repository secrets.
 [identity]
-id = "example-labor-newsroom"
+id = "example-labor"
 newsletter_name = "Labor Document Hunt"
 sender_name = "Example Labor Newsroom"
-accent_color = "#152b44"
-[editorial]
-coverage_brief = "I am a reporter who covers labor, and I'm seeking important documents that may help me with stories in that."
-exclusions = "Opinion and unsupported speculation"
+accent_color = "#5a2d0c"
+
+[beat]
+name = "Labor and the workplace"
+brief = """We cover labor and the workplace: worker safety, wages, child labor, unions, unemployment
+insurance and the agencies that enforce labor law."""
+priorities = [
+  "Worker deaths, injuries and safety enforcement",
+  "Wage theft, child labor and misclassification",
+  "Union elections, unfair labor practice cases and collective bargaining",
+  "Unemployment insurance administration and improper payments",
+]
+source_families = [
+  "OSHA enforcement data, inspection records and fatality reports",
+  "Department of Labor Wage and Hour Division releases and enforcement data",
+  "Department of Labor Office of Inspector General audits and alerts",
+  "National Labor Relations Board case filings and decisions",
+  "Federal Register notices and information collections from labor agencies",
+  "GAO reports on labor programs",
+]
 geography = "United States"
-max_final_leads = 8
-[ai]
-provider = "openai"
+exclusions = "Opinion and unsupported speculation."
+records_law = "the federal Freedom of Information Act (FOIA)"
+freshness_days = 3
+max_leads = 3
+
+[agent]
+runtime = "codex"
 model = "gpt-6.1-sol"
-reasoning_effort = "medium"
-reviewer_model = ""
+reasoning_effort = "high"
+
 [email]
 provider = "resend"
 sender = "labor-editor@example.org"
 recipients = ["reporter@example.org"]
+
 [schedule]
 enabled = false
-timezone = "America/Chicago"
+timezone = "America/New_York"
 weekdays = [0, 1, 2, 3, 4]
-preferred_time = "08:00"
-[hunt]
-mode = "watch"
-playbook = "playbooks/labor.toml"
-window_days = 14
+preferred_time = "07:30"

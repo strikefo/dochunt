@@ -1,38 +1,30 @@
 # Costs and limits
 
-You pay each provider directly from your own account: the AI model, email, GitHub Actions and, optionally, Firecrawl. DocHunt has no fees.
+You pay each provider directly from your own account: the AI model, email and GitHub Actions. DocHunt has no fees.
 
-## What runs have cost
+## What a run costs
 
-These are live watch-mode runs with OpenAI `gpt-6.1-sol` at medium reasoning, priced at $2.50 per million input tokens and $10 per million output tokens (check current pricing):
+A run is one research session by the agent: it searches the web, reads documents, verifies contacts and reviews its own candidates. When the answer has fixable problems (a missing verification page, a repeat, too many leads), DocHunt asks the agent once to correct them, which costs a second, shorter session.
 
-| Run | New documents analysed | Model calls | Model cost | Time |
-|---|---|---|---|---|
-| Watch run, plain fetching only | 0 (sites blocked plain requests) | 0 | $0.00 | 19 s |
-| Watch run with Firecrawl | 5 | 5 | $0.12 | 95 s |
-| Watch run with Firecrawl and topic keywords | 5 | 5 | $0.23 | 4 min |
-| Watch run with Firecrawl, two-section email | 5 | 6 | $0.22 | 3.7 min |
+Agentic research uses far more tokens than a single model call, and the total varies with your model, `reasoning_effort`, beat and how much is published that day. **Measure before scheduling:** run two or three `paid-ai-preview` runs and read `check-report.json`. Each attempt records its run time and token usage, and for Claude Code the dollar cost the CLI reports. Multiply by your weekdays per month.
 
-Firecrawl scrapes are billed separately, at about one credit per page. A weekday schedule at these rates comes to a few dollars of model calls a month. Your watch list, document lengths and `max_new_documents` change that.
+For scale, the first live run of the [military example](../examples/military.toml) (Codex, `gpt-6.1-sol`, high reasoning) took about 5 minutes, made 22 web searches, and used about 2.4 million input tokens (2.2 million of them cached) and 15,000 output tokens, producing three leads in one session with no repair. Price those tokens at your provider's current rates, including its cached-input rate, and check the result against your usage dashboard.
 
-## Built-in ceilings
+To spend less:
 
-The `[limits]` section caps every run:
+- choose a smaller model or a lower `reasoning_effort`;
+- narrow `brief`, `priorities` and `source_families`, so the agent searches less widely;
+- lower `max_leads`.
 
-- `research_requests` and `review_requests`: model calls, including retries;
-- `searches` and `fetches`;
-- `input_tokens` and `output_tokens`;
-- `transient_retries`;
-- `application_deadline_minutes` (25) inside `workflow_timeout_minutes` (30).
+## Built-in limits
 
-A run that reaches a ceiling stops. If it had not finished analysing any document, it fails and sends nothing, rather than a "no leads" email. If some documents were analysed first, it sends what it found, and the run's `engine-result.json` lists the documents it could not finish.
+- **Claude Code:** `agent.max_budget_usd` (default $5) is a hard stop for each agent session. A run that hits it sends nothing new and fails visibly. The optional repair session has its own cap, so the most one run can spend on the model is twice this amount.
+- **Codex:** the CLI has no dollar cap. Set a monthly budget and alerts in your OpenAI account before scheduling.
+- **Time:** each agent session stops after `agent.timeout_minutes` (default 18). The whole run must finish within the workflow's 25-minute application deadline, so the repair session is skipped when there isn't enough time left, and the valid leads from the first answer are sent.
 
-These are **work limits, not a dollar cap**. A provider reports token use only after a call, so a single accepted call can exceed a ceiling, and a timeout cannot cancel work the provider has already accepted. Set spending limits and alerts in your provider accounts too.
-
-For watch mode with five documents of up to 80,000 characters each, [examples/military.toml](../examples/military.toml) uses `input_tokens = 950000` and `output_tokens = 90000`. That is a worst-case ceiling of about $3.30 per run. Actual use has been far lower.
+A timeout stops the CLI, but it can't cancel work the provider has already done. Set spending limits and alerts in your provider accounts too.
 
 ## Other costs
 
-- **GitHub Actions.** Private repositories use Actions minutes and artifact storage. The hourly schedule check is lightweight, but it runs even while scheduling is disabled.
+- **GitHub Actions.** Private repositories use Actions minutes and artifact storage. Each run installs the agent CLI and runs for several minutes. The hourly schedule check is lightweight, but it runs even while scheduling is disabled.
 - **Email.** Resend or your SMTP provider's plan.
-- **Firecrawl.** Optional. Each attempt, including failures and timeouts, can use credits. `firecrawl_max_calls` caps attempts per run.

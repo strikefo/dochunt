@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import pytest
 from test_delivery import prepared, Fake
-from support import config, provider as fictional_provider, NoCalls
+from support import config, FakeAgent, NoCalls, no_fetch
 from dochunt.delivery import send
 from dochunt.state import PublishedStateStore, StateStore
 from dochunt.runtime import run
@@ -25,7 +25,7 @@ def repos(tmp_path):
     remote=tmp_path/'remote.git'; git(tmp_path,'init','--bare','--initial-branch=main',remote)
     seed=tmp_path/'seed'; git(tmp_path,'clone',remote,seed)
     git(seed,'config','user.name','Test'); git(seed,'config','user.email','test@example.invalid')
-    (seed/'data').mkdir(); (seed/'data'/'state.json').write_text('{}\n'); (seed/'data'/'history.jsonl').write_text('')
+    (seed/'data').mkdir(); (seed/'data'/'state.json').write_text('{}\n'); (seed/'data'/'leads.jsonl').write_text('')
     git(seed,'add','data'); git(seed,'commit','-m','seed'); git(seed,'push','origin','main')
     return remote,clone(remote,tmp_path/'one')
 
@@ -83,7 +83,7 @@ def test_interrupted_runner_recovers_exact_saved_attempt(repos,tmp_path,monkeypa
     with pytest.raises((KeyboardInterrupt,OSError)): send(initial,s,t if after_acceptance else Interrupted())
     fresh=clone(remote,tmp_path/'fresh')
     recovery=Fake(); c=config(); c.email.recipients=['changed@example.invalid']
-    outcome=run(c,fresh,tmp_path/'output',provider=NoCalls(),transport=recovery,manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+    outcome=run(c,fresh,tmp_path/'output',agent=NoCalls(),transport=recovery,manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
     assert outcome.state.value=='accepted' and recovery.calls==[initial]
     if after_acceptance: assert t.calls==[initial]
 
@@ -95,27 +95,40 @@ def test_unknown_smtp_stops_before_research(repos,tmp_path):
             from dochunt.models import SendReceipt
             return SendReceipt('smtp','unknown')
     send(p,s,Unknown())
-    decision=run(config(),s,tmp_path/'out',provider=NoCalls(),transport=NoCalls(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+    decision=run(config(),s,tmp_path/'out',agent=NoCalls(),transport=NoCalls(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
     assert not decision.due
 
 
-def test_normal_watch_analysis_render_delivery(repos,tmp_path):
-    _,s=repos; c=config(); p=fictional_provider(c)
-    t=Fake(); receipt=run(c,s,tmp_path/'output',provider=p,transport=t,manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
-    assert receipt.state.value=='accepted' and len(t.calls)==1 and len(p.transport.requests)==2
+def test_normal_research_render_delivery_and_tracker(repos,tmp_path):
+    _,s=repos; c=config(); agent=FakeAgent()
+    t=Fake(); receipt=run(c,s,tmp_path/'output',agent=agent,fetch=no_fetch,transport=t,manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+    assert receipt.state.value=='accepted' and len(t.calls)==1 and len(agent.prompts)==1
     assert (tmp_path/'output'/'issue.json').exists()
-    assert s.read()['seen_documents']
+    rows=s.read()['leads']
+    assert len(rows)==3 and all(r['last_issue_included']=='2026-10-02' for r in rows)
+    assert (s.path/'leads.jsonl').read_text().count('\n')==3
+
+
+def test_next_day_prompt_lists_sent_leads_and_drops_repeats(repos,tmp_path):
+    from support import sample_data
+    _,s=repos; c=config()
+    run(c,s,tmp_path/'day1',agent=FakeAgent(),fetch=no_fetch,transport=Fake(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+    repeat=sample_data(); agent=FakeAgent(repeat,repeat)
+    t=Fake(); run(c,s,tmp_path/'day2',agent=agent,fetch=no_fetch,transport=t,manual=True,now_utc=datetime(2026,10,3,14,tzinfo=timezone.utc))
+    assert 'auditor.example/reports/2026-07-road-repair-payments.pdf' in agent.prompts[0]
+    assert 'already sent in an earlier issue' in agent.prompts[1]
+    assert t.calls[0].rendered['subject']=='No actionable records leads qualified today'
 
 
 def test_disabled_has_no_paid_calls(repos,tmp_path):
     _,s=repos
-    assert not run(config(),s,tmp_path/'out',provider=NoCalls(),now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc)).due
+    assert not run(config(),s,tmp_path/'out',agent=NoCalls(),now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc)).due
 
 
 def test_split_stages_do_not_share_credentials(repos,tmp_path):
     _,s=repos; c=config(); t=Fake()
     clock=datetime(2026,10,2,14,tzinfo=timezone.utc)
-    assert run(c,s,tmp_path/'out',provider=fictional_provider(c),transport=t,manual=True,research_only=True,now_utc=clock).due
+    assert run(c,s,tmp_path/'out',agent=FakeAgent(),fetch=no_fetch,transport=t,manual=True,research_only=True,now_utc=clock).due
     assert not t.calls and not s.read()['attempts']
     run(c,s,tmp_path/'out',transport=t,manual=True,delivery_only=True,now_utc=clock)
     assert len(t.calls)==1
@@ -164,7 +177,7 @@ def test_missing_mail_credentials_before_research(tmp_path,monkeypatch,provider_
     c=config(); c.email.provider=provider_name
     s=StateStore(tmp_path/'state',git=False)
     with pytest.raises(ValueError,match='credentials'):
-        run(c,s,tmp_path/'out',provider=NoCalls(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+        run(c,s,tmp_path/'out',agent=NoCalls(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
     assert not s.read()['attempts']
 
 
@@ -182,4 +195,4 @@ def test_recovery_readiness_uses_frozen_provider(tmp_path,monkeypatch):
 def test_invalid_sender_before_research(tmp_path):
     c=config(); c.identity.sender_name='News\nBcc: bad@example.invalid'
     with pytest.raises(ValueError,match='From header'):
-        run(c,StateStore(tmp_path/'state',git=False),tmp_path/'out',provider=NoCalls(),transport=Fake(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))
+        run(c,StateStore(tmp_path/'state',git=False),tmp_path/'out',agent=NoCalls(),transport=Fake(),manual=True,now_utc=datetime(2026,10,2,14,tzinfo=timezone.utc))

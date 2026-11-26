@@ -10,9 +10,18 @@ import re
 import smtplib
 import ssl
 import urllib.request
-from .models import SendReceipt
+from .models import SendReceipt, issue_problems, issue_to_data, parse_issue_data
 from .render import render_issue
-from .editorial import validate_issue, lead_identity, lead_revision
+from .tracker import record_issue
+
+
+RESEND_MAX_RECIPIENTS=100  # Resend batch API: up to 100 individually addressed emails per request
+WIRE_VERSION=2
+
+
+def check_recipient_limit(provider,recipients):
+    if provider=='resend' and len(recipients)>RESEND_MAX_RECIPIENTS:
+        raise ValueError(f'Resend accepts at most {RESEND_MAX_RECIPIENTS} recipients per send; this list has {len(recipients)}')
 
 
 def now(): return datetime.now(timezone.utc).isoformat()
@@ -31,23 +40,41 @@ class PreparedIssue:
     smtp_port: int = 587
     preview_test: bool = False
     sender_name: str = ''
-    seen_documents: tuple[str,...] = ()   # watch mode: recorded as seen only once accepted
+    # Saved with each attempt so a retry replays exactly what was first sent:
+    # wire 0 = legacy single Resend email to everyone; 2 = one email per recipient (batch).
+    wire: int = 0
+    subscription_url: str = ''
 
     def __post_init__(self):
         # Saved attempts round-trip through JSON, which turns tuples into lists.
-        object.__setattr__(self,'seen_documents',tuple(self.seen_documents))
+        object.__setattr__(self,'recipient_snapshot',tuple(self.recipient_snapshot))
 
 
-def prepare(issue,rendered,config,*,attempt_id=None,recipient=None,seen_documents=()):
-    validate_issue(issue,config)
+def restore(saved):
+    """Rebuild a saved attempt exactly, ignoring fields from older versions (such as 0.1's seen_documents)."""
+    from dataclasses import fields
+    known={f.name for f in fields(PreparedIssue)}
+    return PreparedIssue(**{k:v for k,v in saved.items() if k in known})
+
+
+def prepare(issue,rendered,config,*,attempt_id=None,recipient=None,subscriptions=None):
+    """Freeze one exact send. With a subscription list, recipients and the manage link are read now."""
+    problems=issue_problems(issue)
+    if problems: raise ValueError('Issue failed checks: '+'; '.join(problems))
     if render_issue(issue,config)!=rendered: raise ValueError('Final render does not match issue')
     if attempt_id is not None and not re.fullmatch(r'[a-zA-Z0-9_-]{1,64}',attempt_id): raise ValueError('Invalid operator attempt ID')
     if recipient is not None and recipient not in config.email.recipients: raise ValueError('Select one configured recipient')
-    data=asdict(issue); data['local_date']=issue.local_date.isoformat()
+    data={'issue_key':issue.issue_key,'local_date':issue.local_date.isoformat(),'issue':issue_to_data(issue)}
     key=f'{config.identity.id}/{issue.local_date.isoformat()}'
     if attempt_id: key+=f'/resend/{attempt_id}'
     if recipient: key+=f'/preview/{attempt_id or rendered.fingerprint}/{recipient}'
-    return PreparedIssue(data,asdict(rendered),tuple([recipient] if recipient else config.email.recipients),rendered.fingerprint,hashlib.sha256(key.encode()).hexdigest(),now(),config.email.provider,config.email.sender,config.email.smtp_host,config.email.smtp_port,recipient is not None,config.identity.sender_name,tuple(seen_documents))
+    recipients=[recipient] if recipient else list(config.email.recipients)
+    if config.email.subscription_url and not recipient:
+        from .subscriptions import fetch
+        recipients=(subscriptions or fetch)(config.email)  # never the static list: an opt-out must hold
+    check_recipient_limit(config.email.provider,recipients)
+    return PreparedIssue(data,asdict(rendered),tuple(recipients),rendered.fingerprint,hashlib.sha256(key.encode()).hexdigest(),now(),config.email.provider,config.email.sender,config.email.smtp_host,config.email.smtp_port,recipient is not None,config.identity.sender_name,
+                         wire=WIRE_VERSION,subscription_url=config.email.subscription_url if not recipient else '')
 
 
 class DefiniteNonSend(ValueError):
@@ -72,15 +99,20 @@ def from_header(p):
     return sender_header(p.sender,p.sender_name)
 
 
-def send(prepared,store,transport=None):
+def send(prepared,store,transport=None,*,recheck=None):
+    """recheck(prepared) runs before retrying a saved, unaccepted subscription send (opt-outs since)."""
     with store.locked():
         data=store.read(); attempts=data.setdefault('attempts',{}); record=attempts.get(prepared.attempt_key)
         if record:
-            saved=record['prepared']; saved['recipient_snapshot']=tuple(saved['recipient_snapshot']); prepared=PreparedIssue(**saved)
+            prepared=restore(record['prepared'])
             if record['status']=='accepted': return SendReceipt(**record['receipt'])
             if record['status']=='unknown' or (record['status']=='sending' and prepared.provider=='smtp'):
                 raise RuntimeError('Uncertain delivery requires manual recovery')
             if datetime.now(timezone.utc)-datetime.fromisoformat(prepared.prepared_at)>=timedelta(hours=24): raise RuntimeError('Idempotency window expired; manual recovery required')
+            if not prepared.preview_test:
+                if recheck is None and prepared.subscription_url:
+                    raise RuntimeError('A saved subscription send needs its list re-checked before retry; reconcile manually')
+                if recheck is not None: recheck(prepared)
         transport=delivery_readiness(prepared.provider,transport)
         from_header(prepared)
         if not record:
@@ -100,18 +132,14 @@ def send(prepared,store,transport=None):
         record['receipt']=asdict(receipt); record['status']=receipt.state.value
         if receipt.state.value=='accepted' and not prepared.preview_test:
             data.setdefault('completed',{})[prepared.issue['issue_key']]=prepared.attempt_key
-            history=data.setdefault('history',[])
-            from .models import Lead
-            for lead in prepared.issue['leads']:
-                lead=Lead(**lead); row={'identity':lead_identity(lead),'revision':lead_revision(lead)}
-                if row not in history: history.append(row)
-            if prepared.seen_documents:
-                # Watch mode: documents analysed for this issue are skipped by later runs.
-                seen=data.setdefault('seen_documents',{})
-                for url in prepared.seen_documents: seen.setdefault(url,prepared.issue['local_date'])
-                # Keep 180 days, far beyond any freshness window, so state stays small.
-                cutoff=(date.fromisoformat(prepared.issue['local_date'])-timedelta(days=180)).isoformat()
-                data['seen_documents']={u:d for u,d in seen.items() if d>=cutoff}
+            # The tracker is updated in the same atomic state commit that records acceptance.
+            # A tracker problem must never prevent saving the acceptance itself (that would invite a resend).
+            try:
+                saved=prepared.issue
+                issue=parse_issue_data(saved['issue'],issue_key=saved['issue_key'],local_date=date.fromisoformat(saved['local_date']))
+                data['leads']=record_issue(data.get('leads',[]),issue)
+            except (ValueError,KeyError,TypeError):
+                record['tracker_error']='Sent leads could not be added to the tracker'
         store.save(data)
         return receipt
 
@@ -123,11 +151,27 @@ class ResendTransport:
         if not self.api_key: raise DefiniteNonSend('Missing email credentials')
     def send(self,p):
         self.check_ready()
-        payload={'from':from_header(p),'to':list(p.recipient_snapshot),**{k:p.rendered[k] for k in ('subject','html','text')}}
-        request=urllib.request.Request('https://api.resend.com/emails',data=json.dumps(payload).encode(),headers={'Authorization':f'Bearer {self.api_key}','Content-Type':'application/json','Idempotency-Key':p.attempt_key,'User-Agent':'DocHunt/0.1'},method='POST')
+        content={k:p.rendered[k] for k in ('subject','html','text')}
+        if p.wire>=2:
+            # One email per recipient: nobody sees another reader's address and nobody else gets a copy.
+            url='https://api.resend.com/emails/batch'
+            body=[{'from':from_header(p),'to':[r],**content} for r in p.recipient_snapshot]
+        else:
+            # Attempts saved before per-recipient sending replay their original request exactly,
+            # so the provider's idempotency key still matches.
+            url='https://api.resend.com/emails'
+            body={'from':from_header(p),'to':list(p.recipient_snapshot),**content}
+        request=urllib.request.Request(url,data=json.dumps(body).encode(),headers={'Authorization':f'Bearer {self.api_key}','Content-Type':'application/json','Idempotency-Key':p.attempt_key,'User-Agent':'DocHunt/0.2'},method='POST')
         with self.opener(request,timeout=30) as response: result=json.loads(response.read())
-        if not isinstance(result.get('id'),str): raise RuntimeError('Uncertain provider response')
-        return SendReceipt('resend','accepted',provider_id=result['id'],accepted_at=now(),accepted_recipients=list(p.recipient_snapshot))
+        if p.wire>=2:
+            items=result.get('data') if isinstance(result,dict) else None
+            if not isinstance(items,list) or len(items)!=len(p.recipient_snapshot) or any(not isinstance(i,dict) or not isinstance(i.get('id'),str) for i in items):
+                raise RuntimeError('Uncertain provider response')
+            provider_id=','.join(i['id'] for i in items)
+        else:
+            if not isinstance(result.get('id'),str): raise RuntimeError('Uncertain provider response')
+            provider_id=result['id']
+        return SendReceipt('resend','accepted',provider_id=provider_id,accepted_at=now(),accepted_recipients=list(p.recipient_snapshot))
 
 
 class SMTPTransport:

@@ -3,11 +3,11 @@ requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "dochunt"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
-dependencies = ["pypdf==6.19.0", "cryptography==50.0.2"]
+dependencies = []
 [project.optional-dependencies]
 test = ["pytest==8.4.2"]
 [project.scripts]
@@ -16,4 +16,4 @@ dochunt = "dochunt.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-dochunt = ["prompts/*.md", "fixtures/*.json", "setup_ui/*.html", "setup_ui/*.js", "setup_ui/*.css"]
+dochunt = ["prompts/*.md", "schema/*.json", "fixtures/*.json", "setup_ui/*.html", "setup_ui/*.js", "setup_ui/*.css"]

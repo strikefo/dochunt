@@ -32,11 +32,14 @@ class Runner:
         if 'push' in args: self.remote=self.head
         return ''
 @pytest.fixture
-def repo(tmp_path):
-    (tmp_path/'newsroom.toml').write_text((ROOT/'newsroom.toml').read_text()); return tmp_path
+def repo(tmp_path, monkeypatch):
+    # The helper check reads real git settings; keep the machine's own out of every wizard test.
+    monkeypatch.setenv('GIT_CONFIG_GLOBAL', str(tmp_path/'no-global')); monkeypatch.setenv('GIT_CONFIG_NOSYSTEM', '1')
+    for name in ('GIT_CONFIG_COUNT', 'GIT_CONFIG_PARAMETERS', 'GIT_CONFIG'): monkeypatch.delenv(name, raising=False)
+    (tmp_path/'newsroom.toml').write_text((ROOT/'examples'/'military.toml').read_text()); return tmp_path
 
 def test_serialization_roundtrip_preserves_all_fields(repo):
-    c=load_config(repo/'newsroom.toml'); c.editorial.coverage_brief='line one\n"quoted" \\ line'; c.email.smtp_port=465
+    c=load_config(repo/'newsroom.toml'); c.beat.brief='line one\n"quoted" \\ line'; c.email.smtp_port=465
     (repo/'round.toml').write_text(serialize_config(c)); assert asdict(load_config(repo/'round.toml'))==asdict(c)
 
 def test_inspect_private_identity_and_branch(repo):
@@ -73,7 +76,7 @@ def test_partial_secret_failure_and_stdin_only(repo):
         if value: assert args[:3]==['gh','secret','set']
 
 def test_provider_change_requires_new_secret(repo):
-    c=load_config(repo/'newsroom.toml'); c.ai.provider='anthropic'
+    c=load_config(repo/'newsroom.toml'); c.agent.runtime='claude'
     with pytest.raises(ValueError): require_secrets(c,{'OPENAI_API_KEY','RESEND_API_KEY'})
 
 def test_push_failure_never_claims_success(repo):
@@ -91,6 +94,11 @@ def test_wrong_push_remote_and_unreadable_rules_rejected(repo):
         if args[:4]==['git','remote','get-url','--push']: return 'git@github.com:other/repo.git'
         return r(args,**kwargs)
     with pytest.raises(ValueError): inspect_target(repo,runner=altered)
+    def mirrored(args,**kwargs):   # a second push URL (say, a public mirror) would also receive newsroom.toml
+        if args==['git','remote','get-url','--push','--all','origin']: return 'git@github.com:news/own.git\nhttps://github.com/someone/public-mirror.git'
+        return r(args,**kwargs)
+    with pytest.raises(ValueError): inspect_target(repo,runner=mirrored)
+
     def unreadable(args,**kwargs):
         if 'repos/news/own/rules/branches/work' in args: raise ValueError('permission denied')
         return r(args,**kwargs)
@@ -100,14 +108,16 @@ def test_symlink_config_is_rejected(repo):
     r=Runner(); (repo/'outside').write_text((repo/'newsroom.toml').read_text()); (repo/'newsroom.toml').unlink(); (repo/'newsroom.toml').symlink_to(repo/'outside')
     with pytest.raises(ValueError): inspect_target(repo,runner=r)
 
-def test_temporary_git_config_only_commit(tmp_path):
+def test_temporary_git_config_only_commit(tmp_path, monkeypatch):
     """Real isolated Git repos; only GitHub metadata is mocked. No authenticated operations."""
+    monkeypatch.setenv('GIT_CONFIG_GLOBAL', str(tmp_path/'no-global')); monkeypatch.setenv('GIT_CONFIG_NOSYSTEM', '1')
+    for name in ('GIT_CONFIG_COUNT', 'GIT_CONFIG_PARAMETERS', 'GIT_CONFIG'): monkeypatch.delenv(name, raising=False)
     from dochunt.github_setup import run_command
     remote=tmp_path/'remote.git'; repo=tmp_path/'clone'
     def git(args,path): return run_command(['git',*args],cwd=path)
     git(['init','--bare',str(remote)],tmp_path); git(['clone',str(remote),str(repo)],tmp_path)
     git(['config','user.email','fixture@example.invalid'],repo); git(['config','user.name','Fixture'],repo)
-    (repo/'newsroom.toml').write_text((ROOT/'newsroom.toml').read_text()); (repo/'untouched').write_text('keep')
+    (repo/'newsroom.toml').write_text((ROOT/'examples'/'military.toml').read_text()); (repo/'untouched').write_text('keep')
     git(['add','.'],repo); git(['commit','-m','fixture'],repo); git(['push','origin','HEAD'],repo)
     def offline(args,*,cwd,input=None):
         if args[:3]==['git','remote','get-url']: return 'git@github.com:news/own.git'
@@ -147,3 +157,19 @@ def test_default_branch_change_blocks_secret_recheck(repo):
         return r(args,**kwargs)
     results=set_secrets(t,{'OPENAI_API_KEY':'fixture'},runner=runner)
     assert not results[0].success and not any(args[:3]==['gh','secret','set'] for args,_ in r.calls)
+
+
+
+def test_wizard_refuses_any_remote_helper_using_real_git_settings(repo, monkeypatch):
+    import subprocess
+    subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+    # An unrelated setting that isn't valid UTF-8 must not break the check.
+    with open(repo / '.git' / 'config', 'ab') as f: f.write(b'[user]\n\tname = Jos\xe9\n')
+    r = Runner()
+    inspect_target(repo, runner=r)                                   # real settings, mocked remote operations
+    for value in ('elsewhere', 'dochunt-no-remote-helper', ''):       # any value, even empty, means a helper key is set
+        subprocess.run(['git', 'config', 'remote.origin.vcs', value], cwd=repo, check=True)
+        with pytest.raises(ValueError): inspect_target(repo, runner=r)
+    monkeypatch.setenv('GIT_CONFIG', str(repo / 'elsewhere.gitconfig'))  # git push ignores it; so does the check
+    (repo / 'elsewhere.gitconfig').write_text('')
+    with pytest.raises(ValueError): inspect_target(repo, runner=r)

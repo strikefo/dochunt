@@ -1,73 +1,72 @@
 # How DocHunt works
 
+DocHunt pairs an AI research agent, which does the judgment work, with a small amount of code that does the parts a reader must be able to trust: links, routes, repeats, recipients, branding and delivery.
+
 ## One run
 
-1. **Read the request pages.** These are the FOIA or public-records pages in your config and playbook. They are fetched first, because a follow-on request is useless without its route. Each is capped at 12,000 characters.
-2. **Find new documents.** DocHunt reads each page on the watch list:
-   - **RSS/Atom feeds** give exact dates. If `keywords` is set, a feed item's title must contain one of them (whole word, any case).
-   - **Ordinary listing pages** get a few linked documents opened, and each document's own publication date is read.
+1. **Eligibility.** An hourly check decides whether today's issue is due (see [scheduling](scheduling.md)). Nothing is installed or billed until it is.
+2. **Prompt.** DocHunt fills its research prompt (`src/dochunt/prompts/hunt.md`) with your `[beat]` section, today's date, and the leads sent in the last 120 days. Run `dochunt show-prompt` to read it.
+3. **Research.** The agent works in two passes, in one session:
+   - a *research pass*: it searches across your source families, opens and reads the primary documents, verifies findings and numbers, and finds and verifies the responsible office's contact or submission route on an official page;
+   - a *reviewing pass*: acting as a skeptical editor, it checks that each headline and number matches the source, that the records are identifiable, that the route is verified, and that the first step is finished and usable. It revises or drops candidates and keeps at most `max_leads`, best first.
 
-   A document counts as new only if its date falls inside the window (14 days by default) and it hasn't been reported before. Dates are read conservatively:
-   - labelled dates ("Published", "Released") come first;
-   - revision dates, deadlines and comment periods are ignored;
-   - a month with no day counts as the first of that month;
-   - an undated document is skipped.
+   It returns JSON matching a fixed schema (`src/dochunt/schema/issue.schema.json`).
+4. **Checks.** Code checks every lead (below). If anything fails, the agent gets one chance to fix exactly those problems. Leads that are still broken are dropped, and the rest are sent.
+5. **Render.** A fixed, email-safe template renders the issue in your branding, as HTML and plain text, with the AI notice at the top.
+6. **Deliver.** The exact rendered email is saved to `data/state.json` before it is sent, then sent with Resend or SMTP. The sent leads are added to `data/leads.jsonl`, so later runs skip them. See [recovery](recovery.md).
 
-   At most `max_new_documents` (5 by default) are analysed per run.
-3. **Analyse each new document.** One model call gets your coverage brief, any playbook, the request pages and the **whole** new document. Documents over the character allowance keep their beginning and end, and a visible marker shows the cut. The model proposes leads in a fixed structure:
-   - established facts, each with a quote;
-   - qualifications, also quoted;
-   - what is still unproven;
-   - the essential underlying records, each with its own access route (public download or request, custodian, location and the passage that shows it);
-   - a draft request for existing records.
-4. **Independent review.** A separate call sees the same sources and each proposed lead. It can only **reject**, with reasons. It cannot edit a lead into passing.
-5. **Fixed checks.** Application code, not the model, checks every lead:
-   - every quote must appear literally in its source. Quotation marks, repeated PDF page headers and number formatting are tolerated, so `43,159` matches `43,159.00`;
-   - every number in a stated fact must appear in its source;
-   - the lead must rest on the newly published document, and that document must be inside the window;
-   - every essential record needs a route:
-     - a public download must be described by its own passage;
-     - a request route's location must appear in the quote, on the cited page or in its links, and that page must name the custodian;
-     - a route that names a different office, or is a hotline, is held;
-     - a route may not point back at the document you already have;
-   - the draft request must ask for existing records, stay under 1,800 characters and contain no unfilled placeholders;
-   - the headline must be at most 14 words, explain its acronyms, and name only people, places and figures that appear in the evidence or your geography.
-6. **Email.** Passing leads go into the email. Leads whose only problem is an unconfirmed route go into the second section, "Check the request route first", and their locations are never rendered as links. Everything else is held and listed in the run's private files.
-7. **Remember.** After an email is accepted by your provider, the documents it analysed are recorded in `data/state.json`, so they are never analysed or paid for twice. Records older than 180 days are pruned.
+Research and delivery run as separate workflow steps. The research step has only the AI key; the delivery step has only the email keys and the Git push token.
 
-Search results and model claims are never evidence. Only text that DocHunt fetched itself is quoted.
+## The agent
 
-## Search mode
+| | Codex CLI | Claude Code |
+|---|---|---|
+| Key | `OPENAI_API_KEY` | `ANTHROPIC_API_KEY` |
+| Web access | built-in web search | `WebSearch` and `WebFetch` tools only |
+| Shell and file tools | shell, exec, apps, plugins, browser and computer use turned off; read-only sandbox as a backstop. Codex's code-mode host stays on because web search runs through it; it has no file or network access of its own | none |
+| Output | `--output-schema` | `--json-schema` |
+| Spending stop | none; use account limits | `max_budget_usd` per session |
 
-`[hunt] mode = "search"` replaces the watch list with one native web-search call that proposes URLs from your brief. The same retriever fetches them, and the same analysis, review and checks follow. It finds topical documents but not necessarily new ones. Watch mode is the recommended default: that is where reporters told us the value is.
+For both, DocHunt:
 
-## Fetching
+- runs the CLI in an empty temporary folder, not in your repository;
+- passes it an environment with only its own API key and basic system settings, with no email credentials, no GitHub token and no recipients;
+- turns off the CLI's own user settings, rules, plugins and session history;
+- stops the agent's whole process tree if the run times out, is cancelled or is interrupted;
+- tells it, in the prompt, that text on web pages is information and never instructions.
 
-All fetching goes through a guarded retriever:
+The agent can't send email or change your repository. The worst a misled agent can do is write a bad lead, which the checks and your readers' judgment are there to catch.
 
-- public addresses only, with every redirect re-checked;
-- no cookies or credentials;
-- a 1 MB cap per document;
-- a separate worker process with a hard timeout.
+## The checks
 
-PDFs are extracted locally. Pages that block plain clients can fall back to [Firecrawl](https://www.firecrawl.dev/) when you enable it with your own key. Firecrawl handles HTML only, never PDFs. Its calls are capped per run and labelled in the run's source records.
+A lead is **dropped** only for problems a reader would trip over:
+
+- a source, contact or verification link that isn't a valid web address, or an invalid email address or phone number;
+- no usable first step: a records request needs a submission link or email; a call-or-email step needs an email, phone or contact page; a download needs a direct link;
+- no official page named where the route was verified (records requests and inquiries);
+- a source document already sent in an earlier issue, unless the agent marks the lead as an update with new information;
+- two leads on the same document, or more leads than `max_leads` (the agent's ranking is kept);
+- a headline over 160 characters.
+
+These produce **warnings** in `check-report.json` but never drop a lead:
+
+- a link that returns an error such as HTTP 404. A 403, 401 or 429 is ignored, because many government sites block automated requests;
+- a number in a headline that doesn't appear in the lead's own text.
+
+The agent also lists the pages it actually opened (`checked_sources`). A "no leads" answer must show at least three; otherwise the run fails and sends nothing, because the likely cause is broken web access rather than a quiet news day.
+
+If every lead is dropped, the email is an honest "no actionable leads" issue. If the agent fails or returns something unusable twice, nothing is sent and the run fails visibly.
+
+The checks deliberately don't try to re-verify facts against source documents. Earlier versions of DocHunt did, with strict literal-quote and route-wording gates, and they blocked almost every lead. Fact-checking is the agent's reviewing pass and, in the end, the reporter's job: every email says it is AI-generated.
 
 ## What each run leaves behind
 
-A preview or scheduled run writes:
+Every scheduled or previewed run uploads a private Actions artifact for 7 days:
 
-- `preview.html` and `preview.txt`: the email;
-- `issue.json`: the leads as sent;
-- `engine-result.json`: every lead, approved or held, with the reasons;
-- `sources.json`: the exact text that was read;
-- `analysed-documents.json`;
-- `raw/`: the model's raw replies.
+- `preview.html`, `preview.txt`: the email;
+- `issue.json`: the checked issue that was (or would be) sent;
+- `check-report.json`: agent run time and usage, the sources it checked, problems found, dropped leads and why, warnings;
+- `preview-manifest.json`: hashes that tie the files to your current configuration;
+- `raw/prompt.md`, `raw/agent-output-*.json`: what the agent was asked and returned (never used for sending).
 
-These let you check any email against its sources after the fact. They stay in your private repository's workflow artifacts for seven days.
-
-## Providers
-
-- **OpenAI**: Responses API with strict JSON schemas. Supported models are `gpt-6.1-sol` (the default, and the one used in our live tests) and `gpt-6-astra`.
-- **Anthropic**: Messages API, with the schema included in the instructions. Supported models are `claude-sonnet-5-5`, `claude-opus-5-5` and `claude-haiku-4-5`. The Anthropic path is covered by offline tests but **has not been run live yet**.
-
-`ai.reviewer_model` can name a different model from the same provider for the review call.
+A test send or resend re-checks the manifest and re-renders the issue, so an edited or stale artifact can't be sent.

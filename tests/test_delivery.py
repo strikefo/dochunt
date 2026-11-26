@@ -51,7 +51,7 @@ def test_preview_test_does_not_mark_scheduled_complete(tmp_path):
     from dataclasses import replace
     p=replace(prepared(),preview_test=True); s=StateStore(tmp_path,git=False)
     send(p,s,Fake())
-    assert not s.read()['completed'] and not s.read()['history']
+    assert not s.read()['completed'] and not s.read()['leads']
 
 
 def test_smtp_partial_and_timeout_stop_retry(tmp_path):
@@ -80,14 +80,56 @@ def test_resend_exact_wire_snapshot_and_key():
     class Response:
         def __enter__(self): return self
         def __exit__(self,*a): pass
-        def read(self): return b'{"id":"synthetic-id"}'
+        def read(self): return json.dumps({'data':[{'id':f'id-{i}'} for i in range(len(p.recipient_snapshot))]}).encode()
     def opener(request,**kwargs): requests.append(request); return Response()
     t=ResendTransport(api_key='synthetic',opener=opener)
     assert t.send(p).accepted_recipients==list(p.recipient_snapshot)
     t.send(p)
     assert requests[0].data==requests[1].data
     assert requests[0].get_header('Idempotency-key')==p.attempt_key
-    assert json.loads(requests[0].data)['subject']==p.rendered['subject']
+    assert requests[0].full_url=='https://api.resend.com/emails/batch'
+    body=json.loads(requests[0].data)
+    # One email per recipient, each addressed only to that reader; no extra mailbox.
+    assert [e['to'] for e in body]==[[r] for r in p.recipient_snapshot]
+    assert all(e['subject']==p.rendered['subject'] and 'bcc' not in e for e in body)
+
+
+def test_resend_per_recipient_batch_hides_addresses_and_adds_nobody():
+    import json
+    from dataclasses import replace
+    from dochunt.delivery import ResendTransport
+    p=replace(prepared(),recipient_snapshot=('a@example.org','b@example.org','c@example.org'))
+    sent=[]
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self,*a): pass
+        def read(self): return b'{"data":[{"id":"1"},{"id":"2"},{"id":"3"}]}'
+    def opener(request,**kwargs): sent.append(json.loads(request.data)); return Response()
+    receipt=ResendTransport(api_key='synthetic',opener=opener).send(p)
+    assert [e['to'] for e in sent[0]]==[['a@example.org'],['b@example.org'],['c@example.org']]
+    assert receipt.provider_id=='1,2,3' and receipt.accepted_recipients==['a@example.org','b@example.org','c@example.org']
+    class Short(Response):
+        def read(self): return b'{"data":[{"id":"1"}]}'
+    import pytest
+    with pytest.raises(RuntimeError,match='Uncertain'):
+        ResendTransport(api_key='synthetic',opener=lambda r,**k: Short()).send(p)
+
+
+def test_attempts_saved_by_older_versions_replay_their_original_request():
+    import json
+    from dataclasses import asdict
+    from dochunt.delivery import ResendTransport, restore
+    saved=asdict(prepared()); saved.pop('wire'); saved.pop('subscription_url')
+    legacy=restore(saved)
+    assert legacy.wire==0
+    seen=[]
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self,*a): pass
+        def read(self): return b'{"id":"legacy-id"}'
+    def opener(request,**kwargs): seen.append(request); return Response()
+    assert ResendTransport(api_key='synthetic',opener=opener).send(legacy).provider_id=='legacy-id'
+    assert seen[0].full_url=='https://api.resend.com/emails' and json.loads(seen[0].data)['to']==list(legacy.recipient_snapshot)
 
 
 def test_smtp_definite_failure_is_pending_and_can_recover(tmp_path):
@@ -108,10 +150,10 @@ def test_sender_snapshot_headers_and_injection():
     class Response:
         def __enter__(self): return self
         def __exit__(self,*a): pass
-        def read(self): return b'{"id":"fake"}'
+        def read(self): return b'{"data":[{"id":"fake"}]}'
     def opener(req,**k):
         import json
-        sent.append(json.loads(req.data)['from']); return Response()
+        sent.append(json.loads(req.data)[0]['from']); return Response()
     ResendTransport(api_key='fake',opener=opener).send(p)
     class Client:
         def __enter__(self): return self
@@ -141,16 +183,16 @@ def test_resend_explicit_user_agent_can_pass_gateway_without_changing_send():
     class Response:
         def __enter__(self): return self
         def __exit__(self,*a): pass
-        def read(self): return b'{"id":"synthetic-id"}'
+        def read(self): return json.dumps({'data':[{'id':'synthetic-id'}]}).encode()
     def opener(request,**kwargs):
         agent=request.get_header('User-agent')
         if not agent or not agent.startswith('DocHunt/'):
             raise HTTPError(request.full_url,403,'Forbidden',{},None)
         assert request.get_method()=='POST'
-        assert request.full_url=='https://api.resend.com/emails'
+        assert request.full_url=='https://api.resend.com/emails/batch'
         assert request.get_header('Idempotency-key')==p.attempt_key
         assert request.get_header('Authorization')=='Bearer synthetic-unused'
-        payload=json.loads(request.data)
+        payload=json.loads(request.data)[0]
         assert payload['to']==list(p.recipient_snapshot)
         assert payload['subject']==p.rendered['subject']
         assert payload['html']==p.rendered['html']
@@ -158,5 +200,5 @@ def test_resend_explicit_user_agent_can_pass_gateway_without_changing_send():
         return Response()
     receipt=ResendTransport(api_key='synthetic-unused',opener=opener).send(p)
     assert receipt.state.value=='accepted'
-    assert receipt.provider_id=='synthetic-id'
+    assert receipt.provider_id=='synthetic-id'  # one recipient: one id
     assert receipt.accepted_recipients==list(p.recipient_snapshot)

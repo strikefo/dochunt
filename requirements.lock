@@ -1,4 +1,4 @@
-# Pinned runtime PDF parser and build/test dependencies. Install with pip install -r requirements.lock
+# Pinned build/test dependencies (DocHunt has no runtime dependencies). Install with pip install -r requirements.lock
 # then pip install --no-build-isolation -e .
 setuptools==80.9.0
 pytest==8.4.2
@@ -6,4 +6,3 @@ iniconfig==2.3.0
 packaging==26.3
 pluggy==1.6.0
 Pygments==2.21.0
-pypdf==6.19.0
