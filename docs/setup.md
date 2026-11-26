@@ -36,25 +36,27 @@ Go to **Settings → Secrets and variables → Actions → New repository secret
 
 Never put a key in `newsroom.toml`, in a workflow input or in an issue.
 
-If a branch ruleset protects your default branch, DocHunt's state commits need a way through. Create a GitHub App that is the ruleset's bypass actor and has contents write access, install it on the repository, then add the repository variable `BOT_APP_CLIENT_ID` and the secret `BOT_APP_PRIVATE_KEY`. Without them, DocHunt pushes with the workflow's own token.
+Before any paid research, a scheduled run checks that your provider's mail secrets are present, but not that they work; the test send in step 4 confirms them.
+
+If a branch ruleset protects your default branch, DocHunt's state commits need a way through. Create a GitHub App that is the ruleset's bypass actor and has contents write access, install it on the repository, then add the repository variable `BOT_APP_CLIENT_ID` and the secret `BOT_APP_PRIVATE_KEY`. Set both: the variable alone makes the run fail. Without them, DocHunt pushes with the workflow's own token.
 
 ## 4. Preview, then test, then schedule
 
 Use **Actions → Document Hunt → Run workflow** on the default branch:
 
-1. **`preview`** (free). A fictional issue rendered with your branding. Download the `document-hunt-RUN_ID` artifact and open `preview.html`. This only proves that your settings render.
+1. **`preview`** (no AI cost). A fictional issue rendered with your branding. Download the `document-hunt-RUN_ID` artifact and open `preview.html`. This only proves that your settings render.
 2. **`paid-ai-preview`** (billed). A real agent run on your beat. It sends no email and changes no state. Download `paid-ai-preview-RUN_ID` and read:
    - `preview.html` and `preview.txt`: the email;
    - `check-report.json`: run time, token usage (and cost, for Claude), problems the checks found, any leads dropped and why, and link warnings.
 
    The `document-hunt-RUN_ID` artifact also has `raw/prompt.md` (exactly what the agent was asked) and `raw/agent-output-*.json` (what it returned). Expect to adjust your `[beat]` section a few times.
-3. **`send-preview-test`**. Sends that exact preview to **one** address from your recipients list. Enter the paid preview's run ID, the recipient, and a new `attempt_id` (letters, digits, `_` and `-`). Check the inbox, spam folder, links and the layout on a phone.
-4. **Schedule.** When you are satisfied, set `[schedule] enabled = true`. An hourly check (at minute 17 UTC) starts a run after your `preferred_time` on your `weekdays`, within `window_hours` (default 12). GitHub starts these checks only a few times a day, so the email can arrive hours late; for on-time email, add an external timer ([scheduling](scheduling.md#githubs-schedule-is-sparse-use-an-external-timer-for-on-time-email)). Missed days are not backfilled.
+3. **`send-preview-test`**. Sends that exact preview to **one** address from your recipients list. Enter the paid preview's run ID, the recipient, and a new `attempt_id` (1-64 letters, digits, `_` and `-`). Check the inbox, spam folder, links and the layout on a phone.
+4. **Schedule.** When you are satisfied, set `[schedule] enabled = true`. An hourly check (at minute 17 UTC) starts a run after your `preferred_time` on your `weekdays`, within `window_hours` (default 12). GitHub can delay or skip these checks, so the email can arrive hours late; for on-time email, add an external timer ([scheduling](scheduling.md#githubs-schedule-is-sparse-use-an-external-timer-for-on-time-email)). Missed days are not backfilled.
 
 Other modes:
 
-- `deliver` runs today's issue now and sends it to everyone.
-- `resend` re-sends a chosen paid preview to everyone, under a new attempt ID.
+- `deliver` researches and sends today's issue now, even with scheduling off, unless today's issue was already sent or an earlier send needs recovery.
+- `resend` sends a chosen paid preview (by its run ID) to everyone again, under a new `attempt_id`, and marks that date's issue as sent.
 
 See [scheduling](scheduling.md) and [recovery](recovery.md).
 
@@ -66,7 +68,7 @@ See [scheduling](scheduling.md) and [recovery](recovery.md).
 
 ## Working locally (optional)
 
-With Python 3.11+ you can check settings and see the agent's prompt without spending anything:
+With Python 3.11+ on macOS or Linux (on Windows, use WSL) you can check settings and see the agent's prompt without spending anything:
 
 ```bash
 python -m pip install .
@@ -81,18 +83,20 @@ dochunt show-prompt
 ```
 
 ```bash
-dochunt preview --synthetic --output-dir out
+dochunt preview --synthetic --output-dir out/synthetic
 ```
 
-A local paid preview also needs the agent CLI, at the version the workflow pins (`npm install -g @openai/codex@0.163.0` or `npm install -g @anthropic-ai/claude-code@2.1.299`; other versions may reject DocHunt's command), and your API key in the environment:
+`--fixture no-leads` shows the no-leads email instead. A local paid preview also needs the agent CLI, at the version the workflow pins (`npm install -g @openai/codex@0.163.0` or `npm install -g @anthropic-ai/claude-code@2.1.299`; other versions may reject DocHunt's command), and your API key in the environment:
 
 ```bash
-dochunt preview --paid --output-dir out
+dochunt preview --paid --output-dir out/paid
 ```
+
+Use a new, empty output directory for each preview.
 
 ## Optional local setup form
 
-If you have Python 3.11+, Git and an authenticated GitHub CLI (`gh auth login`), you can edit settings and secrets in a local browser form instead. From a clean clone of your private repository:
+If you have Python 3.11+, Git and an authenticated GitHub CLI (`gh auth login`), you can edit settings and secrets in a local browser form instead. It works when your GitHub login owns the repository (for an organization-owned repository, use the web steps above). If the default branch is protected, it gives you the new `newsroom.toml` to commit through a pull request instead of pushing. From a clean, up-to-date clone of your private repository, on its default branch:
 
 ```bash
 dochunt setup --repo .
@@ -102,12 +106,12 @@ The form:
 
 - runs only on `127.0.0.1` until you stop it;
 - shows every change before writing;
-- commits and pushes only `newsroom.toml`;
+- commits and pushes only `newsroom.toml` (rewritten without its comments);
 - sends secrets to `gh secret set` on standard input.
 
 It always publishes scheduling as disabled before it uploads replacement secrets. Turning the schedule on needs a separate, explicit confirmation.
 
-For a demonstration with fictional settings and no writes, run:
+To try the form with no writes at all (it shows this checkout's current `newsroom.toml` but saves nothing), run:
 
 ```bash
 python -m dochunt.setup_server --mock --no-browser --repo .
