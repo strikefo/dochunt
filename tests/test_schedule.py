@@ -6,7 +6,7 @@ from dochunt.schedule import due
 
 
 def cfg(**changes):
-    c=config(); c.schedule=replace(c.schedule,enabled=True,**changes); return c
+    c=config(); c.schedule=replace(c.schedule,**{'enabled':True,'preferred_time':'08:00','window_hours':4,**changes}); return c
 
 
 def at(value): return datetime.fromisoformat(value).astimezone(timezone.utc)
@@ -50,3 +50,11 @@ def test_naive_clock_rejected():
 ])
 def test_dst_gap_and_repeated_hour(when,preferred,expected):
     assert due(cfg(timezone='America/Chicago',weekdays=[6],preferred_time=preferred),at(when),{}).due is expected
+
+
+def test_default_window_is_wide_because_github_schedules_are_sparse():
+    c=config(); c.schedule=replace(c.schedule,enabled=True,preferred_time='06:00',timezone='America/Los_Angeles')
+    assert c.schedule.window_hours==12
+    assert due(c,at('2026-11-25T15:39:00+00:00'),{}).due            # 07:39 PT
+    assert due(c,at('2026-11-25T21:15:00+00:00'),{}).due            # 13:15 PT: a 4-hour window would miss it
+    assert 'expired' in due(c,at('2026-11-26T02:00:00+00:00'),{}).reason  # 18:00 PT

@@ -17,15 +17,18 @@ class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
         redirected=super().redirect_request(req,fp,code,msg,headers,newurl)
         if urlsplit(newurl).netloc != "api.github.com": redirected.remove_header("Authorization")
         return redirected
-from .models import Issue, Lead, Evidence, Usage
+from .models import parse_issue_data
 from .render import render_issue, RenderedIssue
 
-# Preview artifacts; raw model outputs sit in an optional raw/ directory that delivery never reads.
-FILES={'issue.json','preview.html','preview.txt','preview-manifest.json','engine-result.json','sources.json','analysed-documents.json'}
-ENGINE_FILES=FILES
+# Preview artifacts; prompts and raw agent outputs sit in an optional raw/ directory that delivery never reads.
+FILES={'issue.json','preview.html','preview.txt','preview-manifest.json','check-report.json'}
 
 def config_digest(config):
-    return hashlib.sha256(json.dumps(asdict(config),sort_keys=True).encode()).hexdigest()
+    data=asdict(config)
+    if not data['email'].get('subscription_url'):
+        # Inactive optional settings must not invalidate previews made before they existed.
+        data['email'].pop('subscription_url',None); data['email'].pop('subscription_domains',None)
+    return hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()
 
 def write_manifest(path,config,synthetic,files=FILES):
     path=Path(path)
@@ -42,12 +45,10 @@ def load_preview(path,config,*,require_paid=False,require_send=False):
     manifest=json.loads((path/'preview-manifest.json').read_text())
     if manifest.get('version')!=1 or manifest.get('mode') not in {'synthetic-preview','paid-ai-preview'} or (require_paid and manifest['mode']!='paid-ai-preview') or manifest.get('config_sha256')!=config_digest(config): raise ValueError('Preview/config mismatch')
     if manifest.get('files')!={name:hashlib.sha256((path/name).read_bytes()).hexdigest() for name in files-{'preview-manifest.json'}}: raise ValueError('Preview hashes differ')
-    data=json.loads((path/'issue.json').read_text()); fingerprint=data.pop('fingerprint')
-    data['local_date']=date.fromisoformat(data['local_date']); data['leads']=[Lead(**v) for v in data['leads']]; data['evidence']=[Evidence(**v) for v in data['evidence']]; data['usage']=Usage(**data['usage'])
-    issue=Issue(**data)
-    # Every evidence excerpt must be literal text of a saved source with the same hash.
-    from .engine import validate_engine_artifacts
-    validate_engine_artifacts(issue,json.loads((path/'sources.json').read_text()))
+    data=json.loads((path/'issue.json').read_text())
+    if not isinstance(data,dict) or set(data)!={'issue_key','local_date','fingerprint','issue'}: raise ValueError('Unexpected issue file')
+    fingerprint=data['fingerprint']
+    issue=parse_issue_data(data['issue'],issue_key=data['issue_key'],local_date=date.fromisoformat(data['local_date']))
     rendered=RenderedIssue(issue.subject,(path/'preview.html').read_text(),(path/'preview.txt').read_text(),fingerprint)
     if render_issue(issue,config)!=rendered: raise ValueError('Payload differs from finalized issue')
     return issue,rendered

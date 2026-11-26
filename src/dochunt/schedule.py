@@ -32,9 +32,10 @@ def due(config, now_utc, states, *, manual=False):
     if local.weekday() not in config.schedule.weekdays: return decision(False,'weekday excluded')
     preferred=datetime.combine(local.date(),time.fromisoformat(config.schedule.preferred_time),local.tzinfo)
     # fold=0 picks the first repeated wall time. A nonexistent spring time is
-    # mapped forward through UTC; the four-hour window is elapsed time.
+    # mapped forward through UTC; the window is elapsed time. It is wide by default
+    # because GitHub starts hourly schedules only a few times a day.
     preferred=preferred.astimezone(timezone.utc)
     elapsed=now_utc.astimezone(timezone.utc)-preferred
     if elapsed<timedelta(): return decision(False,'before preferred time')
-    if elapsed>=timedelta(hours=4): return decision(False,'window expired')
+    if elapsed>=timedelta(hours=config.schedule.window_hours): return decision(False,'window expired')
     return decision(True,'due')

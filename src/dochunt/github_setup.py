@@ -2,6 +2,7 @@
 from dataclasses import asdict, dataclass
 from pathlib import Path
 import json
+import os
 import re
 import subprocess
 import tomllib
@@ -15,15 +16,13 @@ def serialize_config(config: NewsroomConfig) -> str:
     def literal(value):
         if type(value) is bool: return str(value).lower()
         if type(value) is int: return str(value)
+        if type(value) is float: return repr(value)
         if isinstance(value,str): return json.dumps(value,ensure_ascii=False)
         if isinstance(value,list): return '['+', '.join(literal(v) for v in value)+']'
         raise ValueError('Unsupported TOML value')
     lines=['# Credentials belong only in GitHub Actions repository secrets.']
     for section,record in data.items():
-        if section=='sources': continue
         lines.extend(['',f'[{section}]',*[f'{k} = {literal(v)}' for k,v in record.items()]])
-    for record in data['sources']:
-        lines.extend(['','[[sources]]',*[f'{k} = {literal(v)}' for k,v in record.items()]])
     return '\n'.join(lines)+'\n'
 
 
@@ -63,7 +62,18 @@ class SecretUpdateResult:
     message: str
 
 
-def inspect_target(path: Path,*,runner=run_command) -> RepoTarget:
+def git_config_has(path,key):
+    """Whether `git push` in this checkout would see `key` set, read by name only (values are never
+    decoded). GIT_CONFIG is dropped because it redirects `git config` but not `git push`."""
+    env={k:v for k,v in os.environ.items() if k!='GIT_CONFIG'}
+    try: result=subprocess.run(['git','config','--name-only','--get-regexp','^'+re.escape(key)+'$'],cwd=path,env=env,capture_output=True,timeout=40,check=False)
+    except (OSError,subprocess.TimeoutExpired): raise ValueError('Git is required; operation unavailable.') from None
+    if result.returncode==0: return True
+    if result.returncode==1: return False          # git's "not found"
+    raise ValueError('Could not read git settings.')
+
+
+def inspect_target(path: Path,*,runner=run_command,config_has=git_config_has) -> RepoTarget:
     path=Path(path).resolve()
     def run(args): return runner(args,cwd=path)
     try:
@@ -77,7 +87,9 @@ def inspect_target(path: Path,*,runner=run_command) -> RepoTarget:
         head=run(['git','rev-parse','HEAD'])
         if not re.fullmatch('[0-9a-f]{40,64}',head): raise ValueError()
         remote=run(['git','remote','get-url','origin'])
-        if run(['git','remote','get-url','--push','origin'])!=remote: raise ValueError()
+        if run(['git','remote','get-url','--push','--all','origin'])!=remote: raise ValueError()   # exactly one push destination, the verified one
+        # A remote helper (remote.origin.vcs), with any value, would decide for itself where the push goes.
+        if config_has(path,'remote.origin.vcs'): raise ValueError()
         match=re.fullmatch(r'(?:git@github\.com:|https://github\.com/)([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+?)(?:\.git)?',remote)
         if not match: raise ValueError()
         repository=match[1]
@@ -135,7 +147,7 @@ def require_secrets(config,configured):
     if not set(config.secret_names.values()) <= set(configured):
         raise ValueError('Selected providers need configured repository secrets before schedule activation.')
 
-ALLOWED_SECRETS={'FIRECRAWL_API_KEY','OPENAI_API_KEY','ANTHROPIC_API_KEY','RESEND_API_KEY','SMTP_USERNAME','SMTP_PASSWORD'}
+ALLOWED_SECRETS={'OPENAI_API_KEY','ANTHROPIC_API_KEY','RESEND_API_KEY','SMTP_USERNAME','SMTP_PASSWORD','SUBSCRIPTION_API_TOKEN'}
 
 def set_secrets(target: RepoTarget,values: dict,*,runner=run_command) -> list[SecretUpdateResult]:
     if not isinstance(values,dict) or set(values)-ALLOWED_SECRETS or any(not isinstance(v,str) or len(v)>64000 for v in values.values()): raise ValueError('Invalid secret fields')

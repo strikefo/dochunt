@@ -14,3 +14,7 @@ data/*.tmp
 
 output/
 selected-preview/
+
+# Cloudflare Wrangler local state and local secrets (account cache, build output, .dev.vars)
+.wrangler/
+.dev.vars*

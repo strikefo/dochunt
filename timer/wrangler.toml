@@ -1,0 +1,21 @@
+# DocHunt on-time timer. Set TIME_ZONE and SEND_TIME to match newsroom.toml's
+# schedule.timezone and schedule.preferred_time, then deploy with:
+#   npx wrangler deploy --config timer/wrangler.toml
+#   npx wrangler secret put GITHUB_TOKEN --config timer/wrangler.toml
+# GITHUB_TOKEN: a fine-grained token for this one repository with "Actions: read and write".
+name = "dochunt-timer"
+main = "index.mjs"
+compatibility_date = "2026-11-01"
+workers_dev = false   # cron only: no public address
+
+[vars]
+GITHUB_REPO = "your-org/your-dochunt-repo"
+WORKFLOW = "document-hunt.yml"
+GITHUB_REF = "main"
+TIME_ZONE = "America/Chicago"
+SEND_TIME = "07:00"
+
+[triggers]
+# Wake every 5 minutes; the Worker dispatches once a day, at the first wake-up at or after
+# SEND_TIME in TIME_ZONE. DocHunt's own schedule check applies weekdays and the send window.
+crons = ["*/5 * * * *"]

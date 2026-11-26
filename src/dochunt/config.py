@@ -6,7 +6,14 @@ import tomllib
 from datetime import time
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from typing import get_origin, get_args
-from .models import Limits, public_url
+
+class ConfigError(ValueError):
+    """A configuration problem with an operator-readable message (no secret values)."""
+
+
+RUNTIMES = {'codex': 'OPENAI_API_KEY', 'claude': 'ANTHROPIC_API_KEY'}
+DEFAULT_MODELS = {'codex': 'gpt-6.1-sol', 'claude': 'claude-opus-5-5'}
+
 
 @dataclass
 class Identity:
@@ -15,25 +22,29 @@ class Identity:
     sender_name: str
     accent_color: str = '#152b44'
 
+
 @dataclass
-class Editorial:
-    coverage_brief: str
+class Beat:
+    name: str
+    brief: str
+    priorities: list[str] = field(default_factory=list)
+    source_families: list[str] = field(default_factory=list)
+    geography: str = 'United States'
     exclusions: str = ''
-    geography: str = ''
-    max_final_leads: int = 8
+    records_law: str = 'the federal Freedom of Information Act (FOIA)'
+    freshness_days: int = 3
+    max_leads: int = 3
+    extra_instructions: str = ''
+
 
 @dataclass
-class Source:
-    url: str
-    label: str = ''
-    notes: str = ''
+class Agent:
+    runtime: str
+    model: str = ''
+    reasoning_effort: str = 'high'
+    max_budget_usd: float = 5.0
+    timeout_minutes: int = 18
 
-@dataclass
-class AI:
-    provider: str
-    model: str
-    reasoning_effort: str = 'medium'
-    reviewer_model: str = ''
 
 @dataclass
 class Email:
@@ -42,135 +53,154 @@ class Email:
     recipients: list[str]
     smtp_host: str = ''
     smtp_port: int = 587
+    subscription_url: str = ''
+    subscription_domains: list[str] = field(default_factory=list)
+
 
 @dataclass
 class Schedule:
     timezone: str
     enabled: bool = False
-    weekdays: list[int] = field(default_factory=lambda: [0,1,2,3,4])
+    weekdays: list[int] = field(default_factory=lambda: [0, 1, 2, 3, 4])
     preferred_time: str = '08:00'
-
-@dataclass
-class Retrieval:
-    firecrawl_enabled: bool = False
-    firecrawl_max_calls: int = 8
-    firecrawl_timeout_seconds: int = 30
-
-@dataclass
-class Hunt:
-    playbook: str = ''
-    allowed_acronyms: list[str] = field(default_factory=list)
-    max_source_chars: int = 240000
-    mode: str = 'watch'                  # 'watch': new documents on the watch list; 'search': open web search
-    window_days: int = 14
-    max_new_documents: int = 5
-    watch: list[str] = field(default_factory=list)
-    request_pages: list[str] = field(default_factory=list)
-    keywords: list[str] = field(default_factory=list)   # feed items must mention one, if set
-    seen_path: str = 'data/seen-documents.json'
+    window_hours: int = 12
 
 
 @dataclass
 class NewsroomConfig:
     identity: Identity
-    editorial: Editorial
-    ai: AI
+    beat: Beat
+    agent: Agent
     email: Email
     schedule: Schedule
-    sources: list[Source] = field(default_factory=list)
-    limits: Limits = field(default_factory=Limits)
-    retrieval: Retrieval = field(default_factory=Retrieval)
-    hunt: Hunt = field(default_factory=Hunt)
 
     @property
-    def secret_names(self) -> dict[str,str]:
-        names={'ai': {'openai':'OPENAI_API_KEY','anthropic':'ANTHROPIC_API_KEY'}[self.ai.provider]}
-        if self.email.provider == 'resend': names['email']='RESEND_API_KEY'
-        else: names.update(smtp_username='SMTP_USERNAME',smtp_password='SMTP_PASSWORD')
-        if self.retrieval.firecrawl_enabled: names['retrieval']='FIRECRAWL_API_KEY'
+    def secret_names(self) -> dict[str, str]:
+        names = {'ai': RUNTIMES[self.agent.runtime]}
+        if self.email.provider == 'resend':
+            names['email'] = 'RESEND_API_KEY'
+        else:
+            names.update(smtp_username='SMTP_USERNAME', smtp_password='SMTP_PASSWORD')
+        if self.email.subscription_url:
+            names['subscriptions'] = 'SUBSCRIPTION_API_TOKEN'
         return names
+
+    @property
+    def model(self) -> str:
+        return self.agent.model or DEFAULT_MODELS[self.agent.runtime]
 
 
 def _record(cls, data):
-    if not isinstance(data,dict): raise ValueError(f'{cls.__name__} must be a table')
+    if not isinstance(data, dict):
+        raise ConfigError(f'{cls.__name__} must be a table')
+    data = dict(data)
     for definition in fields(cls):
-        if definition.name not in data: continue
+        if definition.name not in data:
+            continue
         value = data[definition.name]
         kind = definition.type
+        if kind is float and type(value) is int:
+            value = data[definition.name] = float(value)
         if get_origin(kind) is list:
             item_kind = get_args(kind)[0]
             valid = isinstance(value, list) and all(type(item) is item_kind for item in value)
         else:
             valid = type(value) is kind
-        if not valid: raise ValueError(f'Invalid type for {cls.__name__}.{definition.name}')
-    try: return cls(**data)
-    except TypeError as exc: raise ValueError(f'Invalid fields in {cls.__name__}') from exc
+        if not valid:
+            raise ConfigError(f'Invalid type for {cls.__name__}.{definition.name}')
+    try:
+        return cls(**data)
+    except TypeError as exc:
+        raise ConfigError(f'Invalid fields in {cls.__name__}') from exc
 
 
 def load_config(path: Path) -> NewsroomConfig:
     try:
-        with Path(path).open('rb') as stream: data=tomllib.load(stream)
+        with Path(path).open('rb') as stream:
+            data = tomllib.load(stream)
     except tomllib.TOMLDecodeError as exc:
-        raise ValueError('Invalid TOML configuration') from exc
+        raise ConfigError('Invalid TOML configuration') from exc
     return config_from_data(data)
 
 
+SECTIONS = {'identity': Identity, 'beat': Beat, 'agent': Agent, 'email': Email, 'schedule': Schedule}
+
+
+def _single_line(value):
+    return isinstance(value, str) and not any(ord(c) < 32 or ord(c) == 127 for c in value)
+
+
 def config_from_data(data: dict) -> NewsroomConfig:
-    allowed={'identity','editorial','ai','email','schedule','sources','limits','retrieval','hunt'}
-    if set(data)-allowed: raise ValueError('Unknown configuration section')
-    required=allowed-{'sources','limits','retrieval','hunt'}
-    if not required <= data.keys(): raise ValueError('Missing required configuration section')
-    if not isinstance(data.get('sources', []), list): raise ValueError('Sources must be a list of tables')
-    c=NewsroomConfig(*[_record(cls,data[key]) for cls,key in [(Identity,'identity'),(Editorial,'editorial'),(AI,'ai'),(Email,'email'),(Schedule,'schedule')]],sources=[_record(Source,s) for s in data.get('sources',[])],limits=_record(Limits,data.get('limits',{})),retrieval=_record(Retrieval,data.get('retrieval',{})),hunt=_record(Hunt,data.get('hunt',{})))
-    for value in (c.identity.id,c.identity.newsletter_name,c.identity.sender_name,c.editorial.coverage_brief,c.ai.model):
-        if not isinstance(value,str) or not value.strip(): raise ValueError('Required text field is empty')
-    if any(ord(char)<32 or ord(char)==127 for char in c.identity.sender_name): raise ValueError('Invalid sender name')
-    if not re.fullmatch(r'[a-z0-9][a-z0-9_-]*',c.identity.id): raise ValueError('Invalid newsroom identifier')
-    if not re.fullmatch(r'#[0-9a-fA-F]{6}',c.identity.accent_color): raise ValueError('Invalid accent color')
-    if c.ai.provider not in {'openai','anthropic'}: raise ValueError('Unsupported AI provider')
-    if c.ai.reasoning_effort not in {'low','medium','high','xhigh','max'}: raise ValueError('Unsupported reasoning effort')
-    # Model capabilities are checked by each integration before paid research.
-    if c.email.provider not in {'resend','smtp'}: raise ValueError('Unsupported email provider')
-    addresses=[c.email.sender,*c.email.recipients] if isinstance(c.email.recipients,list) else []
-    if not addresses or not c.email.recipients or any(not isinstance(a,str) or not re.fullmatch(r'[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+',a) for a in addresses): raise ValueError('Invalid email addresses')
-    if c.email.provider == 'smtp' and (not c.email.smtp_host or type(c.email.smtp_port) is not int or not 1 <= c.email.smtp_port <= 65535): raise ValueError('SMTP host and valid port required')
-    try: ZoneInfo(c.schedule.timezone)
-    except (ZoneInfoNotFoundError,TypeError,ValueError) as exc: raise ValueError('Explicit valid IANA timezone required') from exc
-    if type(c.schedule.enabled) is not bool: raise ValueError('Schedule enabled must be boolean')
-    if not isinstance(c.schedule.weekdays,list) or not c.schedule.weekdays or any(type(d) is not int or not 0 <= d <= 6 for d in c.schedule.weekdays) or len(set(c.schedule.weekdays)) != len(c.schedule.weekdays): raise ValueError('Weekdays must be unique integers 0–6')
-    if not isinstance(c.schedule.preferred_time,str) or not re.fullmatch(r'\d{2}:\d{2}',c.schedule.preferred_time): raise ValueError('Preferred time must be HH:MM')
-    try: time.fromisoformat(c.schedule.preferred_time)
-    except ValueError as exc: raise ValueError('Invalid preferred time') from exc
-    if type(c.editorial.max_final_leads) is not int or not 1 <= c.editorial.max_final_leads <= c.limits.max_final_leads: raise ValueError('Editorial final leads exceed configured limit')
-    if not 1 <= c.retrieval.firecrawl_max_calls <= 20: raise ValueError('Firecrawl attempt cap must be 1–20')
-    if not 5 <= c.retrieval.firecrawl_timeout_seconds <= 60: raise ValueError('Firecrawl timeout must be 5–60 seconds')
-    for source in c.sources: public_url(source.url)
-    if c.hunt.mode not in {'search','watch'}: raise ValueError('Hunt mode must be search or watch')
-    if not 1 <= c.hunt.window_days <= 90: raise ValueError('Hunt window must be 1-90 days')
-    if not 1 <= c.hunt.max_new_documents <= 20: raise ValueError('Hunt new-document cap must be 1-20')
-    for url in c.hunt.watch + c.hunt.request_pages: public_url(url)
-    if not 20000 <= c.hunt.max_source_chars <= 600000: raise ValueError('Hunt source allowance must be 20,000–600,000 characters')
-    if any(not re.fullmatch(r'[A-Z][A-Z0-9.&]{1,9}',a) for a in c.hunt.allowed_acronyms): raise ValueError('Allowed acronyms must be short uppercase tokens')
+    unknown = set(data) - set(SECTIONS)
+    if unknown:
+        raise ConfigError(f'Unknown configuration section: {", ".join(sorted(unknown))}')
+    missing = set(SECTIONS) - set(data)
+    if missing:
+        raise ConfigError(f'Missing configuration section: {", ".join(sorted(missing))}')
+    c = NewsroomConfig(**{key: _record(cls, data[key]) for key, cls in SECTIONS.items()})
+    for label, value in (('identity.id', c.identity.id), ('identity.newsletter_name', c.identity.newsletter_name),
+                         ('identity.sender_name', c.identity.sender_name), ('beat.name', c.beat.name), ('beat.brief', c.beat.brief)):
+        if not value.strip():
+            raise ConfigError(f'{label} is empty')
+    for label, value in (('identity.newsletter_name', c.identity.newsletter_name), ('identity.sender_name', c.identity.sender_name),
+                         ('beat.name', c.beat.name), ('beat.geography', c.beat.geography), ('beat.records_law', c.beat.records_law)):
+        if not _single_line(value):
+            raise ConfigError(f'{label} must be a single line')
+    if not re.fullmatch(r'[a-z0-9][a-z0-9_-]*', c.identity.id):
+        raise ConfigError('identity.id must use lowercase letters, digits, - or _')
+    if not re.fullmatch(r'#[0-9a-fA-F]{6}', c.identity.accent_color):
+        raise ConfigError('identity.accent_color must look like #152b44')
+    if any(not s.strip() or not _single_line(s) for s in c.beat.priorities + c.beat.source_families):
+        raise ConfigError('beat.priorities and beat.source_families need nonempty single-line entries')
+    if not 1 <= c.beat.max_leads <= 5:
+        raise ConfigError('beat.max_leads must be 1-5')
+    if not 1 <= c.beat.freshness_days <= 30:
+        raise ConfigError('beat.freshness_days must be 1-30')
+    if c.agent.runtime not in RUNTIMES:
+        raise ConfigError('agent.runtime must be codex or claude')
+    if c.agent.model and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{0,80}', c.agent.model):
+        raise ConfigError('agent.model is not a valid model name')
+    family = c.agent.model.lower()
+    if (c.agent.runtime == 'claude' and family.startswith(('gpt', 'o1', 'o3', 'o4', 'codex'))) or \
+            (c.agent.runtime == 'codex' and family.startswith('claude')):
+        raise ConfigError(f'agent.model {c.agent.model} does not match agent.runtime {c.agent.runtime}; '
+                          'leave agent.model empty to use the default')
+    if c.agent.reasoning_effort not in {'low', 'medium', 'high', 'xhigh', 'max'}:
+        raise ConfigError('agent.reasoning_effort must be low, medium, high, xhigh or max')
+    if not 0.5 <= c.agent.max_budget_usd <= 50:
+        raise ConfigError('agent.max_budget_usd must be 0.5-50')
+    if not 5 <= c.agent.timeout_minutes <= 20:
+        raise ConfigError('agent.timeout_minutes must be 5-20 so a run fits the 30-minute workflow')
+    if c.email.provider not in {'resend', 'smtp'}:
+        raise ConfigError('email.provider must be resend or smtp')
+    addresses = [c.email.sender, *c.email.recipients]
+    if not c.email.recipients or any(not re.fullmatch(r'[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+', a) for a in addresses):
+        raise ConfigError('email.sender and email.recipients need valid addresses')
+    if len(set(c.email.recipients)) != len(c.email.recipients):
+        raise ConfigError('email.recipients has duplicates')
+    if c.email.subscription_url:
+        from urllib.parse import urlsplit
+        u = urlsplit(c.email.subscription_url)
+        if u.scheme != 'https' or not u.hostname or u.username or u.password or u.path not in ('', '/') or u.query or u.fragment:
+            raise ConfigError('email.subscription_url must be an https origin such as https://subscriptions.example.org')
+        if not c.email.subscription_domains or any(not re.fullmatch(r'[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+', d) for d in c.email.subscription_domains):
+            raise ConfigError('email.subscription_domains must list the lowercase domains subscribers may use, such as ["newsroom.example"]')
+    elif c.email.subscription_domains:
+        raise ConfigError('email.subscription_domains needs email.subscription_url')
+    if c.email.provider == 'smtp' and (not c.email.smtp_host or not 1 <= c.email.smtp_port <= 65535):
+        raise ConfigError('SMTP host and valid port required')
+    try:
+        ZoneInfo(c.schedule.timezone)
+    except (ZoneInfoNotFoundError, TypeError, ValueError) as exc:
+        raise ConfigError('schedule.timezone must be an IANA timezone such as America/Chicago') from exc
+    if not c.schedule.weekdays or any(not 0 <= d <= 6 for d in c.schedule.weekdays) or len(set(c.schedule.weekdays)) != len(c.schedule.weekdays):
+        raise ConfigError('schedule.weekdays must be unique integers 0-6 (0 is Monday)')
+    if not re.fullmatch(r'\d{2}:\d{2}', c.schedule.preferred_time):
+        raise ConfigError('schedule.preferred_time must be HH:MM')
+    if not 1 <= c.schedule.window_hours <= 18:
+        raise ConfigError('schedule.window_hours must be 1-18')
+    try:
+        time.fromisoformat(c.schedule.preferred_time)
+    except ValueError as exc:
+        raise ConfigError('schedule.preferred_time is not a valid time') from exc
     return c
-
-
-class ModelConfigurationError(ValueError):
-    """Safe operator guidance containing only application-owned model names."""
-
-
-def validate_model_configuration(config: NewsroomConfig) -> None:
-    """Check operator model choices without keys, provider instances or network.
-
-    Keep generic configuration loading usable by injected fixture adapters;
-    operator readiness and setup explicitly opt into supported live models.
-    """
-    from .providers.openai import OpenAIProvider
-    from .providers.anthropic import AnthropicProvider
-    providers={'openai': OpenAIProvider, 'anthropic': AnthropicProvider}
-    supported=providers[config.ai.provider].supported_models
-    for field in ('model','reviewer_model'):
-        value=getattr(config.ai,field)
-        if field=='reviewer_model' and value=='': continue
-        if value not in supported:
-            suffix=' Leave ai.reviewer_model empty to use the research model.' if field=='reviewer_model' else ''
-            raise ModelConfigurationError(f'Unsupported ai.{field}. Choose a model supported by the selected provider: {", ".join(supported)}.{suffix}')

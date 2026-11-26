@@ -8,7 +8,7 @@ import json
 import secrets
 import tomllib
 import webbrowser
-from .config import load_config, config_from_data, validate_model_configuration, ModelConfigurationError
+from .config import load_config, config_from_data, ConfigError
 from .github_setup import inspect_target, serialize_config, save_config, set_secrets, require_secrets, RepoTarget, SaveResult, SecretUpdateResult, verify_saved_target
 
 
@@ -18,9 +18,7 @@ def form_config(data,existing,*,enable=False):
     # Limits and every unedited setting are retained; callers cannot silently omit sections.
     if not isinstance(data.get('schedule'),dict): raise ValueError('Schedule must be a table')
     data['schedule']['enabled']=enable
-    config=config_from_data(data)
-    validate_model_configuration(config)
-    return config
+    return config_from_data(data)
 
 class GitHubAdapter:
     def __init__(self,path):
@@ -141,7 +139,7 @@ def create_server(adapter):
                     missing=sorted(set(c.secret_names.values())-configured)
                     return self.reply(200,{'config':asdict(result),'secrets':[asdict(v) for v in updates],'complete':verified is not None and all(v.success for v in updates) and not missing,'missing_secrets':missing,'schedule_enabled':schedule_enabled,'url':target.url})
                 return self.reply(404,{'error':'Unknown path.'})
-            except ModelConfigurationError as exc:
+            except ConfigError as exc:
                 self.reply(400,{'error':str(exc)})
             except (ValueError,KeyError,TypeError,OSError):
                 self.reply(400,{'error':'Invalid or stale request. Check settings, repository confirmation, and preview requirements; no successful save is claimed.'})

@@ -1,11 +1,18 @@
-"""Provider-neutral, credential-free application records."""
+"""Provider-neutral, credential-free application records.
+
+The agent returns JSON matching ``schema/issue.schema.json``. ``parse_issue_data``
+turns it into these records and reports every structural problem at once, so a
+single repair request to the agent can fix them all.
+"""
 from dataclasses import dataclass, field
 from datetime import date
 from enum import StrEnum
 import re
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
-FIELD_PATCH_FIELDS=('provisional_headline','factual_hook','material_update','caveat','records_route_note','acquisition_details','records_request_text')
+ACTIONS = ('foia', 'inquiry', 'download')
+NO_LEAD_SUBJECT = 'No actionable records leads qualified today'
+EMAIL_RE = re.compile(r'[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[A-Za-z]{2,}')
 
 
 def public_url(value: str) -> str:
@@ -14,7 +21,32 @@ def public_url(value: str) -> str:
     parsed = urlsplit(value)
     if parsed.scheme not in {'http', 'https'} or not parsed.hostname or parsed.username or parsed.password:
         raise ValueError('Expected an HTTP(S) URL without credentials')
+    if any(c.isspace() or ord(c) < 32 for c in value):
+        raise ValueError('URL contains whitespace or control characters')
     return value
+
+
+def source_key(url: str) -> str:
+    """Normalized identity of a source document for deduplication. Never raises."""
+    try:
+        parts = urlsplit(url.strip())
+        parts.port  # noqa: B018 - raises ValueError for a malformed port
+    except ValueError:
+        return url.strip().lower()
+    query = urlencode(sorted((k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
+                             if not k.lower().startswith('utm_')))
+    path = parts.path.rstrip('/') or '/'
+    host = (parts.hostname or '').lower()
+    if host.startswith('www.'):
+        host = host[4:]
+    if ':' in host:
+        host = f'[{host}]'
+    if parts.port and parts.port not in (80, 443):
+        host = f'{host}:{parts.port}'
+    # '#/records/123' or '#!/doc/9' is a single-page app's route and identifies the document;
+    # an ordinary '#section' anchor does not.
+    fragment = parts.fragment if parts.fragment.startswith(('/', '!')) else ''
+    return urlunsplit(('https', host, path, query, fragment))
 
 
 class IssueState(StrEnum):
@@ -25,151 +57,240 @@ class IssueState(StrEnum):
 
 
 @dataclass
-class Limits:
-    workflow_timeout_minutes: int = 30
-    application_deadline_minutes: int = 25
-    max_candidates: int = 20
-    max_final_leads: int = 8
-    research_requests: int = 12
-    review_requests: int = 7
-    searches: int = 20
-    fetches: int = 30
-    input_tokens: int = 120000
-    output_tokens: int = 24000
-    transient_retries: int = 2
-
-    def __post_init__(self):
-        for name, value in vars(self).items():
-            if type(value) is not int or value < (0 if name == 'transient_retries' else 1):
-                raise ValueError(f'Invalid limit: {name}')
-        if self.application_deadline_minutes >= self.workflow_timeout_minutes:
-            raise ValueError('Application deadline must precede workflow timeout')
-        if self.max_final_leads > self.max_candidates:
-            raise ValueError('Final leads cannot exceed candidates')
+class Contact:
+    label: str = ''
+    url: str = ''
+    email: str = ''
+    phone: str = ''
 
 
 @dataclass
-class Usage:
-    research_requests: int = 0
-    review_requests: int = 0
-    searches: int = 0
-    fetches: int = 0
-    input_tokens: int = 0
-    output_tokens: int = 0
-
-    def __post_init__(self):
-        if any(type(v) is not int or v < 0 for v in vars(self).values()):
-            raise ValueError('Usage must contain nonnegative integers')
-
-
-@dataclass
-class Evidence:
-    id: str
-    url: str
-    title: str
-    excerpt: str
-    retrieved_at: str
-    content_hash: str = ''
-    locator: str = ''
-    format: str = ''
-    verified: bool = False
-
-    def __post_init__(self):
-        public_url(self.url)
-        if any(not isinstance(getattr(self,n),str) or not getattr(self,n).strip() for n in ('id','url','title','excerpt','retrieved_at')):
-            raise ValueError('Evidence fields must be nonempty strings')
-        if type(self.verified) is not bool or any(not isinstance(getattr(self,n),str) for n in ('content_hash','locator','format')):
-            raise ValueError('Invalid evidence receipt')
-        if self.verified and (not re.fullmatch(r'[0-9a-f]{64}',self.content_hash) or not self.locator or not self.format):
-            raise ValueError('Verified evidence requires a complete receipt')
+class GetRecords:
+    agency: str
+    office: str
+    action: str
+    contact: Contact
+    verified_at_url: str
+    text: str
 
 
 @dataclass
 class Lead:
-    id: str
-    provisional_headline: str
-    story_potential: str
-    factual_hook: str
-    evidence_ids: list[str]
+    headline: str
+    reporting_opportunity: str
+    source_title: str
     source_url: str
-    likely_records: list[str]
-    acquisition_route: str
-    acquisition_details: str
-    newsworthiness: int
-    obtainability: int
-    next_action: str
-    reviewer_verdict: str
-    jurisdiction: str = ''
-    entities: list[str] = field(default_factory=list)
-    material_update: str = ''
-    records_request_text: str = ''
-    records_custodian: str = ''
-    records_submission_url: str = ''
-    records_route_note: str = ''
+    get_records: GetRecords
     caveat: str = ''
-    records_route_evidence_ids: list[str] = field(default_factory=list)
-    records_plan: dict = field(default_factory=dict)
-    hunt_plan: dict = field(default_factory=dict)
+    newsworthiness: int = 5
+    obtainability: int = 5
+    is_update: bool = False
+    reviewer_notes: str = ''
 
     def __post_init__(self):
-        if not isinstance(self.hunt_plan,dict): raise ValueError('Hunt plan must be an object')
-        if not isinstance(self.records_plan,dict): raise ValueError('Records plan must be an object')
-        for name in ('evidence_ids', 'likely_records', 'entities', 'records_route_evidence_ids'):
-            value = getattr(self, name)
-            if not isinstance(value, list) or any(not isinstance(v, str) or not v.strip() for v in value):
-                raise ValueError('Lead lists require nonempty string members')
-        if any(not isinstance(getattr(self, name), str) for name in ('jurisdiction', 'material_update', 'records_request_text', 'records_custodian',
-                'records_submission_url', 'records_route_note', 'caveat')):
-            raise ValueError('Optional lead text must be strings')
-        for score in (self.newsworthiness,self.obtainability):
-            if type(score) is not int or not 1 <= score <= 10:
-                raise ValueError('Scores must be integers between 1 and 10')
-        if self.reviewer_verdict not in {'approved','rejected','needs_revision'}:
-            raise ValueError('Invalid reviewer verdict')
-        if self.acquisition_route not in {'public','records_request','other'}:
-            raise ValueError('Invalid acquisition route')
-        public_url(self.source_url)
-        if self.records_submission_url:
-            public_url(self.records_submission_url)
-        required = (self.id,self.provisional_headline,self.story_potential,self.factual_hook,self.acquisition_details,self.next_action)
-        if any(not isinstance(v,str) or not v.strip() for v in required) or not self.evidence_ids or not self.likely_records:
-            raise ValueError('Lead is missing required content')
+        if isinstance(self.get_records, dict):
+            data = dict(self.get_records)
+            data['contact'] = Contact(**data.get('contact', {}))
+            self.get_records = GetRecords(**data)
 
 
 @dataclass
 class Issue:
     issue_key: str
     local_date: date
-    evidence: list[Evidence]
-    leads: list[Lead]
-    coverage_results: list[str]
     subject: str
-    subject_lead_id: str | None = None
-    usage: Usage = field(default_factory=Usage)
+    intro: str
+    no_lead_reason: str
+    leads: list[Lead]
 
     def __post_init__(self):
-        if not isinstance(self.evidence, list) or any(not isinstance(e, Evidence) for e in self.evidence):
-            raise ValueError('Issue evidence must be Evidence records')
-        if not isinstance(self.leads, list) or any(not isinstance(l, Lead) for l in self.leads):
-            raise ValueError('Issue leads must be Lead records')
-        if not isinstance(self.coverage_results, list) or any(not isinstance(c, str) or not c.strip() for c in self.coverage_results):
-            raise ValueError('Coverage must be nonempty text entries')
         if not isinstance(self.issue_key, str) or not self.issue_key.strip() or type(self.local_date) is not date:
             raise ValueError('Issue key and local date are required')
-        if not isinstance(self.subject, str) or not self.subject.strip() or '\n' in self.subject or '\r' in self.subject:
-            raise ValueError('Invalid subject')
-        evidence_ids = {e.id for e in self.evidence}
-        if len(evidence_ids) != len(self.evidence) or len({l.id for l in self.leads}) != len(self.leads):
-            raise ValueError('Duplicate identifiers')
-        for lead in self.leads:
-            if lead.reviewer_verdict != 'approved' or not set(lead.evidence_ids) <= evidence_ids:
-                raise ValueError('Issue requires approved leads and referenced evidence')
-        if self.leads:
-            selected = next((l for l in self.leads if l.id == self.subject_lead_id),None)
-            if selected is None or self.subject != selected.provisional_headline:
-                raise ValueError('Subject must exactly match the named final lead headline')
-        elif self.subject_lead_id is not None or not self.coverage_results or self.subject != 'No qualifying document leads':
-            raise ValueError('No-leads issue requires coverage results, no subject lead, and the fixed neutral subject')
+        if not isinstance(self.leads, list) or any(not isinstance(l, Lead) for l in self.leads):
+            raise ValueError('Issue leads must be Lead records')
+        problems = issue_problems(self)
+        if problems:
+            raise ValueError('; '.join(problems))
+
+
+class IssueFormatError(ValueError):
+    def __init__(self, problems):
+        self.problems = list(problems)
+        super().__init__('; '.join(self.problems))
+
+
+def _text(value, where, problems, *, required=True):
+    if not isinstance(value, str):
+        problems.append(f'{where} must be a string')
+        return ''
+    if any(ord(c) < 32 and c not in '\n\t' for c in value):
+        problems.append(f'{where} contains control characters')
+    if required and not value.strip():
+        problems.append(f'{where} is empty')
+    return value.strip()
+
+
+def _object(value, keys, where, problems):
+    if not isinstance(value, dict):
+        problems.append(f'{where} must be an object')
+        return {}
+    extra = set(value) - set(keys)
+    missing = set(keys) - set(value)
+    if extra:
+        problems.append(f'{where} has unexpected fields: {", ".join(sorted(extra))}')
+    if missing:
+        problems.append(f'{where} is missing fields: {", ".join(sorted(missing))}')
+    return value
+
+
+def parse_lead(data, where='lead'):
+    """Return (lead or None, problems)."""
+    problems = []
+    data = _object(data, ('headline', 'reporting_opportunity', 'source', 'get_records', 'caveat', 'internal'), where, problems)
+    source = _object(data.get('source', {}), ('title', 'url'), f'{where}.source', problems)
+    records = _object(data.get('get_records', {}), ('agency', 'office', 'action', 'contact', 'verified_at_url', 'text'), f'{where}.get_records', problems)
+    contact = _object(records.get('contact', {}), ('label', 'url', 'email', 'phone'), f'{where}.get_records.contact', problems)
+    internal = _object(data.get('internal', {}), ('newsworthiness', 'obtainability', 'is_update', 'reviewer_notes'), f'{where}.internal', problems)
+    action = records.get('action')
+    if action not in ACTIONS:
+        problems.append(f'{where}.get_records.action must be one of {", ".join(ACTIONS)}')
+    scores = []
+    for name in ('newsworthiness', 'obtainability'):
+        value = internal.get(name)
+        if type(value) is not int or not 1 <= value <= 10:
+            problems.append(f'{where}.internal.{name} must be an integer 1-10')
+            value = 5
+        scores.append(value)
+    if type(internal.get('is_update', False)) is not bool:
+        problems.append(f'{where}.internal.is_update must be true or false')
+    lead = Lead(
+        headline=_text(data.get('headline'), f'{where}.headline', problems),
+        reporting_opportunity=_text(data.get('reporting_opportunity'), f'{where}.reporting_opportunity', problems),
+        source_title=_text(source.get('title'), f'{where}.source.title', problems),
+        source_url=_text(source.get('url'), f'{where}.source.url', problems),
+        get_records=GetRecords(
+            agency=_text(records.get('agency'), f'{where}.get_records.agency', problems),
+            office=_text(records.get('office'), f'{where}.get_records.office', problems, required=False),
+            action=action if action in ACTIONS else 'foia',
+            contact=Contact(**{k: _text(contact.get(k, ''), f'{where}.get_records.contact.{k}', problems, required=False)
+                               for k in ('label', 'url', 'email', 'phone')}),
+            verified_at_url=_text(records.get('verified_at_url', ''), f'{where}.get_records.verified_at_url', problems, required=False),
+            text=_text(records.get('text'), f'{where}.get_records.text', problems),
+        ),
+        caveat=_text(data.get('caveat', ''), f'{where}.caveat', problems, required=False),
+        newsworthiness=scores[0], obtainability=scores[1],
+        is_update=internal.get('is_update') is True,
+        reviewer_notes=_text(internal.get('reviewer_notes', ''), f'{where}.internal.reviewer_notes', problems, required=False),
+    )
+    return (None if problems else lead), problems
+
+
+def lead_problems(lead: Lead, where='lead'):
+    """Per-lead rules a reader relies on: real links and a usable first action."""
+    problems = []
+    r = lead.get_records
+    c = r.contact
+    try:
+        public_url(lead.source_url)
+    except ValueError:
+        problems.append(f'{where}: source link is not a valid web address')
+    for name, value in (('contact link', c.url), ('verification page', r.verified_at_url)):
+        if value:
+            try:
+                public_url(value)
+            except ValueError:
+                problems.append(f'{where}: {name} is not a valid web address')
+    if c.email and not EMAIL_RE.fullmatch(c.email):
+        problems.append(f'{where}: contact email is not a valid address')
+    if c.phone and not re.search(r'\d{3}.*\d{4}', c.phone):
+        problems.append(f'{where}: contact phone is not a phone number')
+    if r.action == 'foia' and not (c.url or c.email):
+        problems.append(f'{where}: a records request needs a submission link or email')
+    if r.action == 'inquiry' and not (c.url or c.email or c.phone):
+        problems.append(f'{where}: an inquiry needs an email, phone or contact link')
+    if r.action == 'download' and not c.url:
+        problems.append(f'{where}: a download needs a direct link')
+    if r.action in ('foia', 'inquiry') and not r.verified_at_url:
+        problems.append(f'{where}: name the official page where the contact or route was verified')
+    if len(lead.headline) > 160:
+        problems.append(f'{where}: headline is longer than 160 characters')
+    return problems
+
+
+def subject_problems(subject: str):
+    problems = []
+    if not isinstance(subject, str) or not subject.strip():
+        problems.append('subject is empty')
+    elif any(ord(c) < 32 or ord(c) == 127 for c in subject) or len(subject.strip()) > 100:
+        problems.append('subject must be one line under 100 characters, without control characters')
+    return problems
+
+
+def issue_problems(issue: Issue):
+    problems = subject_problems(issue.subject)
+    for i, lead in enumerate(issue.leads, 1):
+        problems += lead_problems(lead, f'lead {i}')
+    if not issue.leads and not issue.no_lead_reason.strip():
+        problems.append('an issue without leads needs a short no-lead reason')
+    if issue.leads and issue.no_lead_reason.strip():
+        problems.append('no_lead_reason must be empty when there are leads')
+    keys = [source_key(l.source_url) for l in issue.leads]
+    if len(set(keys)) != len(keys):
+        problems.append('two leads share the same source document')
+    return problems
+
+
+def parse_issue_data(data, *, issue_key, local_date):
+    """Parse agent JSON into an Issue, raising IssueFormatError with every problem."""
+    problems = []
+    if isinstance(data, dict) and 'checked_sources' in data:
+        data = {k: v for k, v in data.items() if k != 'checked_sources'}  # research record, not part of the email
+    data = _object(data, ('subject', 'intro', 'no_lead_reason', 'leads'), 'issue', problems)
+    leads_data = data.get('leads', [])
+    if not isinstance(leads_data, list):
+        problems.append('issue.leads must be a list')
+        leads_data = []
+    leads = []
+    for i, item in enumerate(leads_data, 1):
+        lead, found = parse_lead(item, f'lead {i}')
+        problems += found
+        if lead:
+            leads.append(lead)
+    subject = _text(data.get('subject', ''), 'issue.subject', problems)
+    intro = _text(data.get('intro', ''), 'issue.intro', problems, required=False)
+    reason = _text(data.get('no_lead_reason', ''), 'issue.no_lead_reason', problems, required=False)
+    if problems:
+        raise IssueFormatError(problems + [p for p in subject_problems(subject) if p not in problems])
+    return issue_from_parts(issue_key, local_date, subject, intro, reason, leads)
+
+
+def issue_from_parts(issue_key, local_date, subject, intro, no_lead_reason, leads):
+    """Build an Issue, raising IssueFormatError (not a bare ValueError) on rule failures."""
+    probe = Issue.__new__(Issue)
+    probe.issue_key, probe.local_date, probe.subject, probe.intro, probe.no_lead_reason, probe.leads = (
+        issue_key, local_date, subject, intro, no_lead_reason, leads)
+    problems = issue_problems(probe)
+    if problems:
+        raise IssueFormatError(problems)
+    return Issue(issue_key, local_date, subject, intro, no_lead_reason, leads)
+
+
+def issue_to_data(issue: Issue) -> dict:
+    """Agent-schema JSON for an issue (round-trips through parse_issue_data)."""
+    return {
+        'subject': issue.subject, 'intro': issue.intro, 'no_lead_reason': issue.no_lead_reason,
+        'leads': [{
+            'headline': l.headline, 'reporting_opportunity': l.reporting_opportunity,
+            'source': {'title': l.source_title, 'url': l.source_url},
+            'get_records': {'agency': l.get_records.agency, 'office': l.get_records.office, 'action': l.get_records.action,
+                            'contact': {'label': l.get_records.contact.label, 'url': l.get_records.contact.url,
+                                        'email': l.get_records.contact.email, 'phone': l.get_records.contact.phone},
+                            'verified_at_url': l.get_records.verified_at_url, 'text': l.get_records.text},
+            'caveat': l.caveat,
+            'internal': {'newsworthiness': l.newsworthiness, 'obtainability': l.obtainability,
+                         'is_update': l.is_update, 'reviewer_notes': l.reviewer_notes},
+        } for l in issue.leads],
+    }
 
 
 @dataclass

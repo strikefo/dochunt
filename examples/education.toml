@@ -1,35 +1,48 @@
-# Fictional settings. Credentials belong only in repository secrets.
+# Fictional newsroom settings. Credentials belong only in GitHub Actions repository secrets.
+# A state education beat, citing a state public records law instead of federal FOIA.
 [identity]
-id = "example-newsroom"
-newsletter_name = "Document Hunt"
+id = "example-education"
+newsletter_name = "Schools Document Hunt"
 sender_name = "Example Newsroom"
-accent_color = "#152b44"
-[editorial]
-coverage_brief = """We cover public education in Wisconsin, focusing on school spending,
-special education, student safety, and accountability."""
-exclusions = "Opinion and unsupported speculation"
+accent_color = "#1f4e3d"
+
+[beat]
+name = "Wisconsin public education"
+brief = """We cover public education in Wisconsin: school spending, special education, student safety,
+staffing and accountability for districts and the state education agency."""
+priorities = [
+  "Student safety, discipline, restraint and seclusion, and abuse investigations",
+  "Special education services, complaints and state monitoring findings",
+  "School spending, referendums, contracts and audits",
+  "Staffing, licensing and teacher misconduct",
+]
+source_families = [
+  "Wisconsin Department of Public Instruction reports, complaint decisions, monitoring findings and data releases",
+  "Legislative Audit Bureau and Legislative Fiscal Bureau reports",
+  "School board agendas, packets and minutes for the largest districts",
+  "U.S. Department of Education Office for Civil Rights and Office of Inspector General findings involving Wisconsin",
+  "Court filings and settlements involving Wisconsin districts",
+]
 geography = "Wisconsin"
-max_final_leads = 8
-[ai]
-provider = "openai"
-model = "gpt-6.1-sol"
-reasoning_effort = "medium"
-reviewer_model = ""
+exclusions = "Opinion, sports, and routine school calendar announcements."
+records_law = "the Wisconsin Public Records Law (Wis. Stat. 19.31-19.39)"
+freshness_days = 5
+max_leads = 3
+
+[agent]
+runtime = "claude"
+model = "claude-opus-5-5"
+reasoning_effort = "high"
+max_budget_usd = 5.0
+timeout_minutes = 18
+
 [email]
 provider = "resend"
-sender = "editor@example.org"
+sender = "schools-editor@example.org"
 recipients = ["reporter@example.org"]
+
 [schedule]
 enabled = false
 timezone = "America/Chicago"
 weekdays = [0, 1, 2, 3, 4]
-preferred_time = "08:00"
-[hunt]
-# Watch mode: each run reports documents published in the last 14 days on these pages that
-# it has not reported before, with follow-on records requests. Replace these with your own
-# state's education agency, auditor and district feeds; feeds (RSS/Atom) give exact dates.
-mode = "watch"
-watch = ["https://www.gao.gov/rss/reports.xml"]
-keywords = ["school", "schools", "education", "student", "students", "teacher", "teachers"]
-request_pages = ["https://www.ed.gov/about/ed-overview/required-notices/freedom-of-information-act-foia/how-make-freedom-of-information-act-foia-request-or-appeal"]
-window_days = 14
+preferred_time = "07:00"

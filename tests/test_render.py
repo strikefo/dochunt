@@ -1,102 +1,65 @@
-"""Email rendering of engine issues: concise layout, escaping, branding, safe links."""
-from dataclasses import replace
-from datetime import date
-from html import escape
-import re
-
 import pytest
+from support import config, sample_data, sample_issue
+from dochunt.models import parse_issue_data
+from dochunt.render import AI_NOTICE, render_issue
+from datetime import date
 
-from dochunt.models import Issue
-from dochunt.render import render_issue
-from support import config, sample_issue
+
+def issue_from(data):
+    return parse_issue_data(data, issue_key='x:2026-10-02', local_date=date(2026, 10, 2))
 
 
-def test_layout_shows_new_document_facts_records_and_request():
+def test_layout_matches_the_working_briefing():
     c = config()
-    issue = sample_issue(c)
-    r = render_issue(issue, c)
-    for label in ['1. ' + issue.subject, 'New document', 'Established', 'Still to prove', 'Get the records',
-                  'Send the request to: records@publicworks.example', 'This briefing is AI-generated']:
-        assert label in r.html and label in r.text
-    # The new document is the source, so no separate Source line repeats it.
-    assert 'Source:' not in r.text
-    assert r.subject == issue.subject and len(r.fingerprint) == 64 and render_issue(issue, c) == r
+    r = render_issue(sample_issue(c), c)
+    assert r.subject == sample_data()['subject']
+    for part in ('Schools Document Hunt', 'October 2, 2026', AI_NOTICE, '1. Did Example County pay',
+                 'Reporting opportunity:', 'Source:', 'Get the records:', 'File this request:',
+                 'Call or email first:', 'Public download:', 'Caveat:'):
+        assert (part in r.text or part.upper() in r.text) and part.replace("'", '&#x27;') in r.html, part
+    assert r.text.index(AI_NOTICE) < r.text.index('1. Did Example County')
 
 
-@pytest.mark.parametrize('second_tier', ['ready', 'verify_route'])
-def test_lead_label_precedes_the_headline_in_both_formats(second_tier):
+def test_contacts_are_real_links_in_html_and_spelled_out_in_text():
     c = config()
-    issue = sample_issue(c)
-    first = issue.leads[0]
-    records_plan = dict(first.records_plan, tier=second_tier)
-    if second_tier == 'verify_route':
-        records_plan['route_notes'] = ['Confirm where to submit the records request.']
-    second = replace(first, id=f'{first.id}-followup',
-                     records_plan=records_plan,
-                     provisional_headline="Example County's audit raises questions about public works records")
-    issue = replace(issue, leads=[first, second])
-    rendered = render_issue(issue, c)
-    lines = rendered.text.splitlines()
-
-    html_notice = 'Check the request route first'
-    text_notice = 'CHECK THE REQUEST ROUTE FIRST'
-    if second_tier == 'verify_route':
-        first_headline = f'1. {first.provisional_headline}'
-        html_headline = f'>{escape(first_headline, quote=True)}</h1>'
-        assert rendered.html.count(html_notice) == 1
-        assert rendered.html.index(html_headline) < rendered.html.index(html_notice) < rendered.html.index('>Lead 2<')
-        assert lines.count(text_notice) == 1
-        assert lines.index(first_headline) < lines.index(text_notice) < lines.index('Lead 2')
-    else:
-        assert html_notice not in rendered.html
-        assert text_notice not in rendered.text
-
-    for number, lead in enumerate(issue.leads, 1):
-        label = f'Lead {number}'
-        headline = f'{number}. {lead.provisional_headline}'
-        assert lines.count(label) == 1
-        assert lines[lines.index(label) + 1] == headline
-
-        assert rendered.html.count(f'>{label}<') == 1
-        pair = (rf'<div\b[^>]*>{label}</div>\n<h1\b[^>]*>'
-                rf'{re.escape(escape(headline, quote=True))}</h1>')
-        assert re.search(pair, rendered.html)
+    r = render_issue(sample_issue(c), c)
+    assert 'href="https://publicworks.example/records-request"' in r.html
+    assert 'href="mailto:facilities@schools.example"' in r.html and 'href="tel:5550102040"' in r.html
+    assert 'Email: facilities@schools.example | Phone: (555) 010-2040' in r.text
+    assert 'Route checked on October 2, 2026: https://publicworks.example/records' in r.text
+    assert 'https://transit.example/plans/draft-2027-2031.pdf' in r.text
 
 
-def test_internal_metadata_and_raw_quotes_are_not_shown():
+def test_request_paragraphs_and_dollar_amounts_survive():
     c = config()
-    issue = sample_issue(c)
-    r = render_issue(issue, c)
-    for hidden in ['records_plan', 'evidence_ids', 'route_notes', 'newsworthiness', 'evidence-v1']:
-        assert hidden not in r.html and hidden not in r.text
-    # The full quoted audit sentence is evidence, not email copy.
-    assert issue.evidence[0].excerpt not in r.text
+    r = render_issue(sample_issue(c), c)
+    assert 'fees will exceed $25.' in r.text and 'fees will exceed $25.' in r.html
+    assert '$1.2 million' in r.subject and r.html.count('<p style="margin:0 0 12px;font-size:16px;line-height:1.6;">') >= 5
+    assert '\n\nPlease provide records in their existing electronic format' in r.text
+
+
+def test_internal_scores_and_notes_are_never_shown():
+    c = config()
+    r = render_issue(sample_issue(c), c)
+    for hidden in ('Narrowed to the 30 sampled contracts', 'newsworthiness', 'obtainability', 'reviewer'):
+        assert hidden.lower() not in r.html.lower() and hidden.lower() not in r.text.lower()
 
 
 def test_content_is_escaped():
+    data = sample_data()
+    data['leads'][0]['headline'] = '<script>alert(1)</script> & "quotes"'
+    data['leads'][0]['get_records']['text'] = 'Request <b>bold</b>'
     c = config()
-    issue = sample_issue(c)
-    evil = replace(issue.leads[0], story_potential='<script>evil</script>')
-    r = render_issue(Issue(issue.issue_key, issue.local_date, issue.evidence, [evil], issue.coverage_results,
-                           issue.subject, issue.subject_lead_id), c)
-    assert '<script>' not in r.html and '&lt;script&gt;' in r.html
+    r = render_issue(issue_from(data), c)
+    assert '<script>' not in r.html and '&lt;script&gt;' in r.html and '&lt;b&gt;bold' in r.html
+    assert '<script>alert(1)</script>' in r.text
 
 
-def test_unsafe_links_are_rejected():
+def test_no_lead_email_is_short_and_factual():
     c = config()
-    issue = sample_issue(c)
-    issue.leads[0].source_url = 'javascript:alert(1)'
-    with pytest.raises(ValueError):
-        render_issue(issue, c)
-
-
-def test_no_lead_email_is_neutral_and_hides_internal_notes():
-    c = config()
-    issue = Issue(f'{c.identity.id}:2026-10-02', date(2026, 10, 2), [], [], ['held_access: secret internal note'],
-                  'No qualifying document leads')
-    r = render_issue(issue, c)
-    assert 'No qualifying document leads' in r.text and 'secret internal note' not in r.html
-    assert 'AI-generated' not in r.text
+    r = render_issue(issue_from(sample_data('no-leads')), c)
+    assert r.subject == 'No actionable records leads qualified today'
+    assert 'none pointed to records' in r.text and 'Get the records' not in r.text and AI_NOTICE in r.text
 
 
 def test_accent_branding_changes_deterministic_payload():
@@ -114,3 +77,20 @@ def test_email_uses_inline_tables_and_wraps_long_text_on_mobile():
     r = render_issue(sample_issue(c), c)
     assert 'role="presentation"' in r.html and 'max-width:680px' in r.html
     assert 'overflow-wrap:anywhere' in r.html and '@media only screen and (max-width:600px)' in r.html
+    assert '<img' not in r.html and '<script' not in r.html and 'https://fonts' not in r.html
+
+
+def test_render_refuses_an_issue_that_fails_checks():
+    c = config()
+    issue = sample_issue(c)
+    issue.leads[0].source_url = 'javascript:alert(1)'
+    with pytest.raises(ValueError, match='failed checks'):
+        render_issue(issue, c)
+
+
+@pytest.mark.parametrize('phone,href', [('(202) 555-0100 ext. 123', 'tel:2025550100;ext=123'),
+                                        ('+1 202 555 0100 x45', 'tel:+12025550100;ext=45'),
+                                        ('(555) 010-2040', 'tel:5550102040')])
+def test_phone_links_keep_extensions_separate(phone, href):
+    from dochunt.render import _phone_href
+    assert _phone_href(phone) == href

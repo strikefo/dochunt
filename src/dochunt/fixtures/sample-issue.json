@@ -1,0 +1,98 @@
+{
+  "subject": "County paid $1.2 million for road repairs before inspections were signed",
+  "intro": "Three fictional records trails show what a DocHunt issue looks like.",
+  "no_lead_reason": "",
+  "checked_sources": [
+    "https://auditor.example/reports/2026-07-road-repair-payments.pdf",
+    "https://publicworks.example/records",
+    "https://firemarshal.example/notices/fm-2026-114",
+    "https://schools.example/departments/facilities",
+    "https://transit.example/plans/draft-2027-2031"
+  ],
+  "leads": [
+    {
+      "headline": "Did Example County pay $1.2 million for road repairs before anyone inspected them?",
+      "reporting_opportunity": "The county auditor found that 9 of 30 sampled road-repair contracts, worth $1.2 million, were paid before the inspection certificate was signed. The department says most were emergency repairs. Inspection and payment records for the sample could show whether any work was paid for but never inspected, and which contractors benefited.",
+      "source": {
+        "title": "Example County Auditor Report 2026-07, Road Repair Contract Payments",
+        "url": "https://auditor.example/reports/2026-07-road-repair-payments.pdf"
+      },
+      "get_records": {
+        "agency": "Example County Public Works Department",
+        "office": "Contracts and Inspections Division",
+        "action": "foia",
+        "contact": {
+          "label": "Public Works records request form",
+          "url": "https://publicworks.example/records-request",
+          "email": "",
+          "phone": ""
+        },
+        "verified_at_url": "https://publicworks.example/records",
+        "text": "Under the Example State Public Records Act, I request copies of the following existing records held by the Example County Public Works Department, Contracts and Inspections Division, for January 1, 2025, through October 31, 2026: (1) the inspection certificates, and (2) the payment approval records, for the 30 road-repair contracts sampled in County Auditor Report 2026-07.\n\nPlease provide records in their existing electronic format, including spreadsheets in native format, and release all reasonably segregable portions of any record that is partly exempt.\n\nI am a journalist gathering information for public dissemination. Please tell me in advance if fees will exceed $25."
+      },
+      "caveat": "The department says most early payments were emergency repairs.",
+      "internal": {
+        "newsworthiness": 8,
+        "obtainability": 8,
+        "is_update": false,
+        "reviewer_notes": "Narrowed to the 30 sampled contracts and the audit period."
+      }
+    },
+    {
+      "headline": "Which Example County schools still lack working fire alarms?",
+      "reporting_opportunity": "A state fire marshal notice says 4 Example County schools failed alarm inspections this fall and must report repairs within 60 days. The notice does not name the schools. The district's facilities office can say which schools are affected and whether repairs are finished.",
+      "source": {
+        "title": "Example State Fire Marshal Notice FM-2026-114, School Alarm Inspection Results",
+        "url": "https://firemarshal.example/notices/fm-2026-114"
+      },
+      "get_records": {
+        "agency": "Example County School District",
+        "office": "Facilities Office (likely custodian)",
+        "action": "inquiry",
+        "contact": {
+          "label": "Facilities Office",
+          "url": "",
+          "email": "facilities@schools.example",
+          "phone": "(555) 010-2040"
+        },
+        "verified_at_url": "https://schools.example/departments/facilities",
+        "text": "Hello, I'm a reporter following up on State Fire Marshal Notice FM-2026-114, which says four Example County schools failed fire-alarm inspections this fall.\n\nCould you tell me which schools were cited, send the repair plans or work orders filed in response, and say whether repairs are complete? If your office does not keep those records, which office does?"
+      },
+      "caveat": "",
+      "internal": {
+        "newsworthiness": 7,
+        "obtainability": 7,
+        "is_update": false,
+        "reviewer_notes": "Switched from a request to a call because the facilities office can answer faster."
+      }
+    },
+    {
+      "headline": "County's $48 million transit plan relies on ridership it has never reached",
+      "reporting_opportunity": "The draft transit plan projects 2.1 million annual riders by 2028, while its own appendix shows ridership has not passed 1.4 million in any year. The appendix tables show which routes carry the projected growth.",
+      "source": {
+        "title": "Example County Draft Transit Plan 2027-2031",
+        "url": "https://transit.example/plans/draft-2027-2031"
+      },
+      "get_records": {
+        "agency": "Example County Transit Authority",
+        "office": "Planning Department",
+        "action": "download",
+        "contact": {
+          "label": "Draft plan with appendices (PDF)",
+          "url": "https://transit.example/plans/draft-2027-2031.pdf",
+          "email": "",
+          "phone": ""
+        },
+        "verified_at_url": "",
+        "text": "Download the draft plan. Compare the ridership projections in Table 4 with the historical counts in Appendix B, and list the routes that account for most of the projected growth."
+      },
+      "caveat": "The plan is a draft and may change before adoption.",
+      "internal": {
+        "newsworthiness": 6,
+        "obtainability": 10,
+        "is_update": false,
+        "reviewer_notes": "Public document, so no request needed."
+      }
+    }
+  ]
+}
