@@ -229,6 +229,8 @@ def test_ci_installs_the_same_cli_versions_as_the_hunt_workflow():
     ci = Path('.github/workflows/ci.yml').read_text()
     pins = set(re.findall(r'@(?:openai/codex|anthropic-ai/claude-code)@[0-9.]+', hunt))
     assert len(pins) == 2 and all(pin in ci for pin in pins)
+    setup = Path('docs/setup.md').read_text()   # local paid previews use the same pinned CLIs
+    assert all(pin in setup for pin in pins), pins
 
 
 def test_timeout_kills_the_whole_process_tree(tmp_path):
