@@ -16,6 +16,9 @@ import tempfile
 import time
 
 SCHEMA_TEXT = files('dochunt').joinpath('schema', 'issue.schema.json').read_text(encoding='utf-8')
+# Claude Code validates --json-schema with a draft-07 validator that rejects the 2020-12 `$schema`
+# declaration, so it gets the same schema without that line. Codex reads the file as is.
+CLAUDE_SCHEMA_TEXT = json.dumps({k: v for k, v in json.loads(SCHEMA_TEXT).items() if k != '$schema'})
 PASS_ENV = ('PATH', 'LANG', 'LC_ALL', 'TZ', 'SSL_CERT_FILE', 'SSL_CERT_DIR', 'NODE_EXTRA_CA_CERTS')
 
 
@@ -150,8 +153,13 @@ def codex_config_overrides(config):
     return ['-c', 'web_search="live"', '-c', f'model_reasoning_effort="{effort}"']
 
 
+# --safe-mode, not --bare: both skip user and project customizations (CLAUDE.md, hooks, plugins, MCP),
+# but the pinned CLI's --bare also removes WebSearch and WebFetch, leaving the agent no web access.
+# Administrator-managed (policy) settings, including their hooks, still apply, as they do to any Claude
+# Code run on that machine. --disable-slash-commands turns off skills; --tools limits built-in tools to
+# the two web tools (plus the CLI's StructuredOutput).
 def claude_command(config):
-    return ['claude', '-p', '--bare', '--output-format', 'json', '--json-schema', SCHEMA_TEXT,
+    return ['claude', '-p', '--safe-mode', '--disable-slash-commands', '--output-format', 'json', '--json-schema', CLAUDE_SCHEMA_TEXT,
             '--tools', 'WebSearch,WebFetch', '--allowedTools', 'WebSearch,WebFetch', '--permission-mode', 'dontAsk',
             '--strict-mcp-config', '--no-session-persistence', '--model', config.model,
             '--effort', config.agent.reasoning_effort, '--max-budget-usd', f'{config.agent.max_budget_usd:.2f}']
@@ -196,7 +204,10 @@ def run_claude(config, prompt, *, key, runner, workdir, timeout):
     run_dir = workdir / 'run'
     for d in (home, run_dir):
         d.mkdir(mode=0o700)
-    env = _env(home, {'ANTHROPIC_API_KEY': key, 'DISABLE_AUTOUPDATER': '1', 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1'})
+    # A run-specific config directory also gives the CLI its own macOS Keychain namespace, so safe
+    # mode never reads the operator's usual Claude Code credentials.
+    env = _env(home, {'ANTHROPIC_API_KEY': key, 'CLAUDE_CONFIG_DIR': str(home / '.claude'),
+                      'DISABLE_AUTOUPDATER': '1', 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1'})
     cmd = claude_command(config)
     result = _run(runner, cmd, env=env, cwd=run_dir, timeout=timeout, input=prompt)
     try:

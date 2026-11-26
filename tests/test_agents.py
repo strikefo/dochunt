@@ -107,11 +107,13 @@ def test_claude_uses_web_tools_only_with_a_budget_and_schema():
     cmd, env = call['cmd'], call['env']
     assert cmd[cmd.index('--tools') + 1] == 'WebSearch,WebFetch' and cmd[cmd.index('--allowedTools') + 1] == 'WebSearch,WebFetch'
     assert cmd[cmd.index('--max-budget-usd') + 1] == '5.00' and cmd[cmd.index('--model') + 1] == 'claude-opus-5-5'
-    assert json.loads(cmd[cmd.index('--json-schema') + 1])['title'] == 'DocHunt issue'
-    for flag in ('--bare', '--strict-mcp-config', '--no-session-persistence'):
+    schema = json.loads(cmd[cmd.index('--json-schema') + 1])
+    assert schema['title'] == 'DocHunt issue' and '$schema' not in schema   # the CLI rejects the 2020-12 declaration
+    for flag in ('--safe-mode', '--disable-slash-commands', '--strict-mcp-config', '--no-session-persistence'):
         assert flag in cmd
-    assert cmd[cmd.index('--permission-mode') + 1] == 'dontAsk'
+    assert cmd[cmd.index('--permission-mode') + 1] == 'dontAsk' and '--bare' not in cmd   # --bare drops the web tools
     assert env['ANTHROPIC_API_KEY'] == 'sk-ant-fixture' and 'OPENAI_API_KEY' not in env
+    assert env['CLAUDE_CONFIG_DIR'] == str(Path(env['HOME']) / '.claude') and env['HOME'] != ENV['HOME']
     assert not any(v in json.dumps(env) for v in ('re-secret', 'smtp-secret', 'gh-secret', 'token-url'))
     assert call['input'] == 'PROMPT' and 'sk-ant-fixture' not in ' '.join(cmd)
 
@@ -143,6 +145,82 @@ def test_pinned_codex_accepts_the_exact_command(tmp_path):
     cmd = codex_command(config('examples/military.toml'), run_dir=tmp_path, schema=tmp_path / 's.json', out=tmp_path / 'o.json')
     result = subprocess.run(cmd + ['--help'], capture_output=True, text=True, timeout=60, cwd=tmp_path)
     assert result.returncode == 0, result.stderr
+
+
+def test_claude_startup_error_stays_status_only():
+    """CLI stderr is never copied into AgentError, which is printed and saved in check reports."""
+    runner = Runner(lambda cmd, cwd, env, input: subprocess.CompletedProcess(
+        [], 1, '', 'Error: bad argument sk-ant-fixture PROMPT TEXT\n'))
+    with pytest.raises(AgentError) as err:
+        run_agent(config('examples/education.toml'), 'P', runner=runner, environ=ENV)
+    assert str(err.value) == 'Claude Code exited with status 1 without a result'
+
+
+SENTINEL = 'dochunt-loopback-sentinel'
+
+
+def run_pinned_claude(tmp_path, cmd):
+    """Run the pinned Claude CLI against a loopback stand-in for the API that records each request and
+    rejects it with a known error. Dummy key, temporary home and config directory, no retries."""
+    import os
+    import shutil
+    import threading
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    if not shutil.which('claude'):
+        pytest.skip('claude CLI not installed (CI installs the pinned version)')
+    seen = []
+
+    class API(BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers.get('Content-Length') or 0))
+            seen.append(self.path)
+            body = json.dumps({'type': 'error', 'error': {'type': 'authentication_error', 'message': SENTINEL}}).encode()
+            self.send_response(401)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args):
+            pass
+
+    server = HTTPServer(('127.0.0.1', 0), API)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    (tmp_path / 'home').mkdir()
+    env = {'PATH': os.environ['PATH'], 'HOME': str(tmp_path / 'home'), 'ANTHROPIC_API_KEY': 'dummy-not-a-key',
+           'CLAUDE_CONFIG_DIR': str(tmp_path / 'home' / '.claude'),
+           'ANTHROPIC_BASE_URL': f'http://127.0.0.1:{server.server_port}', 'CLAUDE_CODE_MAX_RETRIES': '0',
+           'DISABLE_AUTOUPDATER': '1', 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1'}
+    try:
+        result = subprocess.run(cmd, input='hi', capture_output=True, text=True, timeout=120, cwd=tmp_path, env=env)
+    finally:
+        server.shutdown()
+        server.server_close()
+    return result, seen
+
+
+def test_pinned_claude_accepts_the_exact_command(tmp_path):
+    """The CLI must pass its own argument and schema checks, send the model request, and report the
+    stand-in API's error in its JSON result envelope."""
+    from dochunt.agents import claude_command
+    result, seen = run_pinned_claude(tmp_path, claude_command(config('examples/education.toml')))
+    from urllib.parse import urlsplit
+    assert '/v1/messages' in [urlsplit(path).path for path in seen], (seen, result.stderr[:300])   # not count_tokens
+    envelope = json.loads(result.stdout)
+    assert envelope['is_error'] is True and SENTINEL in json.dumps(envelope), result.stdout[:500]
+
+
+def test_pinned_claude_gives_the_agent_web_tools_and_nothing_else(tmp_path):
+    """The CLI's init event lists the tools the agent will have."""
+    from dochunt.agents import claude_command
+    cmd = claude_command(config('examples/education.toml'))
+    cmd[cmd.index('--output-format') + 1:cmd.index('--output-format') + 2] = ['stream-json', '--verbose']
+    result, seen = run_pinned_claude(tmp_path, cmd)
+    events = [json.loads(line) for line in result.stdout.splitlines() if line.startswith('{')]
+    init, = [e for e in events if e.get('type') == 'system' and e.get('subtype') == 'init']
+    assert set(init['tools']) == {'StructuredOutput', 'WebSearch', 'WebFetch'}, init['tools']
+    assert init['mcp_servers'] == [] and not init.get('skills') and init['permissionMode'] == 'dontAsk'
+    assert init['apiKeySource'] == 'ANTHROPIC_API_KEY'
 
 
 def test_ci_installs_the_same_cli_versions_as_the_hunt_workflow():

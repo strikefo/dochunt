@@ -8,7 +8,7 @@ A run is one research session by the agent: it searches the web, reads documents
 
 Agentic research uses far more tokens than a single model call, and the total varies with your model, `reasoning_effort`, beat and how much is published that day. **Measure before scheduling:** run two or three `paid-ai-preview` runs and read `check-report.json`. Each attempt records its run time and token usage, and for Claude Code the dollar cost the CLI reports. Multiply by your weekdays per month.
 
-For scale, the first live run of the [military example](../examples/military.toml) (Codex, `gpt-6.1-sol`, high reasoning) took about 5 minutes, made 22 web searches, and used about 2.4 million input tokens (2.2 million of them cached) and 15,000 output tokens, producing three leads in one session with no repair. Price those tokens at your provider's current rates, including its cached-input rate, and check the result against your usage dashboard.
+For scale, the first live run of the [military example](../examples/military.toml) (Codex, `gpt-6.1-sol`, high reasoning) took about 5 minutes, made 22 web searches, and used about 2.4 million input tokens (2.2 million of them cached) and 15,000 output tokens, producing three leads in one session with no repair. The first live Claude Code preview of the same example (`claude-opus-5-5`, high effort) took about 8 minutes and cost $1.85 by the CLI's own count (about 1.7 million cached input tokens and 22,000 output tokens), producing two leads with no repair. Price those tokens at your provider's current rates, including its cached-input rate, and check the result against your usage dashboard.
 
 To spend less:
 
