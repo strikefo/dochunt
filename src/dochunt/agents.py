@@ -199,6 +199,42 @@ def run_codex(config, prompt, *, key, runner, workdir, timeout):
     return _json_from_text(raw), raw, usage
 
 
+CLAUDE_RESULT_SUBTYPES = frozenset({'success', 'error_max_turns', 'error_during_execution', 'error_max_budget_usd',
+                                    'error_max_structured_output_retries'})
+
+
+def _claude_api_error(envelope):
+    """A fixed, application-owned explanation of an API error the CLI reported, or None.
+
+    It goes by the CLI's structured status and error code; the CLI's own text is only matched to tell
+    low credit from a spend limit, and neither is copied into the message, which is printed and saved."""
+    if envelope.get('terminal_reason') != 'api_error':
+        return None
+    status = envelope.get('api_error_status')
+    if isinstance(status, bool) or not isinstance(status, int) or not 100 <= status <= 599:
+        return 'the Anthropic API returned an error'
+    if envelope.get('api_error_code') == 'verification_required':
+        return ('the Anthropic organization must complete verification before using this model. '
+                'Complete it in the Anthropic Console, then rerun')
+    text = str(envelope.get('result') or '').lower()
+    if status in (400, 402) and 'credit balance' in text:
+        return 'the Anthropic account is out of API credit. Add credit in the Anthropic Console (Billing), then rerun'
+    if status == 402:
+        return 'the Anthropic account has a billing problem. Check Billing in the Anthropic Console, then rerun'
+    if status == 400 and 'usage limit' in text:
+        return ('the Anthropic account reached its spend limit. Raise it in the Anthropic Console, '
+                'or wait until it resets, then rerun')
+    known = {401: 'Anthropic rejected the API key. Check the ANTHROPIC_API_KEY repository secret',
+             403: "the API key may not use this model or workspace. Check the key's workspace and agent.model",
+             404: 'the model in agent.model is not available to this API key',
+             429: 'the Anthropic rate limit was reached. Rerun later'}
+    if status in known:
+        return known[status]
+    if status >= 500:
+        return f'the Anthropic API is temporarily unavailable (HTTP {status}). Rerun later'
+    return f'the Anthropic API returned HTTP {status}'
+
+
 def run_claude(config, prompt, *, key, runner, workdir, timeout):
     home = workdir / 'home'
     run_dir = workdir / 'run'
@@ -220,9 +256,14 @@ def run_claude(config, prompt, *, key, runner, workdir, timeout):
     if isinstance(envelope.get('total_cost_usd'), (int, float)):
         usage['cost_usd'] = round(float(envelope['total_cost_usd']), 4)
     if envelope.get('is_error') or result.returncode != 0:
-        subtype = envelope.get('subtype') or 'error'
-        if 'budget' in str(subtype):
+        # Only the pinned CLI's own result labels are printed; anything else becomes 'error'.
+        subtype = envelope.get('subtype')
+        subtype = subtype if isinstance(subtype, str) and subtype in CLAUDE_RESULT_SUBTYPES else 'error'
+        if subtype == 'error_max_budget_usd':
             raise AgentError(f'Claude Code stopped at the ${config.agent.max_budget_usd:.2f} run budget')
+        reason = _claude_api_error(envelope)
+        if reason:
+            raise AgentError(f'Claude Code could not use the model: {reason}')
         raise AgentError(f'Claude Code did not finish ({subtype})')
     structured = envelope.get('structured_output')
     if isinstance(structured, dict):

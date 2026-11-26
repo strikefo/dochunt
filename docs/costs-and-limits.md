@@ -18,7 +18,7 @@ To spend less:
 
 ## Built-in limits
 
-- **Claude Code:** `agent.max_budget_usd` (default $5) is a hard stop for each agent session. A run that hits it sends nothing new and fails visibly. The optional repair session has its own cap, so the most one run can spend on the model is twice this amount.
+- **Claude Code:** `agent.max_budget_usd` (default $5) is a hard stop for each agent session. A run that hits it sends nothing new and fails visibly. The optional repair session has its own cap, so the most one run can spend on the model is twice this amount. If a model request fails because the Anthropic account is out of credit, has reached its spend limit, needs organization verification, or rejects the key, that agent session ends with a message naming the cause (`Claude Code could not use the model: ...`). Requests made earlier in the session are still billed, and a failure during the repair session can leave the first attempt's result in place. Fix the cause in the Anthropic Console or the repository secret, then rerun.
 - **Codex:** the CLI has no dollar cap. Set a monthly budget and alerts in your OpenAI account before scheduling.
 - **Time:** each agent session stops after `agent.timeout_minutes` (default 18). The whole run must finish within the workflow's 25-minute application deadline, so the repair session is skipped when there isn't enough time left, and the valid leads from the first answer are sent.
 
