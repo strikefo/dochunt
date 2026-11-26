@@ -125,9 +125,49 @@ def test_claude_falls_back_to_json_in_the_result_text():
     assert result.data == sample_data()
 
 
+API_ERROR = {'type': 'result', 'subtype': 'success', 'is_error': True, 'terminal_reason': 'api_error'}
+
+
+@pytest.mark.parametrize('status,text,message', [
+    (400, 'Credit balance is too low', 'out of API credit'),
+    (400, 'API Error: 400 You have reached your specified API usage limits.', 'reached its spend limit'),
+    (400, 'API Error: 400 something else', r'returned HTTP 400$'),
+    (402, 'Credit balance is too low', 'out of API credit'),
+    (402, 'API Error: 402 Payment required.', 'billing problem'),
+    (401, 'Invalid API key', 'rejected the API key'),
+    (403, 'Failed to authenticate.', 'may not use this model'),
+    (404, "There's an issue with the selected model", 'not available to this API key'),
+    (429, 'API Error: Request rejected (429)', 'rate limit'),
+    (529, 'API Error: 529 Overloaded', r'temporarily unavailable \(HTTP 529\)'),
+    ('529 sk-ant-fixture', 'x', 'the Anthropic API returned an error$'),
+])
+def test_claude_api_errors_get_clear_fixed_messages(status, text, message):
+    """Envelope shapes are those of the pinned CLI (see the pinned tests below)."""
+    envelope = {**API_ERROR, 'api_error_status': status, 'result': text + ' sk-ant-fixture PROMPT TEXT'}
+    with pytest.raises(AgentError, match=message) as err:
+        run_agent(config('examples/education.toml'), 'P', runner=Runner(claude_handler(envelope, 1)), environ=ENV)
+    assert str(err.value).startswith('Claude Code could not use the model: ')
+    assert 'sk-ant-fixture' not in str(err.value) and 'PROMPT' not in str(err.value)
+
+
+def test_claude_verification_required_names_organization_verification():
+    envelope = {**API_ERROR, 'api_error_status': 403, 'api_error_code': 'verification_required', 'result': 'x'}
+    with pytest.raises(AgentError, match='must complete verification'):
+        run_agent(config('examples/education.toml'), 'P', runner=Runner(claude_handler(envelope, 1)), environ=ENV)
+    other = {**API_ERROR, 'api_error_status': 403, 'api_error_code': 'something_else', 'result': 'x'}
+    with pytest.raises(AgentError, match='may not use this model') as err:
+        run_agent(config('examples/education.toml'), 'P', runner=Runner(claude_handler(other, 1)), environ=ENV)
+    assert 'something_else' not in str(err.value)
+
+
 @pytest.mark.parametrize('envelope,code,message', [
     ({'is_error': True, 'subtype': 'error_max_budget_usd'}, 1, r'stopped at the \$5.00 run budget'),
-    ({'is_error': True, 'subtype': 'error_max_turns'}, 1, 'did not finish'),
+    ({'is_error': True, 'subtype': 'error_max_turns'}, 1, r'^Claude Code did not finish \(error_max_turns\)$'),
+    ({'is_error': True, 'subtype': 'sk-ant-fixture PROMPT TEXT'}, 1, r'^Claude Code did not finish \(error\)$'),
+    ({'is_error': True, 'subtype': 'confidential_source'}, 1, r'^Claude Code did not finish \(error\)$'),
+    ({'is_error': True, 'subtype': 'over_budget_note'}, 1, r'^Claude Code did not finish \(error\)$'),
+    ({'is_error': True, 'subtype': ['error_max_turns']}, 1, r'^Claude Code did not finish \(error\)$'),
+    ({'is_error': True, 'subtype': {'x': 1}}, 1, r'^Claude Code did not finish \(error\)$'),
     ('not json', 1, 'without a result'),
     ({'is_error': False, 'result': 'No JSON here'}, 0, 'did not return a JSON object'),
 ])
@@ -159,7 +199,7 @@ def test_claude_startup_error_stays_status_only():
 SENTINEL = 'dochunt-loopback-sentinel'
 
 
-def run_pinned_claude(tmp_path, cmd):
+def run_pinned_claude(tmp_path, cmd, status=401, error_type='authentication_error', message=SENTINEL, details=None):
     """Run the pinned Claude CLI against a loopback stand-in for the API that records each request and
     rejects it with a known error. Dummy key, temporary home and config directory, no retries."""
     import os
@@ -174,8 +214,9 @@ def run_pinned_claude(tmp_path, cmd):
         def do_POST(self):
             self.rfile.read(int(self.headers.get('Content-Length') or 0))
             seen.append(self.path)
-            body = json.dumps({'type': 'error', 'error': {'type': 'authentication_error', 'message': SENTINEL}}).encode()
-            self.send_response(401)
+            error = {'type': error_type, 'message': message, **({'details': details} if details else {})}
+            body = json.dumps({'type': 'error', 'error': error}).encode()
+            self.send_response(status)
             self.send_header('Content-Type', 'application/json')
             self.send_header('Content-Length', str(len(body)))
             self.end_headers()
@@ -221,6 +262,25 @@ def test_pinned_claude_gives_the_agent_web_tools_and_nothing_else(tmp_path):
     assert set(init['tools']) == {'StructuredOutput', 'WebSearch', 'WebFetch'}, init['tools']
     assert init['mcp_servers'] == [] and not init.get('skills') and init['permissionMode'] == 'dontAsk'
     assert init['apiKeySource'] == 'ANTHROPIC_API_KEY'
+
+
+@pytest.mark.parametrize('status,error_type,api_message,details,expected', [
+    (400, 'invalid_request_error', 'Your credit balance is too low to access the Anthropic API.', None, 'out of API credit'),
+    (402, 'billing_error', 'Payment required.', None, 'billing problem'),
+    (400, 'invalid_request_error', 'You have reached your specified API usage limits. You will regain access on '
+     '2026-12-01 at 00:00 UTC.', None, 'reached its spend limit'),
+    (401, 'authentication_error', 'invalid x-api-key', None, 'rejected the API key'),
+    (403, 'permission_error', 'Organization verification is required.', {'error_code': 'verification_required'},
+     'must complete verification'),
+    (529, 'overloaded_error', 'Overloaded', None, 'temporarily unavailable'),
+])
+def test_pinned_claude_api_errors_reach_the_clear_messages(tmp_path, status, error_type, api_message, details, expected):
+    """The real CLI's result envelope for each API error, fed through DocHunt's Claude adapter."""
+    from dochunt.agents import claude_command
+    result, seen = run_pinned_claude(tmp_path, claude_command(config('examples/education.toml')),
+                                     status=status, error_type=error_type, message=api_message, details=details)
+    with pytest.raises(AgentError, match=expected):
+        run_agent(config('examples/education.toml'), 'P', runner=Runner(lambda cmd, cwd, env, input: result), environ=ENV)
 
 
 def test_ci_installs_the_same_cli_versions_as_the_hunt_workflow():
