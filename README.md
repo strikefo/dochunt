@@ -22,34 +22,34 @@ Each newsroom runs its own private copy on GitHub, with its own AI and email acc
 
 1. builds a research prompt from your beat description and the leads you've already been sent;
 2. runs an AI research agent ([Codex CLI](https://github.com/openai/codex) with an OpenAI key, or [Claude Code](https://docs.claude.com/en/docs/claude-code) with an Anthropic key) that searches the web, reads the primary documents, verifies contacts, then reviews its own candidates as a skeptical editor;
-3. checks the agent's answer in code: real links, one usable first step per lead, a verified route, and no repeats. Broken leads are dropped and the rest are sent;
+3. checks the agent's answer in code: well-formed links and contacts, one usable first step per lead, a named page where a request or inquiry route was checked, and no repeated source documents. Leads that fail are dropped and the rest are sent;
 4. renders your branded email and sends it with Resend or SMTP.
 
-The agent never sees your email credentials, recipients or GitHub token, and it can't send anything. Details: [how it works](docs/how-it-works.md).
+The agent never sees your email credentials, recipients or GitHub token, and it has no way to send email. It does browse the web, and its prompt includes your newsletter name, beat settings and recent leads, so keep anything confidential out of those settings. Details: [how it works](docs/how-it-works.md).
 
 ## Getting started
 
 1. Click **Use this template → Create a new repository** and make it **private**. Your copy will hold your recipients and sent emails, and the workflow refuses to run in a public repository.
 2. Edit `newsroom.toml` with your beat, branding and recipients. Start from an example: [military](examples/military.toml), [education](examples/education.toml), [labor](examples/labor.toml) or [local government](examples/local-government.toml).
 3. Add your API keys as GitHub Actions secrets.
-4. Run the free fictional `preview`, then one `paid-ai-preview`, and read it. Send yourself a test.
+4. Run the fictional `preview` (no AI cost), then one `paid-ai-preview`, and read it. Send yourself a test.
 5. Turn on the schedule.
 
 Optional extras:
 
-- **On-time email.** GitHub starts scheduled workflows only a few times a day, so the email can arrive hours late. The included [timer](timer/) is a free Cloudflare Worker that starts DocHunt at your send time. See [scheduling](docs/scheduling.md).
+- **On-time email.** GitHub can delay or skip scheduled workflow runs, so the email can arrive hours late. The included [timer](timer/) is a small Cloudflare Worker, within Cloudflare's free plan, that asks GitHub to start DocHunt within five minutes of your send time. See [scheduling](docs/scheduling.md).
 - **Self-service subscriptions.** Instead of a fixed recipient list, DocHunt can read the list from your own small service with an opt-in/opt-out page, and add a "Manage subscription" link to every email. See [configuration](docs/configuration.md#subscription-list-optional).
 
 Full steps: [setup](docs/setup.md). Also see [configuration](docs/configuration.md), [costs and limits](docs/costs-and-limits.md), [scheduling](docs/scheduling.md), [recovery](docs/recovery.md) and [updating](docs/updating.md).
 
 ## What it costs
 
-You pay your own providers directly. A run is one agentic research session, plus a repair pass when its answer has fixable problems. The cost depends on your model, reasoning effort and beat, so measure a few paid previews before scheduling. Claude Code stops at the per-run spending cap you set; for Codex, set a spending limit in your OpenAI account. GitHub Actions minutes and your email service may also charge. See [costs and limits](docs/costs-and-limits.md).
+You pay your own providers directly. A run is one agentic research session, plus a repair pass when its answer has fixable problems. The cost depends on your model, reasoning effort and beat, so measure a few paid previews before scheduling. Claude Code stops each agent session at the spending cap you set; for Codex, set a spending limit in your OpenAI account. GitHub Actions minutes and your email service may also charge. See [costs and limits](docs/costs-and-limits.md).
 
 ## Honest limits
 
 - **AI-written.** The agent can be wrong about a fact, a number, an office or a route. Every email says so. Check facts and filing details before you report or file.
-- **Checks are deliberately light.** Code catches broken links, missing contacts, unverified routes and repeats. It doesn't re-verify facts against the source; the agent's own reviewing pass does that. This trade-off is intentional: stricter code gates in earlier versions blocked almost every lead.
+- **Checks are deliberately light.** Code catches malformed links and contacts, a missing first step or verification page, and repeated source documents. It doesn't confirm that a contact is right or re-verify facts against the source; the agent's own reviewing pass does that. This trade-off is intentional: stricter code gates in earlier versions blocked almost every lead.
 - **Quality varies by beat and model.** Tune `brief`, `priorities` and `source_families` after reading your first previews.
 - **Testing so far.** DocHunt runs live daily with the Codex agent on a military beat. From a fresh copy of this template, every example has completed a live paid preview: [local government](examples/local-government.toml) and [education](examples/education.toml) with Claude Code (citing Illinois and Wisconsin records laws and finding county, city, district and state agency request portals), and [labor](examples/labor.toml) with Codex (federal FOIA). The Claude Code agent has also run a live preview on the military beat. Whichever you choose, start with a paid preview.
 - DocHunt never files requests or contacts agencies.
