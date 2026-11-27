@@ -28,7 +28,9 @@ class StateStore:
         if not isinstance(data,dict): raise ValueError('Invalid private state')
         # The tracker lives in leads.jsonl so it stays readable and diff-friendly.
         tracker=self.path/'leads.jsonl'
-        if tracker.exists(): data['leads']=[json.loads(line) for line in tracker.read_text().splitlines() if line.strip()]
+        # One record per physical line: str.splitlines() would also split on Unicode separators
+        # (such as U+2028) that json.dumps(ensure_ascii=False) leaves inside a headline.
+        if tracker.exists(): data['leads']=[json.loads(line) for line in tracker.read_text().split('\n') if line.strip()]
         for key,default in [('attempts',{}),('completed',{}),('leads',[])]: data.setdefault(key,default)
         return data
     def check_head(self):

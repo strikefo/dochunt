@@ -54,6 +54,8 @@ def test_every_structural_problem_is_reported_at_once():
     (lambda l: l['get_records']['contact'].update(url='', email=''), 'submission link or email'),
     (lambda l: l['get_records'].update(verified_at_url=''), 'verified'),
     (lambda l: l['get_records']['contact'].update(email='not-an-email'), 'email'),
+    # A contact address becomes a mailto: link; query characters could add hidden recipients.
+    (lambda l: l['get_records']['contact'].update(email='foia?bcc=attacker%40evil.example&x=@agency.example'), 'email'),
 ])
 def test_reader_facing_lead_rules(change, message):
     data = sample_data()
@@ -108,3 +110,18 @@ def test_source_key_keeps_hash_routes_but_not_anchors():
 def test_source_key_keeps_non_default_ports():
     assert source_key('https://records.example.gov:8443/r.pdf') != source_key('https://records.example.gov:9443/r.pdf')
     assert source_key('https://records.example.gov:443/r.pdf') == source_key('http://records.example.gov:80/r.pdf')
+
+
+@pytest.mark.parametrize('character', ['?', '&', '=', '%', '#'])
+def test_each_mailto_delimiter_is_rejected_in_a_contact_address(character):
+    data = sample_data()
+    data['leads'][0]['get_records']['contact']['email'] = f'foia{character}x@agency.example'
+    with pytest.raises(IssueFormatError, match='email'):
+        parse(data)
+
+
+@pytest.mark.parametrize('email', ['foia@agency.example', 'FOIA.Records@oig.agency.example', "o'neil@city.example", 'records+press@county-office.example'])
+def test_ordinary_contact_addresses_are_accepted(email):
+    data = sample_data()
+    data['leads'][0]['get_records']['contact']['email'] = email
+    parse(data)

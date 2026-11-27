@@ -181,7 +181,7 @@ def run_codex(config, prompt, *, key, runner, workdir, timeout):
     cmd = codex_command(config, run_dir=run_dir, schema=schema, out=out)
     result = _run(runner, cmd, env=env, cwd=run_dir, timeout=timeout, input=prompt)
     usage = {}
-    for line in (result.stdout or '').splitlines():
+    for line in (result.stdout or '').split('\n'):   # physical lines; JSON strings may hold U+2028
         try:
             event = json.loads(line)
         except json.JSONDecodeError:
