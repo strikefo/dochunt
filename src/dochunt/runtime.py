@@ -67,7 +67,7 @@ def recheck_for(config):
 def deliver_artifacts(config, store, output_dir, transport, issue_key):
     # The same manifest-checked loader as reviewed previews: every artifact is hashed and re-rendered.
     from .artifacts import load_preview
-    issue, rendered = load_preview(output_dir, config, require_paid=True, require_send=True)
+    issue, rendered = load_preview(output_dir, config, require_paid=True)
     if issue.issue_key != issue_key:
         raise RuntimeError('Artifacts are not for the current local date')
     return send(prepare(issue, rendered, config), store, transport, recheck=recheck_for(config))

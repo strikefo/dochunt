@@ -99,13 +99,19 @@ def from_header(p):
     return sender_header(p.sender,p.sender_name)
 
 
-def send(prepared,store,transport=None,*,recheck=None):
-    """recheck(prepared) runs before retrying a saved, unaccepted subscription send (opt-outs since)."""
+def send(prepared,store,transport=None,*,recheck=None,repeat=False,match_saved=False):
+    """recheck(prepared) runs before retrying a saved, unaccepted subscription send (opt-outs since).
+
+    A new production attempt for an issue that was already sent is refused unless repeat is set,
+    which only an explicit resend does. With match_saved (the standalone commands), an unfinished
+    saved attempt is retried only when it holds exactly the email the operator selected."""
     with store.locked():
         data=store.read(); attempts=data.setdefault('attempts',{}); record=attempts.get(prepared.attempt_key)
         if record:
-            prepared=restore(record['prepared'])
+            selected=prepared; prepared=restore(record['prepared'])
             if record['status']=='accepted': return SendReceipt(**record['receipt'])
+            if match_saved and (prepared.fingerprint!=selected.fingerprint or prepared.rendered!=selected.rendered):
+                raise RuntimeError('A saved, unfinished attempt for this issue holds a different email; reconcile it manually before sending')
             if record['status']=='unknown' or (record['status']=='sending' and prepared.provider=='smtp'):
                 raise RuntimeError('Uncertain delivery requires manual recovery')
             if datetime.now(timezone.utc)-datetime.fromisoformat(prepared.prepared_at)>=timedelta(hours=24): raise RuntimeError('Idempotency window expired; manual recovery required')
@@ -116,6 +122,8 @@ def send(prepared,store,transport=None,*,recheck=None):
         transport=delivery_readiness(prepared.provider,transport)
         from_header(prepared)
         if not record:
+            if not prepared.preview_test and not repeat and prepared.issue['issue_key'] in data.get('completed',{}):
+                raise RuntimeError('This issue was already sent; use resend with a new attempt ID for an intentional extra send')
             if any(r['status']!='accepted' and r['prepared']['issue']['issue_key']==prepared.issue['issue_key'] and r['prepared']['preview_test']==prepared.preview_test for r in attempts.values()):
                 raise RuntimeError('Resolve existing uncertain attempt before creating another')
             record={'prepared':asdict(prepared),'status':'pending'}; attempts[prepared.attempt_key]=record

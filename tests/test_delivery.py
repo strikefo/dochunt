@@ -47,6 +47,34 @@ def test_post_send_failure_recovers_exact_pending(tmp_path,monkeypatch):
     assert t.calls[0]==t.calls[1]
 
 
+def test_an_issue_already_sent_is_not_delivered_again_without_resend(tmp_path):
+    c=config(); i=sample_issue(c,date(2026,10,2)); r=render_issue(i,c)
+    s=StateStore(tmp_path,git=False); t=Fake()
+    send(prepare(i,r,c),s,t)
+    with pytest.raises(RuntimeError, match='already sent'):
+        send(prepare(i,r,c,attempt_id='second-try'),s,t)   # a new attempt key, but not an explicit resend
+    send(prepare(i,r,c,attempt_id='extra-copy'),s,t,repeat=True)
+    send(prepare(i,r,c,recipient=c.email.recipients[0]),s,t)   # test sends stay allowed
+    assert len(t.calls)==3
+
+
+def test_standalone_retry_must_match_the_saved_email(tmp_path):
+    from dochunt.delivery import DefiniteNonSend
+    c=config(); d=date(2026,10,2)
+    saved=sample_issue(c,d,'no-leads'); chosen=sample_issue(c,d)
+    s=StateStore(tmp_path,git=False)
+    class Refuses:
+        def send(self,p): raise DefiniteNonSend('not handed over')
+    with pytest.raises(DefiniteNonSend): send(prepare(saved,render_issue(saved,c),c),s,Refuses())
+    assert next(iter(s.read()['attempts'].values()))['status']=='pending'
+    t=Fake()
+    with pytest.raises(RuntimeError, match='holds a different email'):
+        send(prepare(chosen,render_issue(chosen,c),c),s,t,match_saved=True)
+    assert not t.calls
+    send(prepare(saved,render_issue(saved,c),c),s,t,match_saved=True)   # the same email retries normally
+    assert len(t.calls)==1
+
+
 def test_preview_test_does_not_mark_scheduled_complete(tmp_path):
     from dataclasses import replace
     p=replace(prepared(),preview_test=True); s=StateStore(tmp_path,git=False)

@@ -36,8 +36,8 @@ def test_test_send_then_delivery_then_next_day_and_resend(repos, tmp_path, examp
 
     # An explicit operator resend has its own attempt but preserves the reviewed payload.
     resend = prepare(i, r, c, attempt_id='operator-1')
-    send(resend, store, t)
-    send(resend, store, t)
+    send(resend, store, t, repeat=True)   # what `dochunt resend` passes
+    send(resend, store, t, repeat=True)
     assert len(t.calls) == 4 and t.calls[-1].rendered == t.calls[0].rendered and t.calls[-1].attempt_key != t.calls[1].attempt_key
 
 

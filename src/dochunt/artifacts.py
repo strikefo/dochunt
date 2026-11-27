@@ -35,7 +35,7 @@ def write_manifest(path,config,synthetic,files=FILES):
     manifest={'version':1,'mode':'synthetic-preview' if synthetic else 'paid-ai-preview','config_sha256':config_digest(config),'files':{name:hashlib.sha256((path/name).read_bytes()).hexdigest() for name in files-{'preview-manifest.json'}}}
     (path/'preview-manifest.json').write_text(json.dumps(manifest,sort_keys=True)+'\n')
 
-def load_preview(path,config,*,require_paid=False,require_send=False):
+def load_preview(path,config,*,require_paid=False):
     path=Path(path)
     names={p.name for p in path.iterdir()}
     if 'raw' in names and ((path/'raw').is_symlink() or not (path/'raw').is_dir()): raise ValueError('Unexpected preview files')
