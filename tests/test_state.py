@@ -261,3 +261,11 @@ def test_actions_privacy_evidence_comes_from_the_event(tmp_path, monkeypatch, pa
     assert actions_private_repository() == expected
     monkeypatch.setenv('GITHUB_ACTIONS', 'false')
     assert actions_private_repository() == ''
+
+
+def test_tracker_survives_unicode_line_separators_in_lead_text(tmp_path):
+    """json.dumps(ensure_ascii=False) keeps U+2028 inside a string; reading must not split on it."""
+    store = StateStore(tmp_path, git=False)
+    rows = [{'lead_id': 'a', 'headline': 'Budget\u2028cut\u2029and\x85more', 'source_key': 'k'}, {'lead_id': 'b', 'source_key': 'j'}]
+    store.save({'attempts': {}, 'leads': rows})
+    assert store.read()['leads'] == rows

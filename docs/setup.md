@@ -38,7 +38,7 @@ Never put a key in `newsroom.toml`, in a workflow input or in an issue.
 
 Before any paid research, a scheduled run checks that your provider's mail secrets are present, but not that they work; the test send in step 4 confirms them.
 
-If a branch ruleset protects your default branch, DocHunt's state commits need a way through. Create a GitHub App that is the ruleset's bypass actor and has contents write access, install it on the repository, then add the repository variable `BOT_APP_CLIENT_ID` and the secret `BOT_APP_PRIVATE_KEY`. Set both: the variable alone makes the run fail. Without them, DocHunt pushes with the workflow's own token.
+If a branch ruleset protects your default branch, DocHunt's state commits need a way through. Create a GitHub App that is the ruleset's bypass actor and has contents write access, install it on this repository only, then add the repository variable `BOT_APP_CLIENT_ID` and the secret `BOT_APP_PRIVATE_KEY`. Set both: the variable alone makes the run fail. Anyone with write access to the repository can run a workflow that reads repository secrets, so anyone who can push can use the App's bypass. Use it only when everyone with write access may bypass the ruleset. Without them, DocHunt pushes with the workflow's own token.
 
 ## 4. Preview, then test, then schedule
 

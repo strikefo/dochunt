@@ -12,7 +12,9 @@ from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
 ACTIONS = ('foia', 'inquiry', 'download')
 NO_LEAD_SUBJECT = 'No actionable records leads qualified today'
-EMAIL_RE = re.compile(r'[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[A-Za-z]{2,}')
+# Contact addresses become mailto: links, so only plain mailbox characters are accepted: no ?, &, =,
+# % or # that a mail client could read as extra recipients or headers.
+EMAIL_RE = re.compile(r"[A-Za-z0-9._'+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
 
 
 def public_url(value: str) -> str:
