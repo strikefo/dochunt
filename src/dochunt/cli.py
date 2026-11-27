@@ -133,10 +133,12 @@ def main(argv=None):
             from .delivery import prepare, send
             from .state import PublishedStateStore
             from .artifacts import load_preview
-            issue, rendered = load_preview(args.issue_dir, config, require_paid=args.command == 'preview-test', require_send=True)
+            # Only a paid preview can be sent: a synthetic one is fictional, even for a single test address.
+            issue, rendered = load_preview(args.issue_dir, config, require_paid=True)
             prepared = prepare(issue, rendered, config, attempt_id=getattr(args, 'attempt_id', None), recipient=getattr(args, 'recipient', None))
             from .runtime import recheck_for
-            receipt = send(prepared, PublishedStateStore(args.state_dir, repo=args.repo, branch=args.branch), recheck=recheck_for(config))
+            receipt = send(prepared, PublishedStateStore(args.state_dir, repo=args.repo, branch=args.branch),
+                           recheck=recheck_for(config), repeat=args.command == 'resend', match_saved=True)
             print(f'Delivery state: {receipt.state.value}; provider acceptance does not confirm inbox delivery.')
     except subprocess.CalledProcessError as exc:
         parser.exit(2, f'dochunt {args.command} failed: a git command exited with status {exc.returncode}.\n')

@@ -129,3 +129,42 @@ def test_raw_agent_outputs_are_kept_out_of_the_send_contract(tmp_path):
     assert len(issue.leads)==3
     (tmp_path/'issue.json').write_text((tmp_path/'issue.json').read_text().replace('road-repair','bridge-repair'))
     with pytest.raises(ValueError): load_preview(tmp_path,c)
+
+
+@pytest.mark.parametrize('command,extra', [
+    ('deliver', []),
+    ('resend', ['--attempt-id', 'extra-copy']),
+    ('preview-test', ['--attempt-id', 'test-1', '--recipient', 'reporter@example.org']),
+])
+def test_standalone_sends_refuse_a_synthetic_preview(tmp_path, capsys, monkeypatch, command, extra):
+    """A fictional preview is never sendable, to the full list or to one test address."""
+    from dochunt.cli import main
+    import dochunt.delivery as delivery
+    monkeypatch.setattr(delivery, 'send', lambda *a, **k: pytest.fail('a synthetic preview reached send'))
+    cfg = 'examples/education.toml'
+    main(['preview', '--synthetic', '--config', cfg, '--output-dir', str(tmp_path / 'out')])
+    with pytest.raises(SystemExit) as stop:
+        main([command, '--config', cfg, '--issue-dir', str(tmp_path / 'out'), '--state-dir', str(tmp_path / 'state'),
+              '--repo', str(tmp_path), *extra])
+    assert stop.value.code == 2 and 'Preview/config mismatch' in capsys.readouterr().err
+
+
+@pytest.mark.parametrize('command,extra,repeat', [
+    ('deliver', [], False),
+    ('resend', ['--attempt-id', 'extra-copy'], True),
+    ('preview-test', ['--attempt-id', 'test-1', '--recipient', 'reporter@example.org'], False),
+])
+def test_standalone_sends_pass_the_resend_and_saved_email_rules(tmp_path, monkeypatch, command, extra, repeat):
+    """The CLI wiring: only resend may repeat a sent issue, and every standalone retry must match the saved email."""
+    from dochunt.cli import main
+    from dochunt.models import SendReceipt
+    import dochunt.delivery as delivery
+    import dochunt.state as state
+    preview(config(), tmp_path / 'out')   # a paid preview from the fake agent
+    calls = []
+    monkeypatch.setattr(state, 'PublishedStateStore', lambda *a, **k: object())
+    monkeypatch.setattr(delivery, 'send', lambda prepared, store, **k: calls.append(k) or SendReceipt('resend', 'accepted', provider_id='fake', accepted_at='2026-10-02T12:00:00+00:00'))
+    main([command, '--config', 'examples/education.toml', '--issue-dir', str(tmp_path / 'out'),
+          '--state-dir', str(tmp_path / 'state'), '--repo', str(tmp_path), *extra])
+    kwargs, = calls
+    assert kwargs['repeat'] is repeat and kwargs['match_saved'] is True
