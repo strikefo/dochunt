@@ -32,7 +32,7 @@ The agent never sees your email credentials, recipients or GitHub token, and it 
 1. Click **Use this template → Create a new repository** and make it **private**. Your copy will hold your recipients and sent emails, and the workflow refuses to run in a public repository.
 2. Edit `newsroom.toml` with your beat, branding and recipients. Start from an example: [military](examples/military.toml), [education](examples/education.toml), [labor](examples/labor.toml) or [local government](examples/local-government.toml).
 3. Add your API keys as GitHub Actions secrets.
-4. Run the fictional `preview` (no AI cost), then one `paid-ai-preview`, and read it. Send yourself a test.
+4. Run the fictional `preview` (no AI cost), then one `paid-ai-preview`, and read it on the run's summary page. Send yourself a test.
 5. Turn on the schedule.
 
 Optional extras:

@@ -168,3 +168,27 @@ def test_standalone_sends_pass_the_resend_and_saved_email_rules(tmp_path, monkey
           '--state-dir', str(tmp_path / 'state'), '--repo', str(tmp_path), *extra])
     kwargs, = calls
     assert kwargs['repeat'] is repeat and kwargs['match_saved'] is True
+
+
+@pytest.mark.parametrize('extra,expected', [
+    ([], 'first@example.org'),
+    (['--recipient', 'second@example.org'], 'second@example.org'),
+])
+def test_preview_test_defaults_to_the_first_configured_recipient(tmp_path, monkeypatch, extra, expected):
+    """A blank recipient is the first configured address, never the whole list."""
+    from dochunt.cli import main
+    from dochunt.config import load_config
+    from dochunt.models import SendReceipt
+    import dochunt.delivery as delivery
+    import dochunt.state as state
+    cfg = tmp_path / 'newsroom.toml'
+    cfg.write_text(Path('examples/education.toml').read_text().replace(
+        'recipients = ["reporter@example.org"]', 'recipients = ["first@example.org", "second@example.org"]'))
+    preview(load_config(cfg), tmp_path / 'out')
+    sent = []
+    monkeypatch.setattr(state, 'PublishedStateStore', lambda *a, **k: object())
+    monkeypatch.setattr(delivery, 'send', lambda prepared, store, **k: sent.append(prepared) or SendReceipt('resend', 'accepted', provider_id='fake', accepted_at='2026-10-02T12:00:00+00:00'))
+    main(['preview-test', '--config', str(cfg), '--issue-dir', str(tmp_path / 'out'), '--state-dir', str(tmp_path / 'state'),
+          '--repo', str(tmp_path), '--attempt-id', 'test-1', *extra])
+    prepared, = sent
+    assert prepared.recipient_snapshot == (expected,) and prepared.preview_test

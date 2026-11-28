@@ -69,7 +69,10 @@ def main(argv=None):
         if name in ('resend', 'preview-test'):
             delivery.add_argument('--attempt-id', required=True)
         if name == 'preview-test':
-            delivery.add_argument('--recipient', required=True)
+            delivery.add_argument('--recipient', help='One configured recipient (default: the first in email.recipients)')
+    summary = commands.add_parser('summary', help='Print a preview as escaped HTML for the Actions run page')
+    summary.add_argument('--output-dir', type=Path, default=Path('output'))
+    summary.add_argument('--run-id', default='')
     download = with_config(commands.add_parser('download-preview'))
     download.add_argument('--run-id', required=True)
     download.add_argument('--repository', required=True)
@@ -81,6 +84,10 @@ def main(argv=None):
         if args.command == 'setup':
             from .setup_server import launch
             launch(args.repo, open_browser=not args.no_browser)
+            return 0
+        if args.command == 'summary':
+            from .summary import preview_summary
+            print(preview_summary(args.output_dir, args.run_id), end='')
             return 0
         config = load_config(args.config)
         if args.command == 'validate-config':
@@ -135,7 +142,11 @@ def main(argv=None):
             from .artifacts import load_preview
             # Only a paid preview can be sent: a synthetic one is fictional, even for a single test address.
             issue, rendered = load_preview(args.issue_dir, config, require_paid=True)
-            prepared = prepare(issue, rendered, config, attempt_id=getattr(args, 'attempt_id', None), recipient=getattr(args, 'recipient', None))
+            recipient = None
+            if args.command == 'preview-test':
+                # A test goes to exactly one configured address; the first is the usual choice.
+                recipient = args.recipient or config.email.recipients[0]
+            prepared = prepare(issue, rendered, config, attempt_id=getattr(args, 'attempt_id', None), recipient=recipient)
             from .runtime import recheck_for
             receipt = send(prepared, PublishedStateStore(args.state_dir, repo=args.repo, branch=args.branch),
                            recheck=recheck_for(config), repeat=args.command == 'resend', match_saved=True)

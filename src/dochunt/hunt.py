@@ -51,7 +51,8 @@ def research(config, local_date, tracker_rows, *, raw_dir=None, agent=run_agent,
         remaining = _remaining(deadline)
         if remaining is not None:
             if attempt == 2 and remaining < MIN_REPAIR_SECONDS:
-                report['attempts'].append({'attempt': attempt, 'error': 'Skipped repair: not enough time before the run deadline'})
+                report['attempts'].append({'attempt': attempt, 'skipped': True,
+                                           'error': 'Skipped repair: not enough time before the run deadline'})
                 break
             limit = max(60, min(limit, int(remaining)))
         try:

@@ -128,3 +128,15 @@ def test_local_preview_needs_an_explicit_kind(tmp_path, capsys):
         main(['preview', '--config', 'examples/education.toml', '--output-dir', str(tmp_path / 'out')])
     assert stop.value.code == 2 and 'one of the arguments --synthetic --paid is required' in capsys.readouterr().err
     assert not (tmp_path / 'out').exists()
+
+
+def test_preview_summary_step_and_test_send_defaults():
+    w=Path('.github/workflows/document-hunt.yml').read_text()
+    step=w[w.index('- name: Show the preview on the run page'):]
+    step=step[:step.index('\n      - ')]
+    assert 'secrets.' not in step and '>> "$GITHUB_STEP_SUMMARY"' in step
+    assert "mode == 'preview'" in step and "mode == 'paid-ai-preview'" in step
+    assert w.index('dochunt preview --paid')<w.index('Show the preview on the run page')
+    # Only a test gets a default attempt ID; resend still needs an explicit one.
+    assert '--attempt-id "${ATTEMPT_ID:-test-$GITHUB_RUN_ID}"' in w
+    assert 'dochunt resend --issue-dir selected-preview --attempt-id "$ATTEMPT_ID"' in w

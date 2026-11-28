@@ -61,7 +61,7 @@ def test_repair_is_skipped_near_the_workflow_deadline(monkeypatch):
     monkeypatch.setenv('DOCHUNT_DEADLINE', str(int(time.time()) + 200))
     issue, report = research(config(), D, [], agent=agent, fetch=no_fetch)
     assert len(agent.prompts) == 1 and len(issue.leads) == 2
-    assert 'Skipped repair' in report['attempts'][1]['error']
+    assert 'Skipped repair' in report['attempts'][1]['error'] and report['attempts'][1]['skipped'] is True
     assert agent.timeouts[0] < 200
 
 

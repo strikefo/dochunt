@@ -4,7 +4,7 @@ You need:
 
 - a GitHub account that can create **private** repositories and use Actions;
 - an API account with billing at OpenAI (for the Codex agent) or Anthropic (for the Claude Code agent). A ChatGPT or Claude chat subscription does not include API access;
-- an email sending account on a domain you control (Resend, or any SMTP provider with STARTTLS).
+- an email sending account: Resend or another SMTP provider on a domain you control, or, for a small internal list, a Gmail or Google Workspace address (no DNS changes; see [email](#email-domain)).
 
 No local software is required. Everything below can be done on GitHub's website.
 
@@ -44,13 +44,13 @@ If a branch ruleset protects your default branch, DocHunt's state commits need a
 
 Use **Actions → Document Hunt → Run workflow** on the default branch:
 
-1. **`preview`** (no AI cost). A fictional issue rendered with your branding. Download the `document-hunt-RUN_ID` artifact and open `preview.html`. This only proves that your settings render.
-2. **`paid-ai-preview`** (billed). A real agent run on your beat. It sends no email and changes no state. Download `paid-ai-preview-RUN_ID` and read:
+1. **`preview`** (no AI cost). A fictional issue rendered with your branding. Open the finished run: its summary page shows the email as plain text. For the formatted version, download the `document-hunt-RUN_ID` artifact and open `preview.html`. This only proves that your settings render.
+2. **`paid-ai-preview`** (billed). A real agent run on your beat. It sends no email and changes no state. The run's summary page shows the email as plain text, how many leads the checks dropped, and the run's agent time (and cost, for Claude). For the details, download `paid-ai-preview-RUN_ID` and read:
    - `preview.html` and `preview.txt`: the email;
    - `check-report.json`: run time, token usage (and cost, for Claude), problems the checks found, any leads dropped and why, and link warnings.
 
    The `document-hunt-RUN_ID` artifact also has `raw/prompt.md` (exactly what the agent was asked) and `raw/agent-output-*.json` (what it returned). Expect to adjust your `[beat]` section a few times.
-3. **`send-preview-test`**. Sends that exact preview to **one** address from your recipients list. Enter the paid preview's run ID, the recipient, and a new `attempt_id` (1-64 letters, digits, `_` and `-`). Check the inbox, spam folder, links and the layout on a phone.
+3. **`send-preview-test`**. Sends that exact preview to **one** address from your recipients list. Enter the paid preview's run ID (its summary page shows it). Enter your own address from the recipients list (left blank, it goes to the first address on the list, whoever that is), and leave `attempt_id` blank: re-running that same workflow run never sends a second copy. A new run sends another test once the earlier one was accepted; if an earlier test's delivery state is `unknown`, resolve it first ([recovery](recovery.md)). Check the inbox, spam folder, links and the layout on a phone.
 4. **Schedule.** When you are satisfied, set `[schedule] enabled = true`. An hourly check (at minute 17 UTC) starts a run after your `preferred_time` on your `weekdays`, within `window_hours` (default 12). GitHub can delay or skip these checks, so the email can arrive hours late; for on-time email, add an external timer ([scheduling](scheduling.md#githubs-schedule-is-sparse-use-an-external-timer-for-on-time-email)). Missed days are not backfilled.
 
 Other modes:
@@ -61,6 +61,8 @@ Other modes:
 See [scheduling](scheduling.md) and [recovery](recovery.md).
 
 ## Email domain
+
+**Quickest start: Gmail or Google Workspace.** For a small internal list, send from your own Google address over SMTP, with no DNS changes. Turn on 2-Step Verification, create an [app password](https://support.google.com/accounts/answer/185833), then set `email.provider = "smtp"`, `smtp_host = "smtp.gmail.com"`, `smtp_port = 587`, `sender` to that address, and the secrets `SMTP_USERNAME` (the address) and `SMTP_PASSWORD` (the app password). Google caps how many recipients an account can mail each day, and Workspace administrators can turn app passwords off. For a larger or outside audience, use your own domain.
 
 **Resend.** Add and verify your sending domain in Resend and install the DNS records it gives you. Use a sender address at that domain and a key scoped to sending. See [Resend domains](https://resend.com/docs/dashboard/domains/introduction).
 
