@@ -69,4 +69,6 @@ Runs upload private Actions artifacts kept for 7 days. `document-hunt-RUN_ID` ho
 - `preview-manifest.json`: hashes that tie the files to your current configuration;
 - `raw/prompt.md`, `raw/agent-output-*.json`: what the agent was first asked and what it returned (never used for sending; not in synthetic previews).
 
+A finished `preview` or `paid-ai-preview` run also shows the email as plain text on its summary page, escaped so nothing the agent wrote is read as formatting or markup, so you can review it without downloading anything. That copy is kept with the run itself, not with the 7-day artifacts: anyone who can read the repository can see it until the run is deleted. To remove a preview's unpublished leads sooner, delete the workflow run.
+
 A test send or resend re-checks the manifest's hashes against the files and your current configuration, and re-renders the issue, so an edited artifact or one made with different settings can't be sent. The workflow accepts only a paid preview from an earlier manual run of the same repository and branch.

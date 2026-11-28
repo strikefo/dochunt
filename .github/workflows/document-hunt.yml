@@ -13,10 +13,10 @@ on:
         description: Previous successful paid-ai-preview run ID (test or resend)
         type: string
       recipient:
-        description: One configured recipient for send-preview-test
+        description: One configured recipient for send-preview-test (blank = the first in email.recipients)
         type: string
       attempt_id:
-        description: Explicit unique operator attempt ID for test or resend
+        description: Unique attempt ID; required for resend (blank for a test = one derived from this run)
         type: string
 permissions:
   contents: read
@@ -92,6 +92,9 @@ jobs:
           remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
           [ "$remaining" -gt 0 ] || exit 1
           timeout "$remaining" dochunt preview --paid --output-dir output
+      - name: Show the preview on the run page
+        if: success() && (github.event.inputs.mode == 'preview' || github.event.inputs.mode == 'paid-ai-preview')
+        run: dochunt summary --output-dir output --run-id "$GITHUB_RUN_ID" >> "$GITHUB_STEP_SUMMARY"
       - name: Select previous trusted preview
         if: github.event.inputs.mode == 'send-preview-test' || github.event.inputs.mode == 'resend'
         env:
@@ -179,7 +182,10 @@ jobs:
           remaining=$(( DOCHUNT_DEADLINE - $(date +%s) ))
           [ "$remaining" -gt 0 ] || exit 1
           if [ "$MODE" = send-preview-test ]; then
-            timeout "$remaining" dochunt preview-test --issue-dir selected-preview --recipient "$RECIPIENT" --attempt-id "$ATTEMPT_ID" --branch "$BRANCH"
+            # Blank fields get defaults. Re-running this same run reuses its attempt ID, so it cannot send twice.
+            test_args=(--attempt-id "${ATTEMPT_ID:-test-$GITHUB_RUN_ID}")
+            if [ -n "$RECIPIENT" ]; then test_args+=(--recipient "$RECIPIENT"); fi
+            timeout "$remaining" dochunt preview-test --issue-dir selected-preview "${test_args[@]}" --branch "$BRANCH"
           else
             timeout "$remaining" dochunt resend --issue-dir selected-preview --attempt-id "$ATTEMPT_ID" --branch "$BRANCH"
           fi

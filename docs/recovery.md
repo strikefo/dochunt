@@ -8,7 +8,7 @@ Resend retries reuse the same idempotency key and exact request for less than 24
 
 For an intentional additional send, use `dochunt resend --issue-dir out --attempt-id OPERATOR_SELECTED_ID` (1-64 letters, digits, `_` or `-`). Reuse that ID to recover this same attempt. Do not create a new attempt while another remains unresolved: inspect provider records and decide manually first. Provider accepted is never proof of inbox delivery.
 
-`dochunt preview-test --issue-dir out --recipient CONFIGURED_ADDRESS --attempt-id TEST_ID` sends the existing paid-preview artifacts to one configured recipient only. It performs no research and does not mark a scheduled issue complete or add leads to the tracker. Synthetic preview artifacts are clearly labeled fictional. Routine tests inject fake HTTPS/SMTP transports and never send live mail.
+`dochunt preview-test --issue-dir out --recipient CONFIGURED_ADDRESS --attempt-id TEST_ID` sends the existing paid-preview artifacts to one configured recipient only (without `--recipient`, the first in `email.recipients`). In the workflow, a blank `attempt_id` becomes `test-RUN_ID`, so re-running the same run reuses it. It performs no research and does not mark a scheduled issue complete or add leads to the tracker. Synthetic preview artifacts are clearly labeled fictional. Routine tests inject fake HTTPS/SMTP transports and never send live mail.
 
 If atomic writing or Git commit fails, no new provider call occurs. Local changes may remain for operator inspection; restore/commit them deliberately before restarting. If accepted-state writing fails, preserve the sending snapshot and recover above. Do not delete private pending state to make a retry proceed.
 
